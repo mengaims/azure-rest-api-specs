@@ -653,6 +653,23 @@
         "categoriesAnalysis"
       ]
     },
+    "AnalyzeImageWithTextResult": {
+      "type": "object",
+      "description": "The analysis response of the image with text.",
+      "properties": {
+        "categoriesAnalysis": {
+          "type": "array",
+          "description": "Analysis result for categories.",
+          "items": {
+            "$ref": "#/definitions/TextCategoriesAnalysis"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "categoriesAnalysis"
+      ]
+    },
     "AnalyzeTextOptions": {
       "type": "object",
       "description": "The text analysis request.",
@@ -846,6 +863,38 @@
           "format": "uri",
           "description": "The blob url of the image."
         }
+      }
+    },
+    "ImageWithTextCategoriesAnalysis": {
+      "type": "object",
+      "description": "ImageWithText analysis result.",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/ImageWithTextCategory",
+          "description": "The imageWithtext analysis category."
+        },
+        "severity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The higher the severity of input content, the larger this value is. The values could be: 0,2,4,6."
+        }
+      },
+      "required": [
+        "category"
+      ]
+    },
+    "ImageWithTextCategory": {
+      "type": "string",
+      "description": "ImageWithText analyze category.",
+      "enum": [
+        "Hate",
+        "SelfHarm",
+        "Sexual",
+        "Violence"
+      ],
+      "x-ms-enum": {
+        "name": "ImageWithTextCategory",
+        "modelAsString": true
       }
     },
     "PagedTextBlocklist": {

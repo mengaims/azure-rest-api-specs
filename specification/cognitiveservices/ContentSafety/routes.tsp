@@ -194,5 +194,18 @@ interface ImageIncidents {
     ListImageIncidentSampleResult,
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
+
+  @summary("Analyze Image With Text")
+  @doc("A synchronous API for the analysis of image with text.")
+  @route("/imageWithText:analyze")
+  @post
+  analyzeImageWithTextOptions is Azure.Core.RpcOperation<
+    {
+      @doc("The analysis request of the image with text")
+      @body
+      body: AnalyzeImageWithTextOptions;
+    },
+    AnalyzeImageWithTextResult
+  >;
 }
 
