@@ -472,5 +472,5 @@ model ImageWithTextCategoriesAnalysis {
 @doc("The analysis response of the image with text.")
 model AnalyzeImageWithTextResult {
   @doc("Analysis result for categories.")
-  categoriesAnalysis: TextCategoriesAnalysis[];
+  categoriesAnalysis: ImageWithTextCategoriesAnalysis[];
 }
