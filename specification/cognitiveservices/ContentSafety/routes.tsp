@@ -43,7 +43,7 @@ interface TextOperations {
   @added(ContentSafety.Versions.v2023_10_15_Preview)
   @summary("Analyze Protected Material")
   @doc("A synchronous API for the analysis of protected material.")
-  @route("/text:analyzeProtectedMaterial")
+  @route("/text/protectedMaterial/text:analyze")
   @post
   analyzeTextProtectedMaterial is Azure.Core.RpcOperation<
     {

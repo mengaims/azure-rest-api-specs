@@ -712,6 +712,47 @@
         }
       }
     },
+    "/text/protectedMaterial/text:analyze": {
+      "post": {
+        "operationId": "TextOperations_AnalyzeTextProtectedMaterial",
+        "summary": "Analyze Protected Material",
+        "description": "A synchronous API for the analysis of protected material.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextProtectedMaterialOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextProtectedMaterialResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text:analyze": {
       "post": {
         "operationId": "TextOperations_AnalyzeText",
@@ -782,47 +823,6 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/AnalyzeTextJailbreakResult"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/text:analyzeProtectedMaterial": {
-      "post": {
-        "operationId": "TextOperations_AnalyzeTextProtectedMaterial",
-        "summary": "Analyze Protected Material",
-        "description": "A synchronous API for the analysis of protected material.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "The text analysis request.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AnalyzeTextProtectedMaterialOptions"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/AnalyzeTextProtectedMaterialResult"
             }
           },
           "default": {
