@@ -24,6 +24,34 @@ interface TextOperations {
     },
     AnalyzeTextResult
   >;
+
+  @added(ContentSafety.Versions.v2023_10_15_Preview)
+  @summary("Analyze Text Jailbreak")
+  @doc("A synchronous API for the analysis of text jailbreak.")
+  @route("/text:detectJailbreak")
+  @post
+  detectTextJailbreak is Azure.Core.RpcOperation<
+    {
+      @body
+      @doc("The text jailbreak analysis request.")
+      body: AnalyzeTextJailbreakOptions;
+    },
+    AnalyzeTextJailbreakResult
+  >;
+
+  @added(ContentSafety.Versions.v2023_10_15_Preview)
+  @summary("Analyze Protected Material")
+  @doc("A synchronous API for the analysis of protected material.")
+  @route("/text:detectProtectedMaterial")
+  @post
+  detectTextProtectedMaterial is Azure.Core.RpcOperation<
+    {
+      @body
+      @doc("The text analysis request.")
+      body: AnalyzeTextProtectedMaterialOptions;
+    },
+    AnalyzeTextProtectedMaterialResult
+  >;
 }
 
 interface ImageOperations {
@@ -112,7 +140,10 @@ interface TextIncidents {
 
   @summary("Get All Text Incidents")
   @doc("Get all incidents details.")
-  listIncidents is TextIncidentOps.ResourceList<TextIncident>;
+  listIncidents is TextIncidentOps.ResourceList<
+    TextIncident,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
 
   @summary("Add TextIncidentSamples To Incident")
   @doc("Add textIncidentSamples to an incident. You can add at most 100 textIncidentSamples in one request.")
@@ -163,7 +194,10 @@ interface ImageIncidents {
 
   @summary("Get All Image Incidents")
   @doc("Get all incidents details.")
-  listIncidents is ImageIncidentOps.ResourceList<ImageIncident>;
+  listIncidents is ImageIncidentOps.ResourceList<
+    ImageIncident,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
 
   @summary("Add ImageIncidentSamples To Incident")
   @doc("Add imageIncidentSamples to an incident. You can add at most 100 imageIncidentSamples in one request.")
@@ -220,6 +254,11 @@ interface TextCategoryCustomization {
   getTextCustomizedCategory is CategoryOps.ResourceRead<TextCustomizedCategory>;
 
   deleteTextCustomizedCategory is CategoryOps.ResourceDelete<TextCustomizedCategory>;
+
+  listTextCustomizedCategory is CategoryOps.ResourceList<
+    TextCustomizedCategory,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
 }
 
 @added(Versions.v2023_10_30_Preview)

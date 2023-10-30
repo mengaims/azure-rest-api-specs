@@ -67,6 +67,15 @@
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
           }
         ],
         "responses": {
@@ -873,6 +882,49 @@
         }
       }
     },
+    "/text/categories": {
+      "get": {
+        "operationId": "TextCategoryCustomization_ListTextCustomizedCategory",
+        "description": "Resource list operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedTextCustomizedCategory"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
     "/text/categories/{categoryName}": {
       "get": {
         "operationId": "TextCategoryCustomization_GetTextCustomizedCategory",
@@ -1009,6 +1061,15 @@
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
           }
         ],
         "responses": {
@@ -1448,6 +1509,88 @@
           }
         }
       }
+    },
+    "/text:detectJailbreak": {
+      "post": {
+        "operationId": "TextOperations_DetectTextJailbreak",
+        "summary": "Analyze Text Jailbreak",
+        "description": "A synchronous API for the analysis of text jailbreak.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text jailbreak analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextJailbreakOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextJailbreakResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text:detectProtectedMaterial": {
+      "post": {
+        "operationId": "TextOperations_DetectTextProtectedMaterial",
+        "summary": "Analyze Protected Material",
+        "description": "A synchronous API for the analysis of protected material.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextProtectedMaterialOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextProtectedMaterialResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -1672,6 +1815,33 @@
         "categoriesAnalysis"
       ]
     },
+    "AnalyzeTextJailbreakOptions": {
+      "type": "object",
+      "description": "The text jailbreak analysis request.",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text needs to be analyzed if it attempt to jailbreak. We support a maximum of 1k Unicode characters (Unicode code points) in the text of one request.",
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "AnalyzeTextJailbreakResult": {
+      "type": "object",
+      "description": "The text jailbreak analysis request.",
+      "properties": {
+        "jailbreakAnalysis": {
+          "$ref": "#/definitions/JailbreakAnalysisResult",
+          "description": "Analysis result for jailbreak."
+        }
+      },
+      "required": [
+        "jailbreakAnalysis"
+      ]
+    },
     "AnalyzeTextOptions": {
       "type": "object",
       "description": "The text analysis request.",
@@ -1736,6 +1906,33 @@
           }
         ]
       }
+    },
+    "AnalyzeTextProtectedMaterialOptions": {
+      "type": "object",
+      "description": "The protected material analysis request.",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text needs to be analyzed. We support a maximum of 1k Unicode characters (Unicode code points) in the text of one request.",
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "AnalyzeTextProtectedMaterialResult": {
+      "type": "object",
+      "description": "The protected material analysis response.",
+      "properties": {
+        "protectedMaterialAnalysis": {
+          "$ref": "#/definitions/ProtectedMaterialAnalysisResult",
+          "description": "Analysis result for protected material."
+        }
+      },
+      "required": [
+        "protectedMaterialAnalysis"
+      ]
     },
     "AnalyzeTextResult": {
       "type": "object",
@@ -2091,6 +2288,19 @@
         }
       }
     },
+    "JailbreakAnalysisResult": {
+      "type": "object",
+      "description": "The text jailbreak analysis response.",
+      "properties": {
+        "detected": {
+          "type": "boolean",
+          "description": "Analysis result for jailbreak."
+        }
+      },
+      "required": [
+        "detected"
+      ]
+    },
     "LabelDefinition": {
       "type": "object",
       "description": "Label definition.",
@@ -2214,6 +2424,28 @@
         "value"
       ]
     },
+    "PagedTextCustomizedCategory": {
+      "type": "object",
+      "description": "Paged collection of TextCustomizedCategory items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The TextCustomizedCategory items on this page",
+          "items": {
+            "$ref": "#/definitions/TextCustomizedCategory"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
     "PagedTextIncident": {
       "type": "object",
       "description": "Paged collection of TextIncident items",
@@ -2272,6 +2504,19 @@
       "required": [
         "concept",
         "description"
+      ]
+    },
+    "ProtectedMaterialAnalysisResult": {
+      "type": "object",
+      "description": "The text protected material analysis response.",
+      "properties": {
+        "detected": {
+          "type": "boolean",
+          "description": "Analysis result for protected material.."
+        }
+      },
+      "required": [
+        "detected"
       ]
     },
     "RemoveImageIncidentSamplesOptions": {
@@ -2582,6 +2827,7 @@
       "type": "string",
       "enum": [
         "2023-10-01",
+        "2023-10-15-preview",
         "2023-10-30-preview"
       ],
       "x-ms-enum": {
@@ -2591,6 +2837,10 @@
           {
             "name": "v2023_10_01",
             "value": "2023-10-01"
+          },
+          {
+            "name": "v2023_10_15_Preview",
+            "value": "2023-10-15-preview"
           },
           {
             "name": "v2023_10_30_Preview",
