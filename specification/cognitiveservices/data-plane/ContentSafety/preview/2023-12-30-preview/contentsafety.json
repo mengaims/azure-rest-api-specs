@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "ContentSafety Service",
-    "version": "2023-11-30-preview",
+    "version": "2023-12-30-preview",
     "description": "Analyze harmful content",
     "x-typespec-generated": [
       {
@@ -2054,6 +2054,13 @@
             "$ref": "#/definitions/IncidentMatch"
           },
           "x-ms-identifiers": []
+        },
+        "reason": {
+          "type": "array",
+          "description": "Sentences detected as harmful content.",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
