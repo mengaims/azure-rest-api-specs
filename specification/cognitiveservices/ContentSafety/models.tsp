@@ -167,7 +167,7 @@ model TextBlocklistItem {
   text: string;
 
   @doc("Optional setting. true means this item is a regex matched term, false means this item is an exact matched term. Default value is false.")
-  isRegex: boolean;
+  isRegex?: boolean;
 }
 
 @doc("The request to add blocklistItems to a text blocklist.")

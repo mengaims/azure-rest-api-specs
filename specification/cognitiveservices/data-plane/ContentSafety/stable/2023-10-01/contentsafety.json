@@ -982,8 +982,7 @@
       },
       "required": [
         "blocklistItemId",
-        "text",
-        "isRegex"
+        "text"
       ]
     },
     "TextBlocklistMatch": {
