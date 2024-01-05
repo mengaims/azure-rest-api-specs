@@ -555,11 +555,6 @@ model TextCustomizedCategory {
 }
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)
-model TextModelParameter {
-  categoryName: string,
-}
-
-@added(ContentSafety.Versions.v2024_02_01_Preview)
 @doc("The response for async job submission.")
 model SubmitJobResponse {
   ...AcceptedResponse;
