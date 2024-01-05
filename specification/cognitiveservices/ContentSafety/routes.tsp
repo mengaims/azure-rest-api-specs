@@ -313,7 +313,7 @@ interface TextCustomizedModelTrainingJobOperations {
   @actionSeparator(":")
   @action("cancel")
   cancelTrainingJob is TextMdoelJobOps.ResourceAction<
-    TextCustomizedCategory,
+    TextModelTrainingJobState,
     {},
     SubmitJobResponse>
 }
