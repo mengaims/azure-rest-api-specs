@@ -1098,49 +1098,6 @@
         }
       }
     },
-    "/text/categories/{categoryName}:cancel": {
-      "post": {
-        "operationId": "TextCustomizedModelTrainingJobOperations_CancelTrainingJob",
-        "description": "Resource action operation template.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Text customizedCategories name.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64,
-            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The request has been accepted for processing, but processing has not yet completed.",
-            "headers": {
-              "operation-location": {
-                "type": "string",
-                "description": "The location of the status API for monitoring the created job."
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
     "/text/categories/{categoryName}/models": {
       "get": {
         "operationId": "TextTrainedModelOperations_ListTextTrainedModels",
@@ -1363,6 +1320,55 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/TextModelTrainingJobState"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}/training-jobs/{jobId}:cancel": {
+      "post": {
+        "operationId": "TextCustomizedModelTrainingJobOperations_CancelTrainingJob",
+        "description": "Resource action operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request has been accepted for processing, but processing has not yet completed.",
+            "headers": {
+              "operation-location": {
+                "type": "string",
+                "description": "The location of the status API for monitoring the created job."
+              }
             }
           },
           "default": {
