@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "ContentSafety Service",
-    "version": "2023-11-30-preview",
+    "version": "2024-02-01-preview",
     "description": "Analyze harmful content",
     "x-typespec-generated": [
       {
@@ -472,11 +472,6 @@
               }
             }
           }
-        },
-        "x-ms-examples": {
-          "Analyze Image": {
-            "$ref": "./examples/AnalyzeImage.json"
-          }
         }
       }
     },
@@ -551,11 +546,6 @@
             }
           }
         },
-        "x-ms-examples": {
-          "Get All Text Blocklists": {
-            "$ref": "./examples/ListTextBlocklists.json"
-          }
-        },
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
@@ -598,11 +588,6 @@
                 "description": "String error code indicating what went wrong."
               }
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get Text Blocklist By blocklistName": {
-            "$ref": "./examples/GetTextBlocklist.json"
           }
         }
       },
@@ -661,11 +646,6 @@
               }
             }
           }
-        },
-        "x-ms-examples": {
-          "Create Or Update Text Blocklist": {
-            "$ref": "./examples/CreateOrUpdateTextBlocklist.json"
-          }
         }
       },
       "delete": {
@@ -701,11 +681,6 @@
                 "description": "String error code indicating what went wrong."
               }
             }
-          }
-        },
-        "x-ms-examples": {
-          "Delete Text Blocklist By blocklistName": {
-            "$ref": "./examples/DeleteTextBlocklist.json"
           }
         }
       }
@@ -757,11 +732,6 @@
               }
             }
           }
-        },
-        "x-ms-examples": {
-          "Add or Update BlocklistItems To Text Blocklist": {
-            "$ref": "./examples/AddOrUpdateBlocklistItems.json"
-          }
         }
       }
     },
@@ -808,11 +778,6 @@
                 "description": "String error code indicating what went wrong."
               }
             }
-          }
-        },
-        "x-ms-examples": {
-          "Remove BlockItems From Text Blocklist": {
-            "$ref": "./examples/RemoveBlocklistItems.json"
           }
         }
       }
@@ -865,11 +830,6 @@
             }
           }
         },
-        "x-ms-examples": {
-          "Get All BlockItems By blocklistName": {
-            "$ref": "./examples/ListTextBlocklistItems.json"
-          }
-        },
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
@@ -920,11 +880,6 @@
                 "description": "String error code indicating what went wrong."
               }
             }
-          }
-        },
-        "x-ms-examples": {
-          "Get BlockItem By blocklistName And blocklistItemId": {
-            "$ref": "./examples/GetTextBlocklistItem.json"
           }
         }
       }
@@ -1084,6 +1039,331 @@
         "responses": {
           "204": {
             "description": "There is no content to send for this request, but the headers may be useful. "
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}:train-model": {
+      "post": {
+        "operationId": "TextCategoryCustomization_TrainModel",
+        "description": "Resource action operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request has been accepted for processing, but processing has not yet completed.",
+            "headers": {
+              "operation-location": {
+                "type": "string",
+                "description": "The location of the status API for monitoring the created job."
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}:cancel": {
+      "post": {
+        "operationId": "TextCustomizedModelTrainingJobOperations_CancelTrainingJob",
+        "description": "Resource action operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The request has been accepted for processing, but processing has not yet completed.",
+            "headers": {
+              "operation-location": {
+                "type": "string",
+                "description": "The location of the status API for monitoring the created job."
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}/models": {
+      "get": {
+        "operationId": "TextTrainedModelOperations_ListTextTrainedModels",
+        "summary": "list models",
+        "description": "List models.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedTextTrainedModel"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/text/categories/{categoryName}/models/{modelId}": {
+      "get": {
+        "operationId": "TextTrainedModelOperations_GetTextTrainedModels",
+        "description": "Resource read operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "modelId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/TextTrainedModel"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "TextTrainedModelOperations_DeleteTrainedModel",
+        "description": "Resource delete operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "modelId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "There is no content to send for this request, but the headers may be useful. "
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}/training-jobs": {
+      "get": {
+        "operationId": "TextCustomizedModelTrainingJobOperations_ListTextModelTrainingJobs",
+        "summary": "list jobs",
+        "description": "List jobs.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedTextModelTrainingJobState"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/text/categories/{categoryName}/training-jobs/{jobId}": {
+      "get": {
+        "operationId": "TextCustomizedModelTrainingJobOperations_GetTextModelTrainingJob",
+        "description": "Resource read operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/TextModelTrainingJobState"
+            }
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1554,11 +1834,6 @@
               }
             }
           }
-        },
-        "x-ms-examples": {
-          "Analyze Text": {
-            "$ref": "./examples/AnalyzeText.json"
-          }
         }
       }
     },
@@ -1970,6 +2245,14 @@
         "incidents": {
           "$ref": "#/definitions/IncidentOptions",
           "description": "The incidents to detect."
+        },
+        "customizedCategories": {
+          "type": "array",
+          "description": "The customized categories will be analyzed. If they are not assigned, the analysis results for all available customized categories will be returned.",
+          "items": {
+            "$ref": "#/definitions/CustomizedCategory"
+          },
+          "x-ms-identifiers": []
         }
       },
       "required": [
@@ -2054,10 +2337,26 @@
             "$ref": "#/definitions/IncidentMatch"
           },
           "x-ms-identifiers": []
+        },
+        "citation": {
+          "type": "array",
+          "description": "Chunks in the original text detected as harmful content. Analysis result and scores are caused by these.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "customizedCategoriesAnalysis": {
+          "type": "array",
+          "description": "Analysis result for customized categories.",
+          "items": {
+            "$ref": "#/definitions/TextCustomizedCategoryAnalysis"
+          },
+          "x-ms-identifiers": []
         }
       },
       "required": [
-        "categoriesAnalysis"
+        "categoriesAnalysis",
+        "customizedCategoriesAnalysis"
       ]
     },
     "AnnotateTextOptions": {
@@ -2101,6 +2400,21 @@
         "id",
         "name"
       ]
+    },
+    "AsyncJobStatus": {
+      "type": "string",
+      "enum": [
+        "notStarted",
+        "running",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "cancelling"
+      ],
+      "x-ms-enum": {
+        "name": "AsyncJobStatus",
+        "modelAsString": true
+      }
     },
     "Azure.Core.Foundations.Error": {
       "type": "object",
@@ -2162,6 +2476,23 @@
           "description": "Inner error."
         }
       }
+    },
+    "CustomizedCategory": {
+      "type": "object",
+      "description": "Customized category for inference.",
+      "properties": {
+        "categoryName": {
+          "type": "string",
+          "description": "Category name"
+        },
+        "modelId": {
+          "type": "string",
+          "description": "Model ID for the category. If not provided, the latest available model will be used."
+        }
+      },
+      "required": [
+        "categoryName"
+      ]
     },
     "DetectUngroundednessOptions": {
       "type": "object",
@@ -2673,6 +3004,50 @@
         "value"
       ]
     },
+    "PagedTextModelTrainingJobState": {
+      "type": "object",
+      "description": "Paged collection of TextModelTrainingJobState items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The TextModelTrainingJobState items on this page",
+          "items": {
+            "$ref": "#/definitions/TextModelTrainingJobState"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "PagedTextTrainedModel": {
+      "type": "object",
+      "description": "Paged collection of TextTrainedModel items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The TextTrainedModel items on this page",
+          "items": {
+            "$ref": "#/definitions/TextTrainedModel"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items"
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
     "PreDefinedConcept": {
       "type": "object",
       "description": "Pre-defined concept.",
@@ -2944,12 +3319,6 @@
             "$ref": "#/definitions/SubCategory"
           }
         },
-        "emphases": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
         "exampleBlobUrl": {
           "type": "string",
           "format": "uri",
@@ -2959,6 +3328,27 @@
       "required": [
         "categoryName",
         "subCategories"
+      ]
+    },
+    "TextCustomizedCategoryAnalysis": {
+      "type": "object",
+      "description": "Text customized category analysis result.",
+      "properties": {
+        "categoryName": {
+          "type": "string",
+          "description": "Customized category name"
+        },
+        "subCategoriesAnalysis": {
+          "type": "array",
+          "description": "Severity score between 0.0 to 1.0",
+          "items": {
+            "$ref": "#/definitions/TextSubCategoriesAnalysis"
+          }
+        }
+      },
+      "required": [
+        "categoryName",
+        "subCategoriesAnalysis"
       ]
     },
     "TextIncident": {
@@ -3042,6 +3432,114 @@
       },
       "required": [
         "incidentSampleId"
+      ]
+    },
+    "TextModelTrainingJobResult": {
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "string"
+        },
+        "percentComplete": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "estimatedEndTime": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "modelId",
+        "percentComplete",
+        "startTime",
+        "endTime",
+        "estimatedEndTime"
+      ]
+    },
+    "TextModelTrainingJobState": {
+      "type": "object",
+      "properties": {
+        "jobId": {
+          "type": "string"
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastUpdatedTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expirationTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "$ref": "#/definitions/AsyncJobStatus"
+        },
+        "result": {
+          "$ref": "#/definitions/TextModelTrainingJobResult"
+        }
+      },
+      "required": [
+        "jobId",
+        "createdTime",
+        "lastUpdatedTime",
+        "expirationTime",
+        "status",
+        "result"
+      ]
+    },
+    "TextSubCategoriesAnalysis": {
+      "type": "object",
+      "description": "SubCategoriesAnalysis",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "TextTrainedModel": {
+      "type": "object",
+      "properties": {
+        "modelId": {
+          "type": "string"
+        },
+        "lastTrainedTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastTrainingDurationInSeconds": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "required": [
+        "modelId",
+        "lastTrainedTime",
+        "expirationDate",
+        "lastTrainingDurationInSeconds"
       ]
     },
     "UngroundedDetails": {

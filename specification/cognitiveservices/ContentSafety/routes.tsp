@@ -284,6 +284,59 @@ interface TextCategoryCustomization {
     TextCustomizedCategory,
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
+
+  @action("train-model")
+  @added(Versions.v2024_02_01_Preview)
+  trainModel is CategoryOps.ResourceAction<
+    TextCustomizedCategory,
+    {},
+    SubmitJobResponse
+  >;
+}
+
+interface TextMdoelJobOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(Versions.v2024_02_01_Preview)
+interface TextCustomizedModelTrainingJobOperations {
+  @summary("list jobs")
+  @doc("List jobs.")
+  listTextModelTrainingJobs is TextMdoelJobOps.ResourceList<
+    TextModelTrainingJobState,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
+
+  getTextModelTrainingJob is TextMdoelJobOps.ResourceRead<TextModelTrainingJobState>;
+
+  @actionSeparator(":")
+  @action("cancel")
+  cancelTrainingJob is TextMdoelJobOps.ResourceAction<
+    TextCustomizedCategory,
+    {},
+    SubmitJobResponse>
+}
+
+interface TextTrainedMdoelOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(Versions.v2024_02_01_Preview)
+interface TextTrainedModelOperations {
+  @summary("list models")
+  @doc("List models.")
+  listTextTrainedModels is TextTrainedMdoelOps.ResourceList<
+    TextTrainedModel,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
+
+  getTextTrainedModels is TextTrainedMdoelOps.ResourceRead<TextTrainedModel>;
+
+  deleteTrainedModel is TextTrainedMdoelOps.ResourceDelete<
+    TextTrainedModel
+  >;
 }
 
 @added(Versions.v2023_10_30_Preview)

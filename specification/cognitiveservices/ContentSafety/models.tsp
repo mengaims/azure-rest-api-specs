@@ -40,6 +40,38 @@ enum AnalyzeImageOutputType {
   FourSeverityLevels,
 }
 
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@doc("The status of text model triggering.")
+enum TextModelStatus {
+  @doc("There is no model")
+  NotExisted,
+
+  @doc("The training task is created.")
+  Created,
+
+  @doc("The model is training.")
+  Training,
+
+  @doc("The model is ready for use")
+  Ready,
+
+  @doc("The model is being deleted.")
+  Deleting,
+
+  @doc("The training job failed.")
+  Failed,
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+enum AsyncJobStatus {
+  notStarted,
+  running,
+  succeeded,
+  failed,
+  cancelled,
+  cancelling,
+}
+
 @doc("The text analysis request.")
 model AnalyzeTextOptions {
   @doc("The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
@@ -61,6 +93,20 @@ model AnalyzeTextOptions {
   @added(ContentSafety.Versions.v2023_10_30_Preview)
   @doc("The incidents to detect.")
   incidents?: IncidentOptions;
+
+  @added(ContentSafety.Versions.v2024_02_01_Preview)
+  @doc("The customized categories will be analyzed. If they are not assigned, the analysis results for all available customized categories will be returned.")
+  customizedCategories?: CustomizedCategory[];
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@doc("Customized category for inference.")
+model CustomizedCategory {
+  @doc("Category name")
+  categoryName: string;
+
+  @doc("Model ID for the category. If not provided, the latest available model will be used.")
+  modelId?: string;
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
@@ -88,6 +134,27 @@ model AnalyzeTextResult {
   @added(ContentSafety.Versions.v2023_12_30_Preview)
   @doc("Chunks in the original text detected as harmful content. Analysis result and scores are caused by these.")
   citation?: string[];
+
+  @added(ContentSafety.Versions.v2024_02_01_Preview)
+  @doc("Analysis result for customized categories.")
+  customizedCategoriesAnalysis: TextCustomizedCategoryAnalysis[];
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@doc("Text customized category analysis result.")
+model TextCustomizedCategoryAnalysis {
+  @doc("Customized category name")
+  categoryName: string;
+
+  @doc("Severity score between 0.0 to 1.0")
+  subCategoriesAnalysis: TextSubCategoriesAnalysis[];
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@doc("SubCategoriesAnalysis")
+model TextSubCategoriesAnalysis {
+  id: int32;
+  name: string
 }
 
 @doc("The result of blocklist match.")
@@ -473,10 +540,84 @@ model TextCustomizedCategory {
   @maxLength(64)
   categoryName: string;
 
+  @doc("A predefined concept with its definition can be used directly in the subcategories.")
   preDefinedConcepts?: PreDefinedConcept[];
+
+  @doc("Subcategories are detailed classes of the category.")
   subCategories: SubCategory[];
+
+  @added(Versions.v2023_10_30_Preview)
+  @removed(Versions.v2024_02_01_Preview)
   emphases?: string[];
+
+  @doc("Blob that stores the examples.")
   exampleBlobUrl?: url;
+}
+
+@added(Versions.v2024_02_01_Preview)
+model TextModelResult {
+
+  @doc("statusCode")
+  @statusCode 
+  statusCode: 200 | 202 | 204,
+
+  @doc("The category that the model need to classiy.")
+  categoryName: string,
+
+  @doc("The model version in format YYYY-MM-DD")
+  modelVersion: string,
+
+  @doc("The time that the model training is triggered.")
+  created: utcDateTime,
+
+  @doc("The time that the model is recently changed.")
+  lastUpdated: utcDateTime,
+
+  @doc("The model status.")
+  status: TextModelStatus
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+model TextModelParameter {
+  categoryName: string,
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@doc("The response for async job submission.")
+model SubmitJobResponse {
+  ...AcceptedResponse;
+  
+  @header("operation-location")
+  @doc("The location of the status API for monitoring the created job.")
+  jobUrl: string;
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@parentResource(TextCustomizedCategory)
+@resource("training-jobs")
+model TextModelTrainingJobState {
+  @key
+  jobId: string;
+  createdTime: utcDateTime;
+  lastUpdatedTime: utcDateTime;
+  expirationTime: utcDateTime;
+  status: AsyncJobStatus;
+  result: TextModelTrainingJobResult;
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+model AsyncJobWarning {
+  code: string;
+  messgae: string;
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+model TextModelTrainingJobResult {
+  modelId: string;
+  percentComplete: int32;
+  startTime: utcDateTime;
+  endTime: utcDateTime;
+  estimatedEndTime: utcDateTime;
 }
 
 #suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
@@ -487,6 +628,17 @@ enum ImageWithTextCategory {
   SelfHarm,
   Sexual,
   Violence,
+}
+
+@added(ContentSafety.Versions.v2024_02_01_Preview)
+@parentResource(TextCustomizedCategory)
+@resource("models")
+model TextTrainedModel {
+  @key
+  modelId: string;
+  lastTrainedTime: utcDateTime;
+  expirationDate: utcDateTime;
+  lastTrainingDurationInSeconds: int32;
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
