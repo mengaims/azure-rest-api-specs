@@ -41,28 +41,6 @@ enum AnalyzeImageOutputType {
 }
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)
-@doc("The status of text model triggering.")
-enum TextModelStatus {
-  @doc("There is no model")
-  NotExisted,
-
-  @doc("The training task is created.")
-  Created,
-
-  @doc("The model is training.")
-  Training,
-
-  @doc("The model is ready for use")
-  Ready,
-
-  @doc("The model is being deleted.")
-  Deleting,
-
-  @doc("The training job failed.")
-  Failed,
-}
-
-@added(ContentSafety.Versions.v2024_02_01_Preview)
 enum AsyncJobStatus {
   notStarted,
   running,
