@@ -554,29 +554,6 @@ model TextCustomizedCategory {
   exampleBlobUrl?: url;
 }
 
-@added(Versions.v2024_02_01_Preview)
-model TextModelResult {
-
-  @doc("statusCode")
-  @statusCode 
-  statusCode: 200 | 202 | 204,
-
-  @doc("The category that the model need to classiy.")
-  categoryName: string,
-
-  @doc("The model version in format YYYY-MM-DD")
-  modelVersion: string,
-
-  @doc("The time that the model training is triggered.")
-  created: utcDateTime,
-
-  @doc("The time that the model is recently changed.")
-  lastUpdated: utcDateTime,
-
-  @doc("The model status.")
-  status: TextModelStatus
-}
-
 @added(ContentSafety.Versions.v2024_02_01_Preview)
 model TextModelParameter {
   categoryName: string,
