@@ -40,6 +40,45 @@ enum AnalyzeImageOutputType {
   FourSeverityLevels,
 }
 
+@doc("The API version of each image analyze for batch request.")
+enum SingleImageAnalyzeApiVersion {
+  @doc("Use 2023-10-01 API version to analyze each image.")
+  `2023-10-01`,
+
+  @doc("Use 2023-10-15-preview API version to analyze each image.")
+  `2023-10-15-preview`,
+
+  @doc("Use 2023-10-30-preview API version to analyze each image.")
+  `2023-10-30-preview`,
+}
+
+@doc("The type of batch results storage mode.")
+enum BatchResultsStorageMode {
+  @doc("Store each result in a single file.")
+  IndividualFilePerResult,
+
+  @doc("Merge each result into one file.")
+  CollectiveFileAllResults,
+}
+
+@doc("The type of batch analysis task status.")
+enum BatchTaskStatus {
+  @doc("The task has not started yet.")
+  NotStarted,
+
+  @doc("The task is in progress.")
+  Running,
+
+  @doc("The task has failed.")
+  Failed,
+
+  @doc("The task has been succeeded.")
+  Succeed,
+
+  @doc("The task has been canceled.")
+  Cancelled,
+}
+
 @doc("The text analysis request.")
 model AnalyzeTextOptions {
   @doc("The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
@@ -167,6 +206,62 @@ model ImageCategoriesAnalysis {
 
   @doc("The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the output value can be 0, 2, 4, 6.")
   severity?: int32;
+}
+
+@doc("The image batch analysis request.")
+model BatchAnalyzeImagesOptions {
+  @doc("The API version to use for single image analyze. Supported versions are '2023-10-01', '2023-10-15-preview' and '2023-10-30-preview'.")
+  singleImageAnalyzeApiVersion: SingleImageAnalyzeApiVersion = SingleImageAnalyzeApiVersion.`2023-10-01`;
+
+  @doc("The URL of the Azure Storage Blob containing all the images to be analyzed in the batch task.")
+  sourceImagesBlobUrl: url;
+
+  @doc("The URL of the Azure Storage Blob where the batch task results will be written.")
+  resultsBlobUrl: url;
+
+  @doc("The storage mode for the batch task results, either 'individualFilePerResult' or 'collectiveFileAllResults'.")
+  resultsStorageMode?: BatchResultsStorageMode = BatchResultsStorageMode.IndividualFilePerResult;
+
+  @doc("The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.")
+  categories?: ImageCategory[];
+
+  @doc("This refers to the type of image analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".")
+  outputType?: AnalyzeImageOutputType = AnalyzeImageOutputType.FourSeverityLevels;
+
+  @added(ContentSafety.Versions.v2023_10_30_Preview)
+  @doc("The incidents to detect.")
+  incidents?: IncidentOptions;
+}
+
+@doc("The image batch analysis response.")
+model BatchAnalyzeResult {
+  @doc("The id of image batch analysis task.")
+  taskId: int32;
+
+  @doc("The status of the batch image analysis task.")
+  status: BatchTaskStatus;
+}
+
+@added(ContentSafety.Versions.v2023_10_30_Preview)
+@doc("Image batch analyze task.")
+@resource("image:batchAnalyze")
+model ImageBatchTask {
+  @doc("Task id.")
+  @key("taskId")
+  @visibility("read")
+  @maxLength(64)
+  taskId: string;
+
+  @doc("The status of the batch image analysis task.")
+  status: BatchTaskStatus;
+
+  @doc("The progress of the batch image analysis task, represented as a percentage (0-100).")
+  @visibility("read")
+  progressPercentage: float64;
+
+  @doc("The running time of the batch image analysis task, in seconds.")
+  @visibility("read", "query")
+  runningTimeInSeconds: float64;
 }
 
 @doc("Text Blocklist.")
