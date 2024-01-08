@@ -246,7 +246,7 @@ model BatchAnalyzeResult {
 @doc("Image batch analyze task.")
 @resource("image:batchAnalyze")
 model ImageBatchTask {
-  @doc("Task id.")
+  @doc("The task ID returned by the Start Batch Analyze Images API.")
   @key("taskId")
   @visibility("read")
   @maxLength(64)
@@ -256,11 +256,9 @@ model ImageBatchTask {
   status: BatchTaskStatus;
 
   @doc("The progress of the batch image analysis task, represented as a percentage (0-100).")
-  @visibility("read")
   progressPercentage: float64;
 
   @doc("The running time of the batch image analysis task, in seconds.")
-  @visibility("read", "query")
   runningTimeInSeconds: float64;
 }
 

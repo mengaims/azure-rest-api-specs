@@ -480,6 +480,87 @@
         }
       }
     },
+    "/image:batchAnalyze": {
+      "post": {
+        "operationId": "ImageOperations_BatchAnalyzeImage",
+        "summary": "Start Batch Analyze Images",
+        "description": "An asynchronous API for the batch analysis of potentially harmful image content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The image batch analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BatchAnalyzeImagesOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/BatchAnalyzeResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image:batchAnalyze/{taskId}": {
+      "get": {
+        "operationId": "ImageOperations_GetBatchTaskStatus",
+        "summary": "Get Batch Analyze Status",
+        "description": "Check the status of a batch image analysis task.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "The task ID returned by the Start Batch Analyze Images API.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/ImageBatchTask"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/imageWithText:analyze": {
       "post": {
         "operationId": "ImageWithTextOperations_AnalyzeImageWithText",
@@ -2163,6 +2244,138 @@
         }
       }
     },
+    "BatchAnalyzeImagesOptions": {
+      "type": "object",
+      "description": "The image batch analysis request.",
+      "properties": {
+        "singleImageAnalyzeApiVersion": {
+          "$ref": "#/definitions/SingleImageAnalyzeApiVersion",
+          "description": "The API version to use for single image analyze. Supported versions are '2023-10-01', '2023-10-15-preview' and '2023-10-30-preview'.",
+          "default": "2023-10-01"
+        },
+        "sourceImagesBlobUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the Azure Storage Blob containing all the images to be analyzed in the batch task."
+        },
+        "resultsBlobUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the Azure Storage Blob where the batch task results will be written."
+        },
+        "resultsStorageMode": {
+          "$ref": "#/definitions/BatchResultsStorageMode",
+          "description": "The storage mode for the batch task results, either 'individualFilePerResult' or 'collectiveFileAllResults'.",
+          "default": "IndividualFilePerResult"
+        },
+        "categories": {
+          "type": "array",
+          "description": "The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.",
+          "items": {
+            "$ref": "#/definitions/ImageCategory"
+          }
+        },
+        "outputType": {
+          "$ref": "#/definitions/AnalyzeImageOutputType",
+          "description": "This refers to the type of image analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".",
+          "default": "FourSeverityLevels"
+        },
+        "incidents": {
+          "$ref": "#/definitions/IncidentOptions",
+          "description": "The incidents to detect."
+        }
+      },
+      "required": [
+        "singleImageAnalyzeApiVersion",
+        "sourceImagesBlobUrl",
+        "resultsBlobUrl"
+      ]
+    },
+    "BatchAnalyzeResult": {
+      "type": "object",
+      "description": "The image batch analysis response.",
+      "properties": {
+        "taskId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The id of image batch analysis task."
+        },
+        "status": {
+          "$ref": "#/definitions/BatchTaskStatus",
+          "description": "The status of the batch image analysis task."
+        }
+      },
+      "required": [
+        "taskId",
+        "status"
+      ]
+    },
+    "BatchResultsStorageMode": {
+      "type": "string",
+      "description": "The type of batch results storage mode.",
+      "enum": [
+        "IndividualFilePerResult",
+        "CollectiveFileAllResults"
+      ],
+      "x-ms-enum": {
+        "name": "BatchResultsStorageMode",
+        "modelAsString": true,
+        "values": [
+          {
+            "name": "IndividualFilePerResult",
+            "value": "IndividualFilePerResult",
+            "description": "Store each result in a single file."
+          },
+          {
+            "name": "CollectiveFileAllResults",
+            "value": "CollectiveFileAllResults",
+            "description": "Merge each result into one file."
+          }
+        ]
+      }
+    },
+    "BatchTaskStatus": {
+      "type": "string",
+      "description": "The type of batch analysis task status.",
+      "enum": [
+        "NotStarted",
+        "Running",
+        "Failed",
+        "Succeed",
+        "Cancelled"
+      ],
+      "x-ms-enum": {
+        "name": "BatchTaskStatus",
+        "modelAsString": true,
+        "values": [
+          {
+            "name": "NotStarted",
+            "value": "NotStarted",
+            "description": "The task has not started yet."
+          },
+          {
+            "name": "Running",
+            "value": "Running",
+            "description": "The task is in progress."
+          },
+          {
+            "name": "Failed",
+            "value": "Failed",
+            "description": "The task has failed."
+          },
+          {
+            "name": "Succeed",
+            "value": "Succeed",
+            "description": "The task has been succeeded."
+          },
+          {
+            "name": "Cancelled",
+            "value": "Cancelled",
+            "description": "The task has been canceled."
+          }
+        ]
+      }
+    },
     "DetectUngroundednessOptions": {
       "type": "object",
       "description": "The request of ungroundedness detection.",
@@ -2266,6 +2479,38 @@
       "required": [
         "azureOpenAIEndpoint",
         "deploymentName"
+      ]
+    },
+    "ImageBatchTask": {
+      "type": "object",
+      "description": "Image batch analyze task.",
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "description": "The task ID returned by the Start Batch Analyze Images API.",
+          "maxLength": 64,
+          "readOnly": true
+        },
+        "status": {
+          "$ref": "#/definitions/BatchTaskStatus",
+          "description": "The status of the batch image analysis task."
+        },
+        "progressPercentage": {
+          "type": "number",
+          "format": "double",
+          "description": "The progress of the batch image analysis task, represented as a percentage (0-100)."
+        },
+        "runningTimeInSeconds": {
+          "type": "number",
+          "format": "double",
+          "description": "The running time of the batch image analysis task, in seconds."
+        }
+      },
+      "required": [
+        "taskId",
+        "status",
+        "progressPercentage",
+        "runningTimeInSeconds"
       ]
     },
     "ImageCategoriesAnalysis": {
@@ -2749,6 +2994,36 @@
       "required": [
         "incidentSampleIds"
       ]
+    },
+    "SingleImageAnalyzeApiVersion": {
+      "type": "string",
+      "description": "The API version of each image analyze for batch request.",
+      "enum": [
+        "2023-10-01",
+        "2023-10-15-preview",
+        "2023-10-30-preview"
+      ],
+      "x-ms-enum": {
+        "name": "SingleImageAnalyzeApiVersion",
+        "modelAsString": true,
+        "values": [
+          {
+            "name": "2023-10-01",
+            "value": "2023-10-01",
+            "description": "Use 2023-10-01 API version to analyze each image."
+          },
+          {
+            "name": "2023-10-15-preview",
+            "value": "2023-10-15-preview",
+            "description": "Use 2023-10-15-preview API version to analyze each image."
+          },
+          {
+            "name": "2023-10-30-preview",
+            "value": "2023-10-30-preview",
+            "description": "Use 2023-10-30-preview API version to analyze each image."
+          }
+        ]
+      }
     },
     "SubCategory": {
       "type": "object",
