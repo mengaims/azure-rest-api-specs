@@ -1055,7 +1055,7 @@
         }
       }
     },
-    "/text/categories/{categoryName}:train-model": {
+    "/text/categories/{categoryName}:trainModel": {
       "post": {
         "operationId": "TextCategoryCustomization_TrainModel",
         "description": "Resource action operation template.",
@@ -1100,7 +1100,7 @@
     },
     "/text/categories/{categoryName}/models": {
       "get": {
-        "operationId": "TextTrainedModelOperations_ListTextTrainedModels",
+        "operationId": "TextCustomizedModelOperations_ListTextCustomizedModels",
         "summary": "list models",
         "description": "List models.",
         "parameters": [
@@ -1153,7 +1153,7 @@
     },
     "/text/categories/{categoryName}/models/{modelId}": {
       "get": {
-        "operationId": "TextTrainedModelOperations_GetTextTrainedModels",
+        "operationId": "TextCustomizedModelOperations_GetTextCustomizedModels",
         "description": "Resource read operation template.",
         "parameters": [
           {
@@ -1197,7 +1197,7 @@
         }
       },
       "delete": {
-        "operationId": "TextTrainedModelOperations_DeleteTrainedModel",
+        "operationId": "TextCustomizedModelOperations_DeleteCustomizedModel",
         "description": "Resource delete operation template.",
         "parameters": [
           {
@@ -1222,154 +1222,6 @@
         "responses": {
           "204": {
             "description": "There is no content to send for this request, but the headers may be useful. "
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/text/categories/{categoryName}/training-jobs": {
-      "get": {
-        "operationId": "TextCustomizedModelTrainingJobOperations_ListTextModelTrainingJobs",
-        "summary": "list jobs",
-        "description": "List jobs.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Text customizedCategories name.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64,
-            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/PagedTextModelTrainingJobState"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        },
-        "x-ms-pageable": {
-          "nextLinkName": "nextLink"
-        }
-      }
-    },
-    "/text/categories/{categoryName}/training-jobs/{jobId}": {
-      "get": {
-        "operationId": "TextCustomizedModelTrainingJobOperations_GetTextModelTrainingJob",
-        "description": "Resource read operation template.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Text customizedCategories name.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64,
-            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
-          },
-          {
-            "name": "jobId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/TextModelTrainingJobState"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/text/categories/{categoryName}/training-jobs/{jobId}:cancel": {
-      "post": {
-        "operationId": "TextCustomizedModelTrainingJobOperations_CancelTrainingJob",
-        "description": "Resource action operation template.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Text customizedCategories name.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64,
-            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
-          },
-          {
-            "name": "jobId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The request has been accepted for processing, but processing has not yet completed.",
-            "headers": {
-              "operation-location": {
-                "type": "string",
-                "description": "The location of the status API for monitoring the created job."
-              }
-            }
           },
           "default": {
             "description": "An unexpected error response.",
@@ -2407,20 +2259,20 @@
         "name"
       ]
     },
-    "AsyncJobStatus": {
-      "type": "string",
-      "enum": [
-        "notStarted",
-        "running",
-        "succeeded",
-        "failed",
-        "cancelled",
-        "cancelling"
-      ],
-      "x-ms-enum": {
-        "name": "AsyncJobStatus",
-        "modelAsString": true
-      }
+    "AsyncJobWarning": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "messgae": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "messgae"
+      ]
     },
     "Azure.Core.Foundations.Error": {
       "type": "object",
@@ -2497,7 +2349,8 @@
         }
       },
       "required": [
-        "categoryName"
+        "categoryName",
+        "modelId"
       ]
     },
     "DetectUngroundednessOptions": {
@@ -2856,6 +2709,19 @@
         "incidentSampleId"
       ]
     },
+    "ModelStatus": {
+      "type": "string",
+      "enum": [
+        "created",
+        "training",
+        "ready",
+        "failed"
+      ],
+      "x-ms-enum": {
+        "name": "ModelStatus",
+        "modelAsString": true
+      }
+    },
     "PagedImageIncident": {
       "type": "object",
       "description": "Paged collection of ImageIncident items",
@@ -3010,28 +2876,6 @@
         "value"
       ]
     },
-    "PagedTextModelTrainingJobState": {
-      "type": "object",
-      "description": "Paged collection of TextModelTrainingJobState items",
-      "properties": {
-        "value": {
-          "type": "array",
-          "description": "The TextModelTrainingJobState items on this page",
-          "items": {
-            "$ref": "#/definitions/TextModelTrainingJobState"
-          },
-          "x-ms-identifiers": []
-        },
-        "nextLink": {
-          "type": "string",
-          "format": "uri",
-          "description": "The link to the next page of items"
-        }
-      },
-      "required": [
-        "value"
-      ]
-    },
     "PagedTextTrainedModel": {
       "type": "object",
       "description": "Paged collection of TextTrainedModel items",
@@ -3052,22 +2896,6 @@
       },
       "required": [
         "value"
-      ]
-    },
-    "PreDefinedConcept": {
-      "type": "object",
-      "description": "Pre-defined concept.",
-      "properties": {
-        "concept": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "concept",
-        "description"
       ]
     },
     "ProtectedMaterialAnalysisResult": {
@@ -3310,14 +3138,6 @@
             "create"
           ]
         },
-        "preDefinedConcepts": {
-          "type": "array",
-          "description": "A predefined concept with its definition can be used directly in the subcategories.",
-          "items": {
-            "$ref": "#/definitions/PreDefinedConcept"
-          },
-          "x-ms-identifiers": []
-        },
         "subCategories": {
           "type": "array",
           "description": "Subcategories are detailed classes of the category.",
@@ -3346,7 +3166,7 @@
         },
         "subCategoriesAnalysis": {
           "type": "array",
-          "description": "Severity score between 0.0 to 1.0",
+          "description": "Sub-category analysis",
           "items": {
             "$ref": "#/definitions/TextSubCategoriesAnalysis"
           }
@@ -3440,71 +3260,6 @@
         "incidentSampleId"
       ]
     },
-    "TextModelTrainingJobResult": {
-      "type": "object",
-      "properties": {
-        "modelId": {
-          "type": "string"
-        },
-        "percentComplete": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "startTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "endTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "estimatedEndTime": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "required": [
-        "modelId",
-        "percentComplete",
-        "startTime",
-        "endTime",
-        "estimatedEndTime"
-      ]
-    },
-    "TextModelTrainingJobState": {
-      "type": "object",
-      "properties": {
-        "jobId": {
-          "type": "string"
-        },
-        "createdTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdatedTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "expirationTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "status": {
-          "$ref": "#/definitions/AsyncJobStatus"
-        },
-        "result": {
-          "$ref": "#/definitions/TextModelTrainingJobResult"
-        }
-      },
-      "required": [
-        "jobId",
-        "createdTime",
-        "lastUpdatedTime",
-        "expirationTime",
-        "status",
-        "result"
-      ]
-    },
     "TextSubCategoriesAnalysis": {
       "type": "object",
       "description": "SubCategoriesAnalysis",
@@ -3528,24 +3283,36 @@
         "modelId": {
           "type": "string"
         },
-        "lastTrainedTime": {
+        "status": {
+          "$ref": "#/definitions/ModelStatus"
+        },
+        "createdTime": {
           "type": "string",
           "format": "date-time"
         },
-        "expirationDate": {
+        "lastUpdateTime": {
           "type": "string",
           "format": "date-time"
         },
-        "lastTrainingDurationInSeconds": {
-          "type": "integer",
-          "format": "int32"
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AsyncJobWarning"
+          },
+          "x-ms-identifiers": []
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
         "modelId",
-        "lastTrainedTime",
-        "expirationDate",
-        "lastTrainingDurationInSeconds"
+        "status",
+        "createdTime",
+        "lastUpdateTime"
       ]
     },
     "UngroundedDetails": {

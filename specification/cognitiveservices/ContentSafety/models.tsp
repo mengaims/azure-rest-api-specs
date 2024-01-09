@@ -41,13 +41,11 @@ enum AnalyzeImageOutputType {
 }
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)
-enum AsyncJobStatus {
-  notStarted,
-  running,
-  succeeded,
+enum ModelStatus {
+  created,
+  training,
+  ready,
   failed,
-  cancelled,
-  cancelling,
 }
 
 @doc("The text analysis request.")
@@ -84,7 +82,7 @@ model CustomizedCategory {
   categoryName: string;
 
   @doc("Model ID for the category. If not provided, the latest available model will be used.")
-  modelId?: string;
+  modelId: string;
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
@@ -124,7 +122,7 @@ model TextCustomizedCategoryAnalysis {
   @doc("Customized category name")
   categoryName: string;
 
-  @doc("Severity score between 0.0 to 1.0")
+  @doc("Sub-category analysis")
   subCategoriesAnalysis: TextSubCategoriesAnalysis[];
 }
 
@@ -519,6 +517,8 @@ model TextCustomizedCategory {
   categoryName: string;
 
   @doc("A predefined concept with its definition can be used directly in the subcategories.")
+  @added(Versions.v2023_10_30_Preview)
+  @removed(Versions.v2024_02_01_Preview)
   preDefinedConcepts?: PreDefinedConcept[];
 
   @doc("Subcategories are detailed classes of the category.")
@@ -534,7 +534,7 @@ model TextCustomizedCategory {
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)
 @doc("The response for async job submission.")
-model SubmitJobResponse {
+model SubmitModelTrainingResponse {
   ...AcceptedResponse;
   
   @header("operation-location")
@@ -543,31 +543,9 @@ model SubmitJobResponse {
 }
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)
-@parentResource(TextCustomizedCategory)
-@resource("training-jobs")
-model TextModelTrainingJobState {
-  @key
-  jobId: string;
-  createdTime: utcDateTime;
-  lastUpdatedTime: utcDateTime;
-  expirationTime: utcDateTime;
-  status: AsyncJobStatus;
-  result: TextModelTrainingJobResult;
-}
-
-@added(ContentSafety.Versions.v2024_02_01_Preview)
 model AsyncJobWarning {
   code: string;
   messgae: string;
-}
-
-@added(ContentSafety.Versions.v2024_02_01_Preview)
-model TextModelTrainingJobResult {
-  modelId: string;
-  percentComplete: int32;
-  startTime: utcDateTime;
-  endTime: utcDateTime;
-  estimatedEndTime: utcDateTime;
 }
 
 #suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
@@ -586,9 +564,11 @@ enum ImageWithTextCategory {
 model TextTrainedModel {
   @key
   modelId: string;
-  lastTrainedTime: utcDateTime;
-  expirationDate: utcDateTime;
-  lastTrainingDurationInSeconds: int32;
+  status: ModelStatus;
+  createdTime: utcDateTime;
+  lastUpdateTime: utcDateTime;
+  warnings?: AsyncJobWarning[];
+  errors?: string[];
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
