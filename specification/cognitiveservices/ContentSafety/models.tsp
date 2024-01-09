@@ -538,8 +538,8 @@ model SubmitModelTrainingResponse {
   ...AcceptedResponse;
   
   @header("operation-location")
-  @doc("The location of the status API for monitoring the created job.")
-  jobUrl: string;
+  @doc("The location of the status API for monitoring the triggered model.")
+  modelUrl: string;
 }
 
 @added(ContentSafety.Versions.v2024_02_01_Preview)

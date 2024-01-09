@@ -1079,7 +1079,7 @@
             "headers": {
               "operation-location": {
                 "type": "string",
-                "description": "The location of the status API for monitoring the created job."
+                "description": "The location of the status API for monitoring the triggered model."
               }
             }
           },
@@ -1101,8 +1101,8 @@
     "/text/categories/{categoryName}/models": {
       "get": {
         "operationId": "TextCustomizedModelOperations_ListTextCustomizedModels",
-        "summary": "list models",
-        "description": "List models.",
+        "summary": "List all existing models",
+        "description": "List existing models.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -1154,7 +1154,7 @@
     "/text/categories/{categoryName}/models/{modelId}": {
       "get": {
         "operationId": "TextCustomizedModelOperations_GetTextCustomizedModels",
-        "description": "Resource read operation template.",
+        "description": "Get a model that is not deleted.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -1198,7 +1198,7 @@
       },
       "delete": {
         "operationId": "TextCustomizedModelOperations_DeleteCustomizedModel",
-        "description": "Resource delete operation template.",
+        "description": "If the model is training, the training process will be cancelled and the model will also be deleted.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"

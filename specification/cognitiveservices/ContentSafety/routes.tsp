@@ -301,15 +301,17 @@ interface TextCustomizedMdoelOps
 
 @added(Versions.v2024_02_01_Preview)
 interface TextCustomizedModelOperations {
-  @summary("list models")
-  @doc("List models.")
+  @summary("List all existing models")
+  @doc("List existing models.")
   listTextCustomizedModels is TextCustomizedMdoelOps.ResourceList<
     TextTrainedModel,
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 
+  @doc("Get a model that is not deleted.")
   getTextCustomizedModels is TextCustomizedMdoelOps.ResourceRead<TextTrainedModel>;
 
+  @doc("If the model is training, the training process will be cancelled and the model will also be deleted.")
   deleteCustomizedModel is TextCustomizedMdoelOps.ResourceDelete<
     TextTrainedModel
   >;
