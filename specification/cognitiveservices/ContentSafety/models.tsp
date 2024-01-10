@@ -130,7 +130,7 @@ model TextCustomizedCategoryAnalysis {
 @doc("customized category analysis result")
 model TextCustomizedCategoryClassResult {
   id: int32;
-  @renamedFrom(Versions.v2023_10_30_Preview, "name")
+  @renamedFrom(Versions.v2024_02_01_Preview, "name")
   className: string
 }
 
@@ -500,10 +500,10 @@ model PreDefinedConcept {
 
 @added(Versions.v2023_10_30_Preview)
 @doc("Label definition.")
-@renamedFrom(Versions.v2023_10_30_Preview, "SubCategory")
+@renamedFrom(Versions.v2024_02_01_Preview, "SubCategory")
 model Class {
   id: int32;
-  @renamedFrom(Versions.v2023_10_30_Preview, "name")
+  @renamedFrom(Versions.v2024_02_01_Preview, "name")
   className: string;
   statements: string[];
 }
@@ -525,7 +525,7 @@ model TextCustomizedCategory {
   preDefinedConcepts?: PreDefinedConcept[];
 
   @doc("Subcategories are detailed classes of the category. It is required there is a class 'safe' with id=0.")
-  @renamedFrom(Versions.v2023_10_30_Preview, "subCategories")
+  @renamedFrom(Versions.v2024_02_01_Preview, "subCategories")
   classes: Class[];
 
   @added(Versions.v2023_10_30_Preview)
