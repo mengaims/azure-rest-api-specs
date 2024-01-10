@@ -2163,6 +2163,30 @@
         }
       }
     },
+    "Class": {
+      "type": "object",
+      "description": "Label definition.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "className": {
+          "type": "string"
+        },
+        "statements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "className",
+        "statements"
+      ]
+    },
     "DetectUngroundednessOptions": {
       "type": "object",
       "description": "The request of ungroundedness detection.",
@@ -2750,30 +2774,6 @@
         "incidentSampleIds"
       ]
     },
-    "SubCategory": {
-      "type": "object",
-      "description": "Label definition.",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "name": {
-          "type": "string"
-        },
-        "statements": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "id",
-        "name",
-        "statements"
-      ]
-    },
     "Task": {
       "type": "string",
       "description": "Task type.",
@@ -2937,11 +2937,11 @@
           },
           "x-ms-identifiers": []
         },
-        "subCategories": {
+        "classes": {
           "type": "array",
-          "description": "Subcategories are detailed classes of the category.",
+          "description": "Subcategories are detailed classes of the category. It is required there is a class 'safe' with id=0.",
           "items": {
-            "$ref": "#/definitions/SubCategory"
+            "$ref": "#/definitions/Class"
           }
         },
         "emphases": {
@@ -2958,7 +2958,7 @@
       },
       "required": [
         "categoryName",
-        "subCategories"
+        "classes"
       ]
     },
     "TextIncident": {
