@@ -42,11 +42,11 @@ enum AnalyzeImageOutputType {
 
 @doc("The type of batch results storage mode.")
 enum BatchResultsStorageMode {
-  @doc("Store each result in a single file.")
-  IndividualResultFiles,
-
   @doc("Merge each result into one file.")
   CollectiveResultFile,
+
+  @doc("Store each result in a single file.")
+  IndividualResultFiles,
 }
 
 @doc("The type of batch analysis task status.")
@@ -62,9 +62,6 @@ enum BatchTaskStatus {
 
   @doc("The task has been succeeded.")
   Succeeded,
-
-  @doc("The task has been canceled.")
-  Cancelled,
 }
 
 @doc("The text analysis request.")
@@ -199,10 +196,10 @@ model ImageCategoriesAnalysis {
 @doc("The image batch analysis request.")
 model BatchAnalyzeImagesOptions {
   @doc("The URL of the Azure Storage Blob containing all the images to be analyzed in the batch task.")
-  sourceImagesBlobFolderUrl: url;
+  imagesBlobFolderUrl: url;
 
   @doc("The URL of the Azure Storage Blob where the batch task results will be written.")
-  resultsBlobFolderUrl: url;
+  analysisResultsBlobFolderUrl: url;
 
   @doc("The storage mode for the batch task results, either 'CollectiveResultFile' or 'IndividualResultFiles'.")
   resultsStorageMode?: BatchResultsStorageMode = BatchResultsStorageMode.CollectiveResultFile;
@@ -220,7 +217,7 @@ model BatchAnalyzeImagesOptions {
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
 @doc("Image batch analyze task.")
-@resource("image:batchAnalyze")
+@resource("image/batchAnalyzeTasks")
 model ImageBatchTask {
   @doc("The id of image batch analysis task.")
   @key("taskId")

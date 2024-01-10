@@ -59,6 +59,46 @@
   },
   "tags": [],
   "paths": {
+    "/image/batchAnalyzeTasks/{taskId}": {
+      "get": {
+        "operationId": "ImageOperations_GetBatchTaskStatus",
+        "summary": "Get Batch Analyze Status",
+        "description": "Check the status of a batch image analysis task.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "The id of image batch analysis task.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/ImageBatchTask"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/image/incidents": {
       "get": {
         "operationId": "ImageIncidents_ListIncidents",
@@ -497,46 +537,6 @@
         "responses": {
           "202": {
             "description": "The request has been accepted for processing, but processing has not yet completed.",
-            "schema": {
-              "$ref": "#/definitions/ImageBatchTask"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/image:batchAnalyze/{taskId}": {
-      "get": {
-        "operationId": "ImageOperations_GetBatchTaskStatus",
-        "summary": "Get Batch Analyze Status",
-        "description": "Check the status of a batch image analysis task.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "taskId",
-            "in": "path",
-            "description": "The id of image batch analysis task.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/ImageBatchTask"
             }
@@ -2198,12 +2198,12 @@
       "type": "object",
       "description": "The image batch analysis request.",
       "properties": {
-        "sourceImagesBlobFolderUrl": {
+        "imagesBlobFolderUrl": {
           "type": "string",
           "format": "uri",
           "description": "The URL of the Azure Storage Blob containing all the images to be analyzed in the batch task."
         },
-        "resultsBlobFolderUrl": {
+        "analysisResultsBlobFolderUrl": {
           "type": "string",
           "format": "uri",
           "description": "The URL of the Azure Storage Blob where the batch task results will be written."
@@ -2231,30 +2231,30 @@
         }
       },
       "required": [
-        "sourceImagesBlobFolderUrl",
-        "resultsBlobFolderUrl"
+        "imagesBlobFolderUrl",
+        "analysisResultsBlobFolderUrl"
       ]
     },
     "BatchResultsStorageMode": {
       "type": "string",
       "description": "The type of batch results storage mode.",
       "enum": [
-        "IndividualResultFiles",
-        "CollectiveResultFile"
+        "CollectiveResultFile",
+        "IndividualResultFiles"
       ],
       "x-ms-enum": {
         "name": "BatchResultsStorageMode",
         "modelAsString": true,
         "values": [
           {
-            "name": "IndividualResultFiles",
-            "value": "IndividualResultFiles",
-            "description": "Store each result in a single file."
-          },
-          {
             "name": "CollectiveResultFile",
             "value": "CollectiveResultFile",
             "description": "Merge each result into one file."
+          },
+          {
+            "name": "IndividualResultFiles",
+            "value": "IndividualResultFiles",
+            "description": "Store each result in a single file."
           }
         ]
       }
@@ -2266,8 +2266,7 @@
         "NotStarted",
         "Running",
         "Failed",
-        "Succeeded",
-        "Cancelled"
+        "Succeeded"
       ],
       "x-ms-enum": {
         "name": "BatchTaskStatus",
@@ -2292,11 +2291,6 @@
             "name": "Succeeded",
             "value": "Succeeded",
             "description": "The task has been succeeded."
-          },
-          {
-            "name": "Cancelled",
-            "value": "Cancelled",
-            "description": "The task has been canceled."
           }
         ]
       }
