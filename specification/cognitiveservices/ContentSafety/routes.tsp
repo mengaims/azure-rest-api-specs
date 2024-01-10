@@ -85,7 +85,7 @@ interface ImageOperations {
       @doc("The image batch analysis request.")
       body: BatchAnalyzeImagesOptions;
     },
-    BatchAnalyzeResult
+    ImageBatchTask
   >;
 
   @added(ContentSafety.Versions.v2023_10_30_Preview)
