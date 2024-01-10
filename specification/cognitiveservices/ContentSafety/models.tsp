@@ -503,7 +503,6 @@ model PreDefinedConcept {
 @renamedFrom(Versions.v2024_02_01_Preview, "SubCategory")
 model Class {
   id: int32;
-  @renamedFrom(Versions.v2024_02_01_Preview, "name")
   className: string;
   statements: string[];
 }
