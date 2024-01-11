@@ -79,7 +79,35 @@ interface ImageOperations {
     },
     AnalyzeImageResult
   >;
+
+  @added(ContentSafety.Versions.v2024_01_30_Preview)
+  @summary("Start Batch Analyze Images")
+  @doc("An asynchronous API for the batch analysis of potentially harmful image content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.")
+  @route("/image:batchAnalyze")
+  @post
+  batchAnalyzeImage is Azure.Core.RpcOperation<
+    {
+      @body
+      @doc("The image batch analysis request.")
+      body: BatchAnalyzeImagesOptions;
+    },
+    AcceptedResponse & {
+      @body
+      @doc("The image batch analysis response.")
+      body: ImageBatchTaskDetail;
+    }
+  >;
+
+  @added(ContentSafety.Versions.v2024_01_30_Preview)
+  @summary("Get Batch Analyze Status")
+  @doc("Check the status of a batch image analysis task.")
+  getBatchTaskStatus is BatchOps.ResourceRead<ImageBatchTaskDetail>;
 }
+
+interface BatchOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
 
 interface BlockOps
   extends Azure.Core.ResourceOperations<NoRepeatableRequests &
