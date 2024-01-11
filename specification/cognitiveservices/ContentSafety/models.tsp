@@ -279,6 +279,9 @@ model ImageBatchTaskDetail {
 
   @doc("The timestamp of when batch image analysis task was created.")
   taskCreatedTime: utcDateTime;
+
+  @doc("Return error detail when the task failed.")
+  error?: Azure.Core.Foundations.Error;
 }
 
 @doc("Text Blocklist.")

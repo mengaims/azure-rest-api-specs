@@ -2687,6 +2687,10 @@
           "type": "string",
           "format": "date-time",
           "description": "The timestamp of when batch image analysis task was created."
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "Return error detail when the task failed."
         }
       },
       "required": [
