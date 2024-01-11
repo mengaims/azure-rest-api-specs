@@ -61,7 +61,7 @@
   "paths": {
     "/image/batchAnalyzeTasks/{taskId}": {
       "get": {
-        "operationId": "ImageOperations_GetBatchTaskStatus",
+        "operationId": "ImageBatchOperations_GetBatchTaskStatus",
         "summary": "Get Batch Analyze Status",
         "description": "Check the status of a batch image analysis task.",
         "parameters": [
@@ -517,7 +517,7 @@
     },
     "/image:batchAnalyze": {
       "post": {
-        "operationId": "ImageOperations_BatchAnalyzeImage",
+        "operationId": "ImageBatchOperations_BatchAnalyzeImage",
         "summary": "Start Batch Analyze Images",
         "description": "An asynchronous API for the batch analysis of potentially harmful image content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.",
         "parameters": [
@@ -553,7 +553,8 @@
               }
             }
           }
-        }
+        },
+        "x-ms-long-running-operation": true
       }
     },
     "/imageWithText:analyze": {
