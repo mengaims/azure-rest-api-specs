@@ -617,3 +617,9 @@ model DetectUngroundednessResult {
   @doc("The detailed information about a text identified as ungrounded.")
   ungroundedDetails: UngroundedDetails[];
 }
+
+@added(Versions.v2024_01_30_Preview)
+model GenerateCustomizedCategoryPromptResult {
+  @doc("The generation status.")
+  custom: string;
+}

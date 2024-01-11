@@ -290,6 +290,25 @@ interface TextCategoryCustomization {
     TextCustomizedCategory,
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
+
+  // @added(Versions.v2024_01_30_Preview)
+  // @route("/text/categories/{categoryName}:generatePrompt")
+  // generateCustomizedCategoryPrompt is Azure.Core.LongRunningRpcOperation<
+  //   {
+  //     @path
+  //     @doc("The category name.")
+  //     categoryName: string;
+  //   },
+  //   NoContentResponse
+  // >;
+
+  // @added(Versions.v2024_01_30_Preview)
+  // @route("/text/categories/{categoryName}/operations/{operationId}")
+  // getOperationStatus is Azure.Core.Foundations.GetOperationStatus<{
+  //   @path
+  //   @doc("The category name.")
+  //   categoryName: string;
+  // }>;
 }
 
 @added(Versions.v2023_10_30_Preview)
