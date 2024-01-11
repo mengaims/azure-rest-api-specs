@@ -2758,7 +2758,7 @@
           "type": "integer",
           "format": "int32"
         },
-        "name": {
+        "className": {
           "type": "string"
         },
         "statements": {
@@ -2770,7 +2770,7 @@
       },
       "required": [
         "id",
-        "name",
+        "className",
         "statements"
       ]
     },

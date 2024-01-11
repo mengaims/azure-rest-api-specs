@@ -286,7 +286,7 @@ interface TextCategoryCustomization {
   >;
 
   @action("trainModel")
-  @added(Versions.v2024_02_01_Preview)
+  @added(Versions.v2024_01_30_Preview)
   trainModel is CategoryOps.ResourceAction<
     TextCustomizedCategory,
     {},
@@ -299,7 +299,7 @@ interface TextCustomizedMdoelOps
       NoConditionalRequests &
       NoClientRequestId> {}
 
-@added(Versions.v2024_02_01_Preview)
+@added(Versions.v2024_01_30_Preview)
 interface TextCustomizedModelOperations {
   @summary("List all existing models")
   @doc("List existing models.")
