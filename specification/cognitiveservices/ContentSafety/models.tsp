@@ -107,7 +107,7 @@ model AnalyzeTextResult {
   @doc("The incident match details.")
   incidentMatches?: IncidentMatch[];
 
-  @added(ContentSafety.Versions.v2023_12_30_Preview)
+  @added(ContentSafety.Versions.v2024_01_30_Preview)
   @doc("Chunks in the original text detected as harmful content. Analysis result and scores are caused by these.")
   citation?: string[];
 
@@ -131,7 +131,7 @@ model TextCustomizedCategoryAnalysis {
 model TextCustomizedCategoryClassResult {
   id: int32;
   @renamedFrom(Versions.v2024_01_30_Preview, "name")
-  className: string
+  className: string;
 }
 
 @doc("The result of blocklist match.")
@@ -503,6 +503,7 @@ model PreDefinedConcept {
 @renamedFrom(Versions.v2024_01_30_Preview, "SubCategory")
 model Class {
   id: int32;
+  @renamedFrom(Versions.v2024_01_30_Preview, "name")
   className: string;
   statements: string[];
 }
