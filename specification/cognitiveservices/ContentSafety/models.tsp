@@ -40,6 +40,7 @@ enum AnalyzeImageOutputType {
   FourSeverityLevels,
 }
 
+@added(ContentSafety.Versions.v2024_01_30_Preview)
 @doc("The type of batch results storage mode.")
 enum BatchResultsStorageMode {
   @doc("Merge each result into one file.")
@@ -49,6 +50,7 @@ enum BatchResultsStorageMode {
   IndividualResultFiles,
 }
 
+@added(ContentSafety.Versions.v2024_01_30_Preview)
 @doc("The type of batch analysis task status.")
 enum BatchTaskStatus {
   @doc("The task has not started yet.")

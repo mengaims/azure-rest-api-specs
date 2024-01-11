@@ -553,8 +553,7 @@
               }
             }
           }
-        },
-        "x-ms-long-running-operation": true
+        }
       }
     },
     "/imageWithText:analyze": {
@@ -2517,6 +2516,7 @@
           }
         ]
       }
+    },
     "Class": {
       "type": "object",
       "description": "Label definition.",
