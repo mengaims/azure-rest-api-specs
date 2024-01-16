@@ -2750,7 +2750,7 @@
         "incidentSampleIds"
       ]
     },
-    "Subcategory": {
+    "SubCategory": {
       "type": "object",
       "description": "Label definition.",
       "properties": {
@@ -2943,7 +2943,7 @@
           "type": "array",
           "description": "Subcategories are detailed classes of the category. It is required there is a subcategory 'safe'",
           "items": {
-            "$ref": "#/definitions/Subcategory"
+            "$ref": "#/definitions/SubCategory"
           }
         },
         "emphases": {

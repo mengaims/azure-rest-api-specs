@@ -582,6 +582,7 @@ model PreDefinedConcept {
 
 @added(Versions.v2023_10_30_Preview)
 @doc("Label definition.")
+@renamedFrom(Versions.v2024_01_30_Preview, "SubCategory")
 model Subcategory {
   @added(Versions.v2023_10_30_Preview)
   @removed(Versions.v2024_01_30_Preview)
@@ -636,7 +637,6 @@ model SubmitModelTrainingResponse {
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
 @doc("The warning details of an asynchronous job.")
-@withVisibility("read")
 model AsyncJobWarning {
   @doc("Internal string code about the warning.")
   code: string;
