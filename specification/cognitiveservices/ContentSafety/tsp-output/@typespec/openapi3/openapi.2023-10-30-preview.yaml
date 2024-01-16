@@ -1,0 +1,2269 @@
+openapi: 3.0.0
+info:
+  title: ContentSafety Service
+  version: 2023-10-30-preview
+  description: Analyze harmful content
+tags: []
+paths:
+  /image/incidents:
+    get:
+      operationId: ImageIncidents_listIncidents
+      summary: Get All Image Incidents
+      description: Get all incidents details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedImageIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /image/incidents/{incidentName}:
+    get:
+      operationId: ImageIncidents_getIncidents
+      summary: Get Image Incident By incidentName
+      description: Returns image incident details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+    patch:
+      operationId: ImageIncidents_createOrUpdateIncident
+      summary: Create Or Update Image Incident
+      description: Updates a image incident. If the image incident does not exist, a new image incident will be created.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageIncident'
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The resource instance.
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/ImageIncidentCreateOrUpdate'
+    delete:
+      operationId: ImageIncidents_deleteIncident
+      summary: Delete Image Incident By incidentName
+      description: Deletes a image incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /image/incidents/{incidentName}/incidentSamples:
+    get:
+      operationId: ImageIncidents_listIncidentSamples
+      summary: Get All ImageIncidentSamples By imageIncidentName
+      description: Get all ImageIncidentSamples in a image incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedListImageIncidentSampleResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /image/incidents/{incidentName}/incidentSamples/{incidentSampleId}:
+    get:
+      operationId: ImageIncidents_getIncidentSample
+      summary: Get ImageIncidentSample By imageIncidentName And imageIncidentSampleId
+      description: Get imageIncidentSample by imageIncidentName and imageIncidentSampleId from a image incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - name: incidentSampleId
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageIncidentSampleResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /image/incidents/{incidentName}:addIncidentSamples:
+    post:
+      operationId: ImageIncidents_addIncidentSamples
+      summary: Add ImageIncidentSamples To Incident
+      description: Add imageIncidentSamples to an incident. You can add at most 100 imageIncidentSamples in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddImageIncidentSamplesResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddImageIncidentSamplesOptions'
+  /image/incidents/{incidentName}:removeIncidentSamples:
+    post:
+      operationId: ImageIncidents_removeIncidentSamples
+      summary: Remove ImageIncidentSamples From Incident
+      description: Remove imageIncidentSamples from an incident. You can remove at most 100 Image Incident in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveImageIncidentSamplesOptions'
+  /image:analyze:
+    post:
+      operationId: ImageOperations_analyzeImage
+      summary: Analyze Image
+      description: 'A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.'
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeImageResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The image analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeImageOptions'
+  /imageWithText:analyze:
+    post:
+      operationId: ImageWithTextOperations_analyzeImageWithText
+      summary: Analyze Image With Text
+      description: 'A synchronous API for the analysis of potentially harmful image with text content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.'
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeImageWithTextResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The image with text analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeImageWithTextOptions'
+  /text/blocklists:
+    get:
+      operationId: TextBlocklists_listTextBlocklists
+      summary: Get All Text Blocklists
+      description: Get all text blocklists details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTextBlocklist'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/blocklists/{blocklistName}:
+    get:
+      operationId: TextBlocklists_getTextBlocklist
+      summary: Get Text Blocklist By blocklistName
+      description: Returns text blocklist details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextBlocklist'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+    patch:
+      operationId: TextBlocklists_createOrUpdateTextBlocklist
+      summary: Create Or Update Text Blocklist
+      description: Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextBlocklist'
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextBlocklist'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The resource instance.
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/TextBlocklistCreateOrUpdate'
+    delete:
+      operationId: TextBlocklists_deleteTextBlocklist
+      summary: Delete Text Blocklist By blocklistName
+      description: Deletes a text blocklist.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/blocklists/{blocklistName}/blocklistItems:
+    get:
+      operationId: TextBlocklists_listTextBlocklistItems
+      summary: Get All BlocklistItems By blocklistName
+      description: Get all blocklistItems in a text blocklist.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTextBlocklistItem'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/blocklists/{blocklistName}/blocklistItems/{blocklistItemId}:
+    get:
+      operationId: TextBlocklists_getTextBlocklistItem
+      summary: Get BlocklistItem By blocklistName And blocklistItemId
+      description: Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - name: blocklistItemId
+          in: path
+          required: true
+          description: The service will generate a BlocklistItemId, which will be a UUID.
+          schema:
+            type: string
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextBlocklistItem'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/blocklists/{blocklistName}:addOrUpdateBlocklistItems:
+    post:
+      operationId: TextBlocklists_addOrUpdateBlocklistItems
+      summary: Add or update BlocklistItems To Text Blocklist
+      description: Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddOrUpdateTextBlocklistItemsResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: Options for adding or updating blocklist items.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrUpdateTextBlocklistItemsOptions'
+  /text/blocklists/{blocklistName}:removeBlocklistItems:
+    post:
+      operationId: TextBlocklists_removeBlocklistItems
+      summary: Remove BlocklistItems From Text Blocklist
+      description: Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: blocklistName
+          in: path
+          required: true
+          description: Text blocklist name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: Options for removing blocklist items.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveTextBlocklistItemsOptions'
+  /text/categories:
+    get:
+      operationId: TextCategoryCustomization_listTextCustomizedCategory
+      description: Resource list operation template.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTextCustomizedCategory'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/categories/{categoryName}:
+    put:
+      operationId: TextCategoryCustomization_createOrReplaceTextCustomizedCategory
+      description: Create or replace operation template.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: categoryName
+          in: path
+          required: true
+          description: Text customizedCategories name.
+          schema:
+            type: string
+            pattern: ^Customized_[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextCustomizedCategory'
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextCustomizedCategory'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The resource instance.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextCustomizedCategory'
+    get:
+      operationId: TextCategoryCustomization_getTextCustomizedCategory
+      description: Resource read operation template.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: categoryName
+          in: path
+          required: true
+          description: Text customizedCategories name.
+          schema:
+            type: string
+            pattern: ^Customized_[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextCustomizedCategory'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+    delete:
+      operationId: TextCategoryCustomization_deleteTextCustomizedCategory
+      description: Resource delete operation template.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: categoryName
+          in: path
+          required: true
+          description: Text customizedCategories name.
+          schema:
+            type: string
+            pattern: ^Customized_[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/incidents:
+    get:
+      operationId: TextIncidents_listIncidents
+      summary: Get All Text Incidents
+      description: Get all incidents details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTextIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/incidents/{incidentName}:
+    get:
+      operationId: TextIncidents_getIncidents
+      summary: Get Text Incident By incidentName
+      description: Returns text incident details.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+    patch:
+      operationId: TextIncidents_createOrUpdateIncident
+      summary: Create Or Update Text Incident
+      description: Updates a text incident. If the text incident does not exist, a new text incident will be created.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextIncident'
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextIncident'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The resource instance.
+        required: true
+        content:
+          application/merge-patch+json:
+            schema:
+              $ref: '#/components/schemas/TextIncidentCreateOrUpdate'
+    delete:
+      operationId: TextIncidents_deleteIncident
+      summary: Delete Text Incident By incidentName
+      description: Deletes a text incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/incidents/{incidentName}/incidentSamples:
+    get:
+      operationId: TextIncidents_listIncidentSamples
+      summary: Get All TextIncidentSamples By textIncidentName
+      description: Get all TextIncidentSamples in a text incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - $ref: '#/components/parameters/Azure.Core.TopQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.SkipQueryParameter'
+        - $ref: '#/components/parameters/Azure.Core.MaxPageSizeQueryParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedTextIncidentSample'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/incidents/{incidentName}/incidentSamples/{incidentSampleId}:
+    get:
+      operationId: TextIncidents_getIncidentSample
+      summary: Get TextIncidentSample By textIncidentName And textIncidentSampleId
+      description: Get textIncidentSample by textIncidentName and textIncidentSampleId from a text incident.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+        - name: incidentSampleId
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextIncidentSample'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+  /text/incidents/{incidentName}:addIncidentSamples:
+    post:
+      operationId: TextIncidents_addIncidentSamples
+      summary: Add TextIncidentSamples To Incident
+      description: Add textIncidentSamples to an incident. You can add at most 100 textIncidentSamples in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddTextIncidentSamplesResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTextIncidentSamplesOptions'
+  /text/incidents/{incidentName}:removeIncidentSamples:
+    post:
+      operationId: TextIncidents_removeIncidentSamples
+      summary: Remove TextIncidentSamples From Incident
+      description: Remove textIncidentSamples from an incident. You can remove at most 100 Text Incident in one request.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+        - name: incidentName
+          in: path
+          required: true
+          description: incident name.
+          schema:
+            type: string
+            pattern: ^[0-9A-Za-z._~-]+$
+            maxLength: 64
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveTextIncidentSamplesOptions'
+  /text:adaptiveAnnotate:
+    post:
+      operationId: PromptTextOperations_annotateText
+      summary: Annotate Text by Prompt
+      description: A remote procedure call (RPC) operation.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnnotateTextResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The text analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnotateTextOptions'
+  /text:analyze:
+    post:
+      operationId: TextOperations_analyzeText
+      summary: Analyze Text
+      description: 'A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories: Hate, SelfHarm, Sexual, and Violence.'
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeTextResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The text analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeTextOptions'
+  /text:detectJailbreak:
+    post:
+      operationId: TextOperations_detectTextJailbreak
+      summary: Analyze Text Jailbreak
+      description: A synchronous API for the analysis of text jailbreak.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeTextJailbreakResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The text jailbreak analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeTextJailbreakOptions'
+  /text:detectProtectedMaterial:
+    post:
+      operationId: TextOperations_detectTextProtectedMaterial
+      summary: Analyze Protected Material
+      description: A synchronous API for the analysis of protected material.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeTextProtectedMaterialResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The text protected material analysis request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeTextProtectedMaterialOptions'
+  /text:detectUngroundedness:
+    post:
+      operationId: TextUngroundednessDetectionOperations_detectUngroundedness
+      summary: Detect Ungrounded Information
+      description: A synchronous API for the analysis of language model outputs to determine alignment with user-provided information or identify fictional content.
+      parameters:
+        - $ref: '#/components/parameters/Azure.Core.Foundations.ApiVersionParameter'
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetectUngroundednessResult'
+        default:
+          description: An unexpected error response.
+          headers:
+            x-ms-error-code:
+              required: false
+              description: String error code indicating what went wrong.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Azure.Core.Foundations.ErrorResponse'
+      requestBody:
+        description: The ungroundedness detection request.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetectUngroundednessOptions'
+security:
+  - ApiKeyAuth: []
+  - OAuth2Auth:
+      - https://cognitiveservices.azure.com/.default
+components:
+  parameters:
+    Azure.Core.Foundations.ApiVersionParameter:
+      name: api-version
+      in: query
+      required: true
+      description: The API version to use for this operation.
+      schema:
+        type: string
+        minLength: 1
+    Azure.Core.MaxPageSizeQueryParameter:
+      name: maxpagesize
+      in: query
+      required: false
+      description: The maximum number of result items per page.
+      schema:
+        type: integer
+        format: int32
+    Azure.Core.SkipQueryParameter:
+      name: skip
+      in: query
+      required: false
+      description: The number of result items to skip.
+      schema:
+        type: integer
+        format: int32
+        default: 0
+    Azure.Core.TopQueryParameter:
+      name: top
+      in: query
+      required: false
+      description: The number of result items to return.
+      schema:
+        type: integer
+        format: int32
+  schemas:
+    AddImageIncidentSamplesOptions:
+      type: object
+      required:
+        - incidentSamples
+      properties:
+        incidentSamples:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageIncidentSample'
+          description: Array of incidentSamples to add.
+      description: The request to add incidentSamples to a incident.
+    AddImageIncidentSamplesResult:
+      type: object
+      required:
+        - incidentSamples
+      properties:
+        incidentSamples:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListImageIncidentSampleResult'
+          description: Array of incidentSamples have been added.
+      description: The response of adding incidentSamples to the incident.
+    AddOrUpdateTextBlocklistItemsOptions:
+      type: object
+      required:
+        - blocklistItems
+      properties:
+        blocklistItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextBlocklistItem'
+          description: Array of blocklistItems to add.
+      description: The request to add blocklistItems to a text blocklist.
+    AddOrUpdateTextBlocklistItemsResult:
+      type: object
+      required:
+        - blocklistItems
+      properties:
+        blocklistItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextBlocklistItem'
+          description: Array of blocklistItems have been added.
+      description: The response of adding blocklistItems to the text blocklist.
+    AddTextIncidentSamplesOptions:
+      type: object
+      required:
+        - incidentSamples
+      properties:
+        incidentSamples:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextIncidentSample'
+          description: Array of incidentSamples to add.
+      description: The request to add incidentSamples to a incident.
+    AddTextIncidentSamplesResult:
+      type: object
+      required:
+        - incidentSamples
+      properties:
+        incidentSamples:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextIncidentSample'
+          description: Array of incidentSamples have been added.
+      description: The response of adding incidentSamples to the incident.
+    AnalyzeImageOptions:
+      type: object
+      required:
+        - image
+      properties:
+        image:
+          allOf:
+            - $ref: '#/components/schemas/ImageData'
+          description: The image needs to be analyzed.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageCategory'
+          description: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+        outputType:
+          allOf:
+            - $ref: '#/components/schemas/AnalyzeImageOutputType'
+          description: This refers to the type of image analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+          default: FourSeverityLevels
+        incidents:
+          allOf:
+            - $ref: '#/components/schemas/IncidentOptions'
+          description: The incidents to detect.
+      description: The image analysis request.
+    AnalyzeImageOutputType:
+      type: string
+      enum:
+        - FourSeverityLevels
+      description: The type of image analysis output.
+    AnalyzeImageResult:
+      type: object
+      required:
+        - categoriesAnalysis
+      properties:
+        categoriesAnalysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageCategoriesAnalysis'
+          description: Analysis result for categories.
+        incidentMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentMatch'
+          description: The incident match details.
+      description: The image analysis response.
+    AnalyzeImageWithTextOptions:
+      type: object
+      required:
+        - image
+        - enableOcr
+      properties:
+        image:
+          allOf:
+            - $ref: '#/components/schemas/ImageData'
+          description: The image needs to be analyzed.
+        text:
+          type: string
+          maxLength: 1000
+          description: The text attached to the image. We support at most 1k characters (unicode code points) in one text request.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageWithTextCategory'
+          description: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+        enableOcr:
+          type: boolean
+          description: When set to true, our service will perform OCR and concatenate the recognized text with input text before analyzing. We will recognize at most 256 characters (unicode code points) from input image. The others will be truncated.
+      description: The analysis request of the image with text.
+    AnalyzeImageWithTextResult:
+      type: object
+      required:
+        - categoriesAnalysis
+      properties:
+        categoriesAnalysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageWithTextCategoriesAnalysis'
+          description: Analysis result for categories.
+      description: The analysis response of the image with text.
+    AnalyzeTextJailbreakOptions:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          maxLength: 1000
+          description: The text needs to be analyzed if it attempt to jailbreak. We support a maximum of 1k Unicode characters (Unicode code points) in the text of one request.
+      description: The text jailbreak analysis request.
+    AnalyzeTextJailbreakResult:
+      type: object
+      required:
+        - jailbreakAnalysis
+      properties:
+        jailbreakAnalysis:
+          allOf:
+            - $ref: '#/components/schemas/JailbreakAnalysisResult'
+          description: Analysis result for jailbreak.
+      description: The text jailbreak analysis request.
+    AnalyzeTextOptions:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          description: The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextCategory'
+          description: The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+        blocklistNames:
+          type: array
+          items:
+            type: string
+          description: The names of blocklists.
+        haltOnBlocklistHit:
+          type: boolean
+          description: When set to true, further analyses of harmful content will not be performed in cases where blocklists are hit. When set to false, all analyses of harmful content will be performed, whether or not blocklists are hit.
+        outputType:
+          allOf:
+            - $ref: '#/components/schemas/AnalyzeTextOutputType'
+          description: This refers to the type of text analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+          default: FourSeverityLevels
+        incidents:
+          allOf:
+            - $ref: '#/components/schemas/IncidentOptions'
+          description: The incidents to detect.
+      description: The text analysis request.
+    AnalyzeTextOutputType:
+      type: string
+      enum:
+        - FourSeverityLevels
+        - EightSeverityLevels
+      description: The type of text analysis output.
+    AnalyzeTextProtectedMaterialOptions:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          maxLength: 1000
+          description: The text needs to be analyzed. We support a maximum of 1k Unicode characters (Unicode code points) in the text of one request.
+      description: The protected material analysis request.
+    AnalyzeTextProtectedMaterialResult:
+      type: object
+      required:
+        - protectedMaterialAnalysis
+      properties:
+        protectedMaterialAnalysis:
+          allOf:
+            - $ref: '#/components/schemas/ProtectedMaterialAnalysisResult'
+          description: Analysis result for protected material.
+      description: The protected material analysis response.
+    AnalyzeTextResult:
+      type: object
+      required:
+        - categoriesAnalysis
+      properties:
+        blocklistsMatch:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextBlocklistMatch'
+          description: The blocklist match details.
+        categoriesAnalysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextCategoriesAnalysis'
+          description: Analysis result for categories.
+        incidentMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncidentMatch'
+          description: The incident match details.
+      description: The text analysis response.
+    AnnotateTextOptions:
+      type: object
+      required:
+        - text
+        - category
+      properties:
+        text:
+          type: string
+          maxLength: 10000
+          description: The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.
+        category:
+          type: string
+          description: The category will be analyzed, you can set your customized category or one of built-in categories in 'Hate','Selfharm', 'Sexual' and 'Violence'.
+      description: Annotate text options
+    AnnotateTextResult:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: The id of annotated subcategory.
+        name:
+          type: string
+          description: The name of annotated subcategory.
+        reasoning:
+          type: string
+          description: The reasoning.
+      description: The text annotation response.
+    Azure.Core.Foundations.Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: One of a server-defined set of error codes.
+        message:
+          type: string
+          description: A human-readable representation of the error.
+        target:
+          type: string
+          description: The target of the error.
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/Azure.Core.Foundations.Error'
+          description: An array of details about specific errors that led to this reported error.
+        innererror:
+          allOf:
+            - $ref: '#/components/schemas/Azure.Core.Foundations.InnerError'
+          description: An object containing more specific information than the current object about the error.
+      description: The error object.
+    Azure.Core.Foundations.ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          allOf:
+            - $ref: '#/components/schemas/Azure.Core.Foundations.Error'
+          description: The error object.
+      description: A response containing error details.
+    Azure.Core.Foundations.InnerError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: One of a server-defined set of error codes.
+        innererror:
+          allOf:
+            - $ref: '#/components/schemas/Azure.Core.Foundations.InnerError'
+          description: Inner error.
+      description: An object containing more specific information about the error. As per Microsoft One API guidelines - https://github.com/Microsoft/api-guidelines/blob/vNext/Guidelines.md#7102-error-condition-responses.
+    DetectUngroundednessOptions:
+      type: object
+      required:
+        - text
+        - groundingSources
+      properties:
+        domain:
+          allOf:
+            - $ref: '#/components/schemas/Domain'
+          description: |-
+            The domain of the text for analysis.
+            This field is optional, with a default value of Generic.
+        task:
+          allOf:
+            - $ref: '#/components/schemas/Task'
+          description: |-
+            The task type for the text analysis.
+            This field is optional, with a default value of Summarization.
+        query:
+          type: string
+          description: |-
+            The user's question input in a QnA scenario.
+            This field is optional, but if the task type is set to QnA, it becomes required.
+        text:
+          type: string
+          description: The text requiring analysis.
+        groundingSources:
+          type: array
+          items:
+            type: string
+          description: The source information used as a grounding reference.
+        reasoning:
+          type: boolean
+          description: |-
+            A value indicating if the output includes an explanation for the identified ungroundedness.
+            This field is optional, with a default value of false.
+        gptResource:
+          allOf:
+            - $ref: '#/components/schemas/GptResource'
+          description: |-
+            Connection details for the GPT resource. 
+            This field will be used only when the 'reasoning' field is set to true; otherwise, it will be ignored.
+      description: The request of ungroundedness detection.
+    DetectUngroundednessResult:
+      type: object
+      required:
+        - ungrounded
+        - confidenceScore
+        - ungroundedPercentage
+        - ungroundedDetails
+      properties:
+        ungrounded:
+          type: boolean
+          description: Detection result for ungrounded text.
+        confidenceScore:
+          type: number
+          format: float
+          description: Confidence score of the model in the analysis results.
+        ungroundedPercentage:
+          type: number
+          format: float
+          description: Percentage of ungrounded Text.
+        ungroundedDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/UngroundedDetails'
+          description: The detailed information about a text identified as ungrounded.
+      description: The response of ungroundedness detection.
+    Domain:
+      type: string
+      enum:
+        - Generic
+        - Medical
+      description: Domain.
+    GptResource:
+      type: object
+      required:
+        - azureOpenAIEndpoint
+        - deploymentName
+      properties:
+        azureOpenAIEndpoint:
+          type: string
+          description: Endpoint for Azure OpenAI resource.
+        deploymentName:
+          type: string
+          description: Deployment model name.
+      description: Connection details for the GPT resource.
+    ImageCategoriesAnalysis:
+      type: object
+      required:
+        - category
+      properties:
+        category:
+          allOf:
+            - $ref: '#/components/schemas/ImageCategory'
+          description: The image analysis category.
+        severity:
+          type: integer
+          format: int32
+          description: The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’, and the output value can be 0, 2, 4, 6.
+      description: Image analysis result.
+    ImageCategory:
+      type: string
+      enum:
+        - Hate
+        - SelfHarm
+        - Sexual
+        - Violence
+      description: Image analyze category.
+    ImageData:
+      type: object
+      properties:
+        content:
+          type: string
+          format: byte
+          description: The Base64 encoding of the image.
+        blobUrl:
+          type: string
+          format: uri
+          description: The blob url of the image.
+      description: The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while the minimum image size is 50 x 50 pixels.
+    ImageDataResult:
+      type: object
+      properties:
+        content:
+          type: string
+          format: byte
+          description: The Base64 encoding of the image.
+      description: The image result is base64 encoded bytes
+    ImageIncident:
+      type: object
+      required:
+        - incidentName
+        - created
+        - lastUpdated
+      properties:
+        incidentName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: incident name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Incident description.
+        created:
+          type: string
+          format: date-time
+          description: Incident created time.
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Incident updated time.
+      description: Image Incident.
+    ImageIncidentCreateOrUpdate:
+      type: object
+      properties:
+        incidentName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: incident name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Incident description.
+      description: Image Incident.
+    ImageIncidentSample:
+      type: object
+      required:
+        - incidentSampleId
+      properties:
+        incidentSampleId:
+          type: string
+          maxLength: 64
+          description: incident name.
+          readOnly: true
+        image:
+          allOf:
+            - $ref: '#/components/schemas/ImageData'
+          description: IncidentSample image content.
+      description: Sample in an Image Incident.
+    ImageIncidentSampleResult:
+      type: object
+      required:
+        - incidentSampleId
+      properties:
+        incidentSampleId:
+          type: string
+          maxLength: 64
+          description: incident name.
+          readOnly: true
+        image:
+          allOf:
+            - $ref: '#/components/schemas/ImageDataResult'
+          description: IncidentSample image content.
+      description: Sample Result in an Image Incident.
+    ImageWithTextCategoriesAnalysis:
+      type: object
+      required:
+        - category
+      properties:
+        category:
+          allOf:
+            - $ref: '#/components/schemas/ImageWithTextCategory'
+          description: The imageWithtext analysis category.
+        severity:
+          type: integer
+          format: int32
+          description: 'The higher the severity of input content, the larger this value is. The values could be: 0,2,4,6.'
+      description: ImageWithText analysis result.
+    ImageWithTextCategory:
+      type: string
+      enum:
+        - Hate
+        - SelfHarm
+        - Sexual
+        - Violence
+      description: ImageWithText analyze category.
+    IncidentMatch:
+      type: object
+      required:
+        - incidentName
+      properties:
+        incidentName:
+          type: string
+          maxLength: 64
+          description: The name of the matched incident.
+      description: The result of text incident match.
+    IncidentOptions:
+      type: object
+      properties:
+        incidentNames:
+          type: array
+          items:
+            type: string
+          description: The accept decision made by service.
+        haltOnIncidentHit:
+          type: boolean
+          description: When set to true, further analyses of harmful content will not be performed in cases where incidents are hit. When set to false, all analyses of harmful content will be performed, whether or not incidents are hit.
+      description: The text analysis request.
+    JailbreakAnalysisResult:
+      type: object
+      required:
+        - detected
+      properties:
+        detected:
+          type: boolean
+          description: Analysis result for jailbreak.
+      description: The text jailbreak analysis response.
+    ListImageIncidentSampleResult:
+      type: object
+      required:
+        - incidentSampleId
+      properties:
+        incidentSampleId:
+          type: string
+          maxLength: 64
+          description: incident name.
+          readOnly: true
+      description: Sample in a Image Incident.
+    PagedImageIncident:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageIncident'
+          description: The ImageIncident items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of ImageIncident items
+    PagedListImageIncidentSampleResult:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListImageIncidentSampleResult'
+          description: The ListImageIncidentSampleResult items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of ListImageIncidentSampleResult items
+    PagedTextBlocklist:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextBlocklist'
+          description: The TextBlocklist items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of TextBlocklist items
+    PagedTextBlocklistItem:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextBlocklistItem'
+          description: The TextBlocklistItem items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of TextBlocklistItem items
+    PagedTextCustomizedCategory:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextCustomizedCategory'
+          description: The TextCustomizedCategory items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of TextCustomizedCategory items
+    PagedTextIncident:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextIncident'
+          description: The TextIncident items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of TextIncident items
+    PagedTextIncidentSample:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextIncidentSample'
+          description: The TextIncidentSample items on this page
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      description: Paged collection of TextIncidentSample items
+    PreDefinedConcept:
+      type: object
+      required:
+        - concept
+        - description
+      properties:
+        concept:
+          type: string
+        description:
+          type: string
+      description: Pre-defined concept.
+    ProtectedMaterialAnalysisResult:
+      type: object
+      required:
+        - detected
+      properties:
+        detected:
+          type: boolean
+          description: Analysis result for protected material..
+      description: The text protected material analysis response.
+    RemoveImageIncidentSamplesOptions:
+      type: object
+      required:
+        - incidentSampleIds
+      properties:
+        incidentSampleIds:
+          type: array
+          items:
+            type: string
+          description: Array of incidentSamples to remove.
+      description: The request to remove incidentSamples from a incident.
+    RemoveTextBlocklistItemsOptions:
+      type: object
+      required:
+        - blocklistItemIds
+      properties:
+        blocklistItemIds:
+          type: array
+          items:
+            type: string
+          description: Array of blocklistItemIds to remove.
+      description: The request to remove blocklistItems from a text blocklist.
+    RemoveTextIncidentSamplesOptions:
+      type: object
+      required:
+        - incidentSampleIds
+      properties:
+        incidentSampleIds:
+          type: array
+          items:
+            type: string
+          description: Array of incidentSamples to remove.
+      description: The request to remove incidentSamples from a incident.
+    Subcategory:
+      type: object
+      required:
+        - id
+        - name
+        - statements
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: ''
+        name:
+          type: string
+          description: Name of the subcategory.
+        statements:
+          type: array
+          items:
+            type: string
+          description: The itemized descriptions about the subcategory.
+      description: Label definition.
+    Task:
+      type: string
+      enum:
+        - Summarization
+        - QnA
+      description: Task type.
+    TextBlocklist:
+      type: object
+      required:
+        - blocklistName
+      properties:
+        blocklistName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: Text blocklist name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Text blocklist description.
+      description: Text Blocklist.
+    TextBlocklistCreateOrUpdate:
+      type: object
+      properties:
+        blocklistName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: Text blocklist name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Text blocklist description.
+      description: Text Blocklist.
+    TextBlocklistItem:
+      type: object
+      required:
+        - blocklistItemId
+        - text
+      properties:
+        blocklistItemId:
+          type: string
+          maxLength: 64
+          description: The service will generate a BlocklistItemId, which will be a UUID.
+          readOnly: true
+        description:
+          type: string
+          maxLength: 1024
+          description: BlocklistItem description.
+        text:
+          type: string
+          maxLength: 128
+          description: BlocklistItem content.
+      description: Item in a TextBlocklist.
+    TextBlocklistMatch:
+      type: object
+      required:
+        - blocklistName
+        - blocklistItemId
+        - blocklistItemText
+      properties:
+        blocklistName:
+          type: string
+          maxLength: 64
+          description: The name of the matched blocklist.
+        blocklistItemId:
+          type: string
+          maxLength: 64
+          description: The ID of the matched item.
+        blocklistItemText:
+          type: string
+          maxLength: 128
+          description: The content of the matched item.
+      description: The result of blocklist match.
+    TextCategoriesAnalysis:
+      type: object
+      required:
+        - category
+      properties:
+        category:
+          allOf:
+            - $ref: '#/components/schemas/TextCategory'
+          description: The text analysis category.
+        severity:
+          type: integer
+          format: int32
+          description: The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or ‘EightSeverity Levels’, and the output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
+      description: Text analysis result.
+    TextCategory:
+      type: string
+      enum:
+        - Hate
+        - SelfHarm
+        - Sexual
+        - Violence
+      description: Text analyze category.
+    TextCustomizedCategory:
+      type: object
+      required:
+        - categoryName
+        - subCategories
+      properties:
+        categoryName:
+          type: string
+          maxLength: 64
+          pattern: ^Customized_[0-9A-Za-z._~-]+$
+          description: Text customizedCategories name.
+        preDefinedConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PreDefinedConcept'
+          description: A predefined concept with its definition can be used directly in the subcategories.
+        subCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subcategory'
+          description: Subcategories are detailed classes of the category. It is required there is a subcategory 'safe'
+        emphases:
+          type: array
+          items:
+            type: string
+        exampleBlobUrl:
+          type: string
+          format: uri
+          description: Blob that stores the examples.
+      description: Text Customized categories.
+    TextIncident:
+      type: object
+      required:
+        - incidentName
+        - created
+        - lastUpdated
+      properties:
+        incidentName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: incident name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Incident description.
+        created:
+          type: string
+          format: date-time
+          description: Incident created time.
+        lastUpdated:
+          type: string
+          format: date-time
+          description: Incident updated time.
+      description: Text Incident.
+    TextIncidentCreateOrUpdate:
+      type: object
+      properties:
+        incidentName:
+          type: string
+          maxLength: 64
+          pattern: ^[0-9A-Za-z._~-]+$
+          description: incident name.
+        description:
+          type: string
+          maxLength: 1024
+          description: Incident description.
+      description: Text Incident.
+    TextIncidentSample:
+      type: object
+      required:
+        - incidentSampleId
+      properties:
+        incidentSampleId:
+          type: string
+          maxLength: 64
+          description: incident name.
+          readOnly: true
+        text:
+          type: string
+          maxLength: 1024
+          description: IncidentSample text content.
+      description: Sample in a Text Incident.
+    UngroundedDetails:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+          description: The ungrounded text.
+        reason:
+          type: string
+          description: |-
+            The explanation for identifying the text as ungrounded. 
+            Only when the 'reasoning' field in the input is set to true 'reason' field will be returned.
+      description: The detailed information about a text identified as ungrounded.
+    Versions:
+      type: string
+      enum:
+        - 2023-10-01
+        - 2023-10-15-preview
+        - 2023-10-30-preview
+        - 2024-01-30-preview
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Ocp-Apim-Subscription-Key
+    OAuth2Auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          refreshUrl: https://login.microsoftonline.com/common/oauth2/v2.0/token
+          scopes:
+            https://cognitiveservices.azure.com/.default: ''
+servers:
+  - url: '{endpoint}/contentsafety'
+    description: Analyze harmful content
+    variables:
+      endpoint:
+        default: ''
+        description: |-
+          Supported Cognitive Services endpoints (protocol and hostname, for example:
+          https://<resource-name>.cognitiveservices.azure.com).

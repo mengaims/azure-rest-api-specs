@@ -1136,49 +1136,6 @@
         }
       }
     },
-    "/text/categories/{categoryName}:trainModel": {
-      "post": {
-        "operationId": "TextCategoryCustomization_TrainModel",
-        "description": "Resource action operation template.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Text customizedCategories name.",
-            "required": true,
-            "type": "string",
-            "maxLength": 64,
-            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
-          }
-        ],
-        "responses": {
-          "202": {
-            "description": "The request has been accepted for processing, but processing has not yet completed.",
-            "headers": {
-              "operation-location": {
-                "type": "string",
-                "description": "The location of the status API for monitoring the triggered model."
-              }
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
     "/text/categories/{categoryName}:generatePrompt": {
       "post": {
         "operationId": "TextCategoryCustomization_GenerateCustomizedCategoryPrompt",
@@ -1250,7 +1207,7 @@
           "200": {
             "description": "The request has succeeded.",
             "schema": {
-              "$ref": "#/definitions/PagedTextTrainedModel"
+              "$ref": "#/definitions/PagedCustomizedTextModel"
             }
           },
           "default": {
@@ -1271,7 +1228,7 @@
         }
       }
     },
-    "/text/categories/{categoryName}/models/{modelId}": {
+    "/text/categories/{categoryName}/models/{modelName}": {
       "get": {
         "operationId": "TextCustomizedModelOperations_GetTextCustomizedModels",
         "description": "Get a model that is not deleted.",
@@ -1289,8 +1246,9 @@
             "pattern": "^Customized_[0-9A-Za-z._~-]+$"
           },
           {
-            "name": "modelId",
+            "name": "modelName",
             "in": "path",
+            "description": "The name of the model.",
             "required": true,
             "type": "string"
           }
@@ -1299,7 +1257,71 @@
           "200": {
             "description": "The request has succeeded.",
             "schema": {
-              "$ref": "#/definitions/TextTrainedModel"
+              "$ref": "#/definitions/CustomizedTextModel"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "TextCustomizedModelOperations_TrainModel",
+        "summary": "Trigger model training process",
+        "description": "Train a model on the specified customized category.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "modelName",
+            "in": "path",
+            "description": "The name of the model.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "The name of the category.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "CustomizedTextModel",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CustomizedTextModel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/CustomizedTextModel"
+            },
+            "headers": {
+              "Operation-Id": {
+                "type": "string",
+                "description": "The ID that specifies the training operation."
+              },
+              "Operation-Location": {
+                "type": "string",
+                "format": "uri",
+                "description": "The url that users can query the training process."
+              }
             }
           },
           "default": {
@@ -1333,8 +1355,9 @@
             "pattern": "^Customized_[0-9A-Za-z._~-]+$"
           },
           {
-            "name": "modelId",
+            "name": "modelName",
             "in": "path",
+            "description": "The name of the model.",
             "required": true,
             "type": "string"
           }
@@ -1342,6 +1365,53 @@
         "responses": {
           "204": {
             "description": "There is no content to send for this request, but the headers may be useful. "
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/categories/{categoryName}/snapshots/{snapshotId}": {
+      "get": {
+        "operationId": "TextCategorySnapshot_GetTextCustomizedCategory",
+        "description": "Resource read operation template.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Text customizedCategories name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^Customized_[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "snapshotId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/TextCustomizedCategorySnapshot"
+            }
           },
           "default": {
             "description": "An unexpected error response.",
@@ -2268,7 +2338,7 @@
           "type": "array",
           "description": "The customized categories will be analyzed. If they are not assigned, the analysis results for all available customized categories will be returned.",
           "items": {
-            "$ref": "#/definitions/CustomizedCategory"
+            "$ref": "#/definitions/CustomizedCategoryOption"
           },
           "x-ms-identifiers": []
         }
@@ -2373,8 +2443,7 @@
         }
       },
       "required": [
-        "categoriesAnalysis",
-        "customizedCategoriesAnalysis"
+        "categoriesAnalysis"
       ]
     },
     "AnnotateTextOptions": {
@@ -2421,17 +2490,20 @@
     },
     "AsyncJobWarning": {
       "type": "object",
+      "description": "The warning details of an asynchronous job.",
       "properties": {
         "code": {
-          "type": "string"
+          "type": "string",
+          "description": "Internal string code about the warning."
         },
-        "messgae": {
-          "type": "string"
+        "message": {
+          "type": "string",
+          "description": "The detailed description about the warning."
         }
       },
       "required": [
         "code",
-        "messgae"
+        "message"
       ]
     },
     "Azure.Core.Foundations.Error": {
@@ -2596,31 +2668,7 @@
         ]
       }
     },
-    "Class": {
-      "type": "object",
-      "description": "Label definition.",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "className": {
-          "type": "string"
-        },
-        "statements": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "id",
-        "className",
-        "statements"
-      ]
-    },
-    "CustomizedCategory": {
+    "CustomizedCategoryOption": {
       "type": "object",
       "description": "Customized category for inference.",
       "properties": {
@@ -2628,14 +2676,70 @@
           "type": "string",
           "description": "Category name"
         },
-        "modelId": {
+        "modelName": {
           "type": "string",
-          "description": "Model ID for the category. If not provided, the latest available model will be used."
+          "description": "Model name for the category. If not provided, the latest trained model will be used."
         }
       },
       "required": [
-        "categoryName",
-        "modelId"
+        "categoryName"
+      ]
+    },
+    "CustomizedTextModel": {
+      "type": "object",
+      "description": "The request for model training on a customized category",
+      "properties": {
+        "modelName": {
+          "type": "string",
+          "description": "The name of the model.",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "snapshotId": {
+          "type": "string",
+          "description": "An existing snapshot ID of the customized category. If not provided, a snapshot of the latest customized category will be taken and it will be used for model training.",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "initializationStatus": {
+          "$ref": "#/definitions/ModelTrainingStatus",
+          "description": "The training status of the model.",
+          "readOnly": true
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The created time of the model.",
+          "readOnly": true
+        },
+        "lastUpdatedTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The last updated time of the model.",
+          "readOnly": true
+        },
+        "warnings": {
+          "$ref": "#/definitions/AsyncJobWarning",
+          "description": "The warnings during model training.",
+          "readOnly": true
+        },
+        "errors": {
+          "type": "array",
+          "description": "The errors during model training.",
+          "items": {
+            "type": "string"
+          },
+          "readOnly": true
+        }
+      },
+      "required": [
+        "modelName"
       ]
     },
     "DetectUngroundednessOptions": {
@@ -3065,18 +3169,63 @@
         "incidentSampleId"
       ]
     },
-    "ModelStatus": {
+    "ModelTrainingStatus": {
       "type": "string",
+      "description": "The status of the model training process.",
       "enum": [
-        "Created",
+        "NotStarted",
         "Training",
         "Ready",
         "Failed"
       ],
       "x-ms-enum": {
-        "name": "ModelStatus",
-        "modelAsString": true
+        "name": "ModelTrainingStatus",
+        "modelAsString": true,
+        "values": [
+          {
+            "name": "NotStarted",
+            "value": "NotStarted",
+            "description": "The model training process is not started."
+          },
+          {
+            "name": "Training",
+            "value": "Training",
+            "description": "The model is being trained."
+          },
+          {
+            "name": "Ready",
+            "value": "Ready",
+            "description": "The model training process is finished and it is ready for use."
+          },
+          {
+            "name": "Failed",
+            "value": "Failed",
+            "description": "The model training is failed."
+          }
+        ]
       }
+    },
+    "PagedCustomizedTextModel": {
+      "type": "object",
+      "description": "Paged collection of CustomizedTextModel items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The CustomizedTextModel items on this page",
+          "items": {
+            "$ref": "#/definitions/CustomizedTextModel"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items"
+        }
+      },
+      "required": [
+        "value"
+      ]
     },
     "PagedImageIncident": {
       "type": "object",
@@ -3232,28 +3381,6 @@
         "value"
       ]
     },
-    "PagedTextTrainedModel": {
-      "type": "object",
-      "description": "Paged collection of TextTrainedModel items",
-      "properties": {
-        "value": {
-          "type": "array",
-          "description": "The TextTrainedModel items on this page",
-          "items": {
-            "$ref": "#/definitions/TextTrainedModel"
-          },
-          "x-ms-identifiers": []
-        },
-        "nextLink": {
-          "type": "string",
-          "format": "uri",
-          "description": "The link to the next page of items"
-        }
-      },
-      "required": [
-        "value"
-      ]
-    },
     "ProtectedMaterialAnalysisResult": {
       "type": "object",
       "description": "The text protected material analysis response.",
@@ -3313,6 +3440,27 @@
       },
       "required": [
         "incidentSampleIds"
+      ]
+    },
+    "Subcategory": {
+      "type": "object",
+      "description": "Label definition.",
+      "properties": {
+        "subcategoryName": {
+          "type": "string",
+          "description": "Name of the subcategory."
+        },
+        "statements": {
+          "type": "array",
+          "description": "The itemized descriptions about the subcategory.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "subcategoryName",
+        "statements"
       ]
     },
     "Task": {
@@ -3470,12 +3618,13 @@
             "create"
           ]
         },
-        "classes": {
+        "subcategories": {
           "type": "array",
-          "description": "Subcategories are detailed classes of the category. It is required there is a class 'safe' with id=0.",
+          "description": "Subcategories are detailed classes of the category. It is required there is a subcategory 'safe'",
           "items": {
-            "$ref": "#/definitions/Class"
-          }
+            "$ref": "#/definitions/Subcategory"
+          },
+          "x-ms-identifiers": []
         },
         "exampleBlobUrl": {
           "type": "string",
@@ -3485,7 +3634,7 @@
       },
       "required": [
         "categoryName",
-        "classes"
+        "subcategories"
       ]
     },
     "TextCustomizedCategoryAnalysis": {
@@ -3501,7 +3650,8 @@
           "description": "customized category analysis",
           "items": {
             "$ref": "#/definitions/TextCustomizedCategoryClassResult"
-          }
+          },
+          "x-ms-identifiers": []
         }
       },
       "required": [
@@ -3513,17 +3663,43 @@
       "type": "object",
       "description": "customized category analysis result",
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "className": {
-          "type": "string"
+        "subcategoryName": {
+          "type": "string",
+          "description": "The name of the subcategory."
         }
       },
       "required": [
-        "id",
-        "className"
+        "subcategoryName"
+      ]
+    },
+    "TextCustomizedCategorySnapshot": {
+      "type": "object",
+      "description": "The snapshot on a customized category",
+      "properties": {
+        "snapshotId": {
+          "type": "string"
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "subcategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Subcategory"
+          },
+          "x-ms-identifiers": []
+        },
+        "exampleBlobUrl": {
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "snapshotId",
+        "createdTime",
+        "subcategories",
+        "exampleBlobUrl"
       ]
     },
     "TextIncident": {
@@ -3607,44 +3783,6 @@
       },
       "required": [
         "incidentSampleId"
-      ]
-    },
-    "TextTrainedModel": {
-      "type": "object",
-      "properties": {
-        "modelId": {
-          "type": "string"
-        },
-        "status": {
-          "$ref": "#/definitions/ModelStatus"
-        },
-        "createdTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "lastUpdateTime": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "warnings": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AsyncJobWarning"
-          },
-          "x-ms-identifiers": []
-        },
-        "errors": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "required": [
-        "modelId",
-        "status",
-        "createdTime",
-        "lastUpdateTime"
       ]
     },
     "UngroundedDetails": {

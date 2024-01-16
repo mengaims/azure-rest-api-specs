@@ -67,10 +67,15 @@ enum BatchTaskStatus {
 }
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
-enum ModelStatus {
-  Created,
+@doc("The status of the model training process.")
+enum ModelTrainingStatus {
+  @doc("The model training process is not started.")
+  NotStarted,
+  @doc("The model is being trained.")
   Training,
+  @doc("The model training process is finished and it is ready for use.")
   Ready,
+  @doc("The model training is failed.")
   Failed,
 }
 
@@ -105,17 +110,17 @@ model AnalyzeTextOptions {
 
   @added(ContentSafety.Versions.v2024_01_30_Preview)
   @doc("The customized categories will be analyzed. If they are not assigned, the analysis results for all available customized categories will be returned.")
-  customizedCategories?: CustomizedCategory[];
+  customizedCategories?: CustomizedCategoryOption[];
 }
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
 @doc("Customized category for inference.")
-model CustomizedCategory {
+model CustomizedCategoryOption {
   @doc("Category name")
   categoryName: string;
 
-  @doc("Model ID for the category. If not provided, the latest available model will be used.")
-  modelId: string;
+  @doc("Model name for the category. If not provided, the latest trained model will be used.")
+  modelName?: string;
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
@@ -146,7 +151,7 @@ model AnalyzeTextResult {
 
   @added(ContentSafety.Versions.v2024_01_30_Preview)
   @doc("Analysis result for customized categories.")
-  customizedCategoriesAnalysis: TextCustomizedCategoryAnalysis[];
+  customizedCategoriesAnalysis?: TextCustomizedCategoryAnalysis[];
 }
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
@@ -162,10 +167,8 @@ model TextCustomizedCategoryAnalysis {
 @added(ContentSafety.Versions.v2024_01_30_Preview)
 @doc("customized category analysis result")
 model TextCustomizedCategoryClassResult {
-  id: int32;
-
-  @renamedFrom(Versions.v2024_01_30_Preview, "name")
-  className: string;
+  @doc("The name of the subcategory.")
+  subcategoryName: string;
 }
 
 @doc("The result of blocklist match.")
@@ -579,13 +582,17 @@ model PreDefinedConcept {
 
 @added(Versions.v2023_10_30_Preview)
 @doc("Label definition.")
-@renamedFrom(Versions.v2024_01_30_Preview, "SubCategory")
-model Class {
+model Subcategory {
+  @added(Versions.v2023_10_30_Preview)
+  @removed(Versions.v2024_01_30_Preview)
+  @doc("")
   id: int32;
 
   @renamedFrom(Versions.v2024_01_30_Preview, "name")
-  className: string;
+  @doc("Name of the subcategory.")
+  subcategoryName: string;
 
+  @doc("The itemized descriptions about the subcategory.")
   statements: string[];
 }
 
@@ -605,9 +612,9 @@ model TextCustomizedCategory {
   @removed(Versions.v2024_01_30_Preview)
   preDefinedConcepts?: PreDefinedConcept[];
 
-  @doc("Subcategories are detailed classes of the category. It is required there is a class 'safe' with id=0.")
+  @doc("Subcategories are detailed classes of the category. It is required there is a subcategory 'safe'")
   @renamedFrom(Versions.v2024_01_30_Preview, "subCategories")
-  classes: Class[];
+  subcategories: Subcategory[];
 
   @added(Versions.v2023_10_30_Preview)
   @removed(Versions.v2024_01_30_Preview)
@@ -628,9 +635,14 @@ model SubmitModelTrainingResponse {
 }
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
+@doc("The warning details of an asynchronous job.")
+@withVisibility("read")
 model AsyncJobWarning {
+  @doc("Internal string code about the warning.")
   code: string;
-  messgae: string;
+
+  @doc("The detailed description about the warning.")
+  message: string;
 }
 
 @added(ContentSafety.Versions.v2024_01_30_Preview)
@@ -657,20 +669,6 @@ enum ImageWithTextCategory {
   SelfHarm,
   Sexual,
   Violence,
-}
-
-@added(ContentSafety.Versions.v2024_01_30_Preview)
-@parentResource(TextCustomizedCategory)
-@resource("models")
-model TextTrainedModel {
-  @key
-  modelId: string;
-
-  status: ModelStatus;
-  createdTime: utcDateTime;
-  lastUpdateTime: utcDateTime;
-  warnings?: AsyncJobWarning[];
-  errors?: string[];
 }
 
 @added(ContentSafety.Versions.v2023_10_30_Preview)
@@ -800,4 +798,58 @@ model DetectUngroundednessResult {
 
   @doc("The detailed information about a text identified as ungrounded.")
   ungroundedDetails: UngroundedDetails[];
+}
+
+@added(Versions.v2024_01_30_Preview)
+@doc("The request for model training on a customized category")
+@parentResource(TextCustomizedCategory)
+@resource("models")
+model CustomizedTextModel {
+  @key
+  @doc("The name of the model.")
+  @visibility("read", "create", "update")
+  modelName: string;
+
+  @doc("An existing snapshot ID of the customized category. If not provided, a snapshot of the latest customized category will be taken and it will be used for model training.")
+  @visibility("read", "create", "update")
+  snapshotId?: string;
+
+  @visibility("read")
+  @doc("The training status of the model.")
+  initializationStatus?: ModelTrainingStatus;
+
+  @visibility("read")
+  @doc("The created time of the model.")
+  createdTime?: utcDateTime;
+
+  @visibility("read")
+  @doc("The last updated time of the model.")
+  lastUpdatedTime?: utcDateTime;
+
+  @doc("The warnings during model training.")
+  @visibility("read")
+  warnings?: AsyncJobWarning;
+
+  @visibility("read")
+  @doc("The errors during model training.")
+  errors?: string[];
+}
+
+@added(Versions.v2024_01_30_Preview)
+@doc("The snapshot on a customized category")
+@parentResource(TextCustomizedCategory)
+@resource("snapshots")
+model TextCustomizedCategorySnapshot {
+  @key
+  @doc("")
+  snapshotId: string;
+
+  @doc("")
+  createdTime: utcDateTime;
+
+  @doc("")
+  subcategories: Subcategory[];
+
+  @doc("")
+  exampleBlobUrl: url;
 }

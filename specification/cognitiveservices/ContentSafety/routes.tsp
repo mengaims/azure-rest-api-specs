@@ -326,14 +326,6 @@ interface TextCategoryCustomization {
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 
-  @added(Versions.v2024_01_30_Preview)
-  @action("trainModel")
-  trainModel is CategoryOps.ResourceAction<
-    TextCustomizedCategory,
-    {},
-    SubmitModelTrainingResponse
-  >;
-
   @added(ContentSafety.Versions.v2024_01_30_Preview)
   @route("/text/categories/{categoryName}:generatePrompt")
   @post
@@ -361,18 +353,51 @@ interface TextCustomizedMdoelOps
 
 @added(Versions.v2024_01_30_Preview)
 interface TextCustomizedModelOperations {
+  @summary("Trigger model training process")
+  @doc("Train a model on the specified customized category.")
+  @route("/text/categories/{categoryName}/models/{modelName}")
+  @put
+  trainModel is Azure.Core.RpcOperation<
+  {
+    @doc("CustomizedTextModel")
+    @body
+    body: CustomizedTextModel;
+
+    @path
+    @doc("The name of the model.")
+    modelName: string;
+
+    @path
+    @doc("The name of the category.")
+    categoryName: string;
+  },
+  {
+    @doc("The ID that specifies the training operation.")
+    @header("Operation-Id")
+    operationId: string;
+
+    @doc("The url that users can query the training process.")
+    @header("Operation-Location")
+    operationLocation: url;
+
+    ...CustomizedTextModel;
+    ...OkResponse;
+  }
+  >;
+
+
   @summary("List all existing models")
   @doc("List existing models.")
   listTextCustomizedModels is TextCustomizedMdoelOps.ResourceList<
-    TextTrainedModel,
+    CustomizedTextModel,
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 
   @doc("Get a model that is not deleted.")
-  getTextCustomizedModels is TextCustomizedMdoelOps.ResourceRead<TextTrainedModel>;
+  getTextCustomizedModels is TextCustomizedMdoelOps.ResourceRead<CustomizedTextModel>;
 
   @doc("If the model is training, the training process will be cancelled and the model will also be deleted.")
-  deleteCustomizedModel is TextCustomizedMdoelOps.ResourceDelete<TextTrainedModel>;
+  deleteCustomizedModel is TextCustomizedMdoelOps.ResourceDelete<CustomizedTextModel>;
 }
 
 @added(Versions.v2023_10_30_Preview)
@@ -405,4 +430,14 @@ interface TextUngroundednessDetectionOperations {
     },
     DetectUngroundednessResult
   >;
+}
+
+interface CategorySnapshotOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(Versions.v2024_01_30_Preview)
+interface TextCategorySnapshot {
+  getTextCustomizedCategory is CategorySnapshotOps.ResourceRead<TextCustomizedCategorySnapshot>;
 }

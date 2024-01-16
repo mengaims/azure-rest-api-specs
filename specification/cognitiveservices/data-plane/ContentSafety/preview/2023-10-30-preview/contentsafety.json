@@ -2750,7 +2750,7 @@
         "incidentSampleIds"
       ]
     },
-    "SubCategory": {
+    "Subcategory": {
       "type": "object",
       "description": "Label definition.",
       "properties": {
@@ -2759,10 +2759,12 @@
           "format": "int32"
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the subcategory."
         },
         "statements": {
           "type": "array",
+          "description": "The itemized descriptions about the subcategory.",
           "items": {
             "type": "string"
           }
@@ -2939,9 +2941,9 @@
         },
         "subCategories": {
           "type": "array",
-          "description": "Subcategories are detailed classes of the category. It is required there is a class 'safe' with id=0.",
+          "description": "Subcategories are detailed classes of the category. It is required there is a subcategory 'safe'",
           "items": {
-            "$ref": "#/definitions/SubCategory"
+            "$ref": "#/definitions/Subcategory"
           }
         },
         "emphases": {
