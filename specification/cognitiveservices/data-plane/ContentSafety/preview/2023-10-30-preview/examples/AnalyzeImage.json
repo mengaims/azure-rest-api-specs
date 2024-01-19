@@ -1,16 +1,17 @@
 {
-  "title": "Analyze Text",
-  "operationId": "TextOperations_AnalyzeText",
+  "title": "Analyze Image",
+  "operationId": "ImageOperations_AnalyzeImage",
   "parameters": {
-    "api-version": "2023-11-30-preview",
+    "api-version": "2023-12-30-preview",
     "body": {
-      "text": "This is text example. A hate speech sentence. A sentence with a violent description."
+      "image": {
+        "content": "Y29udGVudDE="
+      }
     }
   },
   "responses": {
     "200": {
       "body": {
-        "blocklistsMatch": [],
         "categoriesAnalysis": [
           {
             "category": "Hate",
@@ -26,12 +27,8 @@
           },
           {
             "category": "Violence",
-            "severity": 0
+            "severity": 2
           }
-        ],
-        "reason": [
-          "A hate speech sentence",
-          "A sentence with a violent description"
         ]
       }
     }
