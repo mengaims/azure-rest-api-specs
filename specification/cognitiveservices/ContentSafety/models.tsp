@@ -85,9 +85,9 @@ model AnalyzeTextResult {
   @doc("The incident match details.")
   incidentMatches?: IncidentMatch[];
 
-  @added(ContentSafety.Versions.v2023_12_30_Preview)
-  @doc("Sentences detected as harmful content.")
-  reason?: string[];
+  @added(ContentSafety.Versions.v2023_10_30_Preview)
+  @doc("Chunks in the original text detected as harmful content. Analysis result and scores are caused by these.")
+  citation?: string[];
 }
 
 @doc("The result of blocklist match.")
@@ -519,7 +519,7 @@ model AnalyzeImageWithTextResult {
   categoriesAnalysis: ImageWithTextCategoriesAnalysis[];
 }
 
-@added(Versions.v2023_11_30_Preview)
+@added(Versions.v2023_10_30_Preview)
 @doc("Connection information for GPT resource.")
 model DetectUngroundednessGptxResource {
   @doc("Endpoint of Azure OpenAI resource.")
@@ -530,7 +530,7 @@ model DetectUngroundednessGptxResource {
 }
 
 #suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
-@added(ContentSafety.Versions.v2023_11_30_Preview)
+@added(ContentSafety.Versions.v2023_10_30_Preview)
 @doc("Text analyze domain category.")
 enum TextDomainCategory {
   Office,
@@ -539,7 +539,7 @@ enum TextDomainCategory {
 }
 
 #suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
-@added(ContentSafety.Versions.v2023_11_30_Preview)
+@added(ContentSafety.Versions.v2023_10_30_Preview)
 @doc("Text analyze task.")
 enum TextTask {
   QNA,
@@ -547,7 +547,7 @@ enum TextTask {
   Summarization,
 }
 
-@added(Versions.v2023_11_30_Preview)
+@added(Versions.v2023_10_30_Preview)
 @doc("The request of ungroudedness detection.")
 model DetectUngroundednessOptions {
   @doc("Domain of the text to be analyzed.")
@@ -569,7 +569,7 @@ model DetectUngroundednessOptions {
   gptxResource?: DetectUngroundednessGptxResource;
 }
 
-@added(Versions.v2023_11_30_Preview)
+@added(Versions.v2023_10_30_Preview)
 @doc("The detection result of ungroudedness.")
 model UngroundednessAnalysis {
   @doc("Detection result for ungrouded text.")
@@ -585,7 +585,7 @@ model UngroundednessAnalysis {
   ungroundedTextDetails: UngroundedTextDetails[];
 }
 
-@added(Versions.v2023_11_30_Preview)
+@added(Versions.v2023_10_30_Preview)
 @doc("The detailed information about a text identified as ungroundness.")
 model UngroundedTextDetails {
   @doc("The index of the ungrounded text from the beginning of the original text.")
@@ -601,7 +601,7 @@ model UngroundedTextDetails {
   ungroundedTextReason: string;
 }
 
-@added(Versions.v2023_11_30_Preview)
+@added(Versions.v2023_10_30_Preview)
 @doc("The response of ungroudedness detection.")
 model DetectUngroundednessResult {
   @doc("Ungroudedness detection result.")
