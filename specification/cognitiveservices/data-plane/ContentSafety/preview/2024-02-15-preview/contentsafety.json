@@ -509,6 +509,47 @@
         }
       }
     },
+    "/text:detectInjectionAttacks": {
+      "post": {
+        "operationId": "TextOperations_DetectTextInjectionAttacks",
+        "summary": "Analyze text injection attacks",
+        "description": "A synchronous API for the analysis of text injection attacks.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text injection attacks analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextInjectionAttacksOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AnalyzeTextInjectionAttacksResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text:detectJailbreak": {
       "post": {
         "operationId": "TextOperations_DetectTextJailbreak",
@@ -574,47 +615,6 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/AnalyzeTextProtectedMaterialResult"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/text:detectXPIA": {
-      "post": {
-        "operationId": "TextOperations_DetectTextXpia",
-        "summary": "Analyze text cross-prompt injection attacks",
-        "description": "A synchronous API for the analysis of text cross-prompt injection attacks.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "description": "The text cross-prompt injection attacks analysis request.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AnalyzeTextXPIAOptions"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/AnalyzeTextXPIAResult"
             }
           },
           "default": {
@@ -727,6 +727,41 @@
       "required": [
         "categoriesAnalysis"
       ]
+    },
+    "AnalyzeTextInjectionAttacksOptions": {
+      "type": "object",
+      "description": "The text injection attacks analysis request.",
+      "properties": {
+        "userPrompt": {
+          "type": "string",
+          "description": "The user prompt needs to be analyzed if it attempts to do jailbreak attacks."
+        },
+        "documents": {
+          "type": "array",
+          "description": "The documents needs to be analyzed if they attempt to do jailbreak or cross-prompt injection attacks.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "AnalyzeTextInjectionAttacksResult": {
+      "type": "object",
+      "description": "The text injection attacks analysis response.",
+      "properties": {
+        "userPromptAnalysisResult": {
+          "$ref": "#/definitions/UserPromptAnalysisResult",
+          "description": "Jailbreak analysis result for user prompt input."
+        },
+        "documentsAnalysisResults": {
+          "type": "array",
+          "description": "Jailbreak and cross-prompt injection attacks analysis result for documents input.",
+          "items": {
+            "$ref": "#/definitions/DocumentAnalysisResult"
+          },
+          "x-ms-identifiers": []
+        }
+      }
     },
     "AnalyzeTextJailbreakOptions": {
       "type": "object",
@@ -868,32 +903,6 @@
         "categoriesAnalysis"
       ]
     },
-    "AnalyzeTextXPIAOptions": {
-      "type": "object",
-      "description": "The text cross-prompt injection attacks analysis request.",
-      "properties": {
-        "text": {
-          "type": "string",
-          "description": "The text needs to be analyzed if it attempts to do cross-prompt injection attacks."
-        }
-      },
-      "required": [
-        "text"
-      ]
-    },
-    "AnalyzeTextXPIAResult": {
-      "type": "object",
-      "description": "The text cross-prompt injection attacks analysis response.",
-      "properties": {
-        "xpiaAnalysisResult": {
-          "$ref": "#/definitions/XPIAAnalysisResult",
-          "description": "Analysis result for cross-prompt injection attacks."
-        }
-      },
-      "required": [
-        "xpiaAnalysisResult"
-      ]
-    },
     "Azure.Core.Foundations.Error": {
       "type": "object",
       "description": "The error object.",
@@ -954,6 +963,19 @@
           "description": "Inner error."
         }
       }
+    },
+    "DocumentAnalysisResult": {
+      "type": "object",
+      "description": "The document jailbreak and cross-prompt injection attacks analysis response.",
+      "properties": {
+        "detected": {
+          "type": "boolean",
+          "description": "Analysis result for jailbreak and cross-prompt injection attacks."
+        }
+      },
+      "required": [
+        "detected"
+      ]
     },
     "ImageCategoriesAnalysis": {
       "type": "object",
@@ -1218,13 +1240,13 @@
         "modelAsString": true
       }
     },
-    "XPIAAnalysisResult": {
+    "UserPromptAnalysisResult": {
       "type": "object",
-      "description": "The text cross-prompt injection attacks analysis response.",
+      "description": "The user prompt jailbreak attacks analysis response.",
       "properties": {
         "detected": {
           "type": "boolean",
-          "description": "Analysis result for cross-prompt injection attacks."
+          "description": "Analysis result for jailbreak attacks."
         }
       },
       "required": [

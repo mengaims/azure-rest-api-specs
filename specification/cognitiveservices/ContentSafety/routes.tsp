@@ -63,20 +63,20 @@ interface TextOperations {
   >;
 
   @added(ContentSafety.Versions.v2024_02_15_Preview)
-  @summary("Analyze text cross-prompt injection attacks")
-  @doc("A synchronous API for the analysis of text cross-prompt injection attacks.")
-  @route("/text:detectXPIA")
+  @summary("Analyze text injection attacks")
+  @doc("A synchronous API for the analysis of text injection attacks.")
+  @route("/text:detectInjectionAttacks")
   @post
-  detectTextXPIA is Azure.Core.RpcOperation<
+  detectTextInjectionAttacks is Azure.Core.RpcOperation<
     {
       @body
-      @doc("The text cross-prompt injection attacks analysis request.")
+      @doc("The text injection attacks analysis request.")
       @projectedName("csharp", "options")
       @projectedName("python", "options")
       @projectedName("java", "options")
-      body: AnalyzeTextXPIAOptions;
+      body: AnalyzeTextInjectionAttacksOptions;
     },
-    AnalyzeTextXPIAResult
+    AnalyzeTextInjectionAttacksResult
   >;
 }
 
