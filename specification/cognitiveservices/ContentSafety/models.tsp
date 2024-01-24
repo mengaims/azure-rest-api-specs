@@ -242,21 +242,14 @@ model AnalyzeTextInjectionAttacksOptions {
 @doc("The text injection attacks analysis response.")
 model AnalyzeTextInjectionAttacksResult {
   @doc("Jailbreak analysis result for user prompt input.")
-  userPromptAnalysisResult?: UserPromptAnalysisResult;
+  userPromptAnalysisResult?: TextInjectionAnalysisResult;
   @doc("Jailbreak and cross-prompt injection attacks analysis result for documents input.")
-  documentsAnalysisResults?: DocumentAnalysisResult[];
+  documentsAnalysisResults?: TextInjectionAnalysisResult[];
 }
 
 @added(ContentSafety.Versions.v2024_02_15_Preview)
-@doc("The user prompt jailbreak attacks analysis response.")
-model UserPromptAnalysisResult {
+@doc("The text injection attacks analysis response.")
+model TextInjectionAnalysisResult {
   @doc("Analysis result for jailbreak attacks.")
-  detected: boolean;
-}
-
-@added(ContentSafety.Versions.v2024_02_15_Preview)
-@doc("The document jailbreak and cross-prompt injection attacks analysis response.")
-model DocumentAnalysisResult {
-  @doc("Analysis result for jailbreak and cross-prompt injection attacks.")
   detected: boolean;
 }

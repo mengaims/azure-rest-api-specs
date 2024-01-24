@@ -750,14 +750,14 @@
       "description": "The text injection attacks analysis response.",
       "properties": {
         "userPromptAnalysisResult": {
-          "$ref": "#/definitions/UserPromptAnalysisResult",
+          "$ref": "#/definitions/TextInjectionAnalysisResult",
           "description": "Jailbreak analysis result for user prompt input."
         },
         "documentsAnalysisResults": {
           "type": "array",
           "description": "Jailbreak and cross-prompt injection attacks analysis result for documents input.",
           "items": {
-            "$ref": "#/definitions/DocumentAnalysisResult"
+            "$ref": "#/definitions/TextInjectionAnalysisResult"
           },
           "x-ms-identifiers": []
         }
@@ -963,19 +963,6 @@
           "description": "Inner error."
         }
       }
-    },
-    "DocumentAnalysisResult": {
-      "type": "object",
-      "description": "The document jailbreak and cross-prompt injection attacks analysis response.",
-      "properties": {
-        "detected": {
-          "type": "boolean",
-          "description": "Analysis result for jailbreak and cross-prompt injection attacks."
-        }
-      },
-      "required": [
-        "detected"
-      ]
     },
     "ImageCategoriesAnalysis": {
       "type": "object",
@@ -1240,9 +1227,9 @@
         "modelAsString": true
       }
     },
-    "UserPromptAnalysisResult": {
+    "TextInjectionAnalysisResult": {
       "type": "object",
-      "description": "The user prompt jailbreak attacks analysis response.",
+      "description": "The text injection attacks analysis response.",
       "properties": {
         "detected": {
           "type": "boolean",
