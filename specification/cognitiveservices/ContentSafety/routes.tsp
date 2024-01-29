@@ -149,3 +149,95 @@ interface TextBlocklists {
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 }
+
+interface TextCustomizedCategoryOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(ContentSafety.Versions.v2024_04_30_Preview)
+interface TextCustomizedCategoryOperations {
+  @summary("Create a new version of text customized category.")
+  @doc("Create new version")
+  createOrUpdateTextCustomizedCategory is TextCustomizedCategoryOps.ResourceCreateOrReplace<TextCustomizedCategory>;
+  
+  getCustomizedCategory is TextCustomizedCategoryOps.ResourceRead<
+    TextCustomizedCategory,
+    QueryParametersTrait<{
+      @query
+      @doc("If not provided, it will return the latest version.")
+      version?: int32;
+    }>
+    >;
+
+  @doc("List categories of their latest versions.")
+  listCustomizedCategory is TextCustomizedCategoryOps.ResourceList<
+    TextCustomizedCategory,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
+
+  @doc("List all versions of the category.")
+  listVersions is TextCustomizedCategoryOps.ResourceAction<
+    TextCustomizedCategoryVersion,
+    {
+      @query
+      @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
+      buildStatus?: CategoryBuildStatus;
+    },
+    Foundations.CustomPage<TextCustomizedCategoryVersion>
+  >;
+
+  @doc("Delete a customized category or a specific version of it.")
+  deletCustomizedCategory is TextCustomizedCategoryOps.ResourceDelete<
+    TextCustomizedCategory,
+    QueryParametersTrait<{
+      @query
+      @doc("If not provided, it will delete the category")
+      version?: int32;
+    }>
+  >;
+
+  @doc("Trigger the category build process.")
+  build is TextCustomizedCategoryOps.ResourceAction<
+    TextCustomizedCategory,
+    {
+      @query
+      @doc("The build will target on the specicied category version")
+      version: int32;
+    },
+    AcceptedResponse
+  >;
+  // #suppress "@azure-tools/typespec-azure-core/verb-conflict"
+  // @doc("List all versions of the category.")
+  // @post
+  // @route("text/categories/{categoryName}:listVersions")
+  // listCustomizedCategoryVersions is TextCustomizedCategoryOps.ResourceList<
+  //   TextCustomizedCategoryVersion,
+  //   ListQueryParametersTrait<
+  //     {
+  //       ...StandardListQueryParameters;
+        
+  //       @query
+  //       @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
+  //       buildStatus?: CategoryBuildStatus;
+      
+  //       @path
+  //       categoryName: string;
+  //     }
+  //   >
+  // >;
+  // listCustomizedCategoryVersions is TextCustomizedCategoryOps.ResourceList<
+  //   TextCustomizedCategoryVersion,
+  //   ListQueryParametersTrait<
+  //   {
+  //     ...StandardListQueryParameters;
+      
+  //     @query
+  //     @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
+  //     buildStatus?: CategoryBuildStatus;
+    
+  //     @path
+  //     categoryName: string;
+  //   }>
+  // >;
+}
