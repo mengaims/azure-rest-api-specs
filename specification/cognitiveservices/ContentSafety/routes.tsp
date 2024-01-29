@@ -155,7 +155,7 @@ interface TextCustomizedCategoryOps
       NoConditionalRequests &
       NoClientRequestId> {}
 
-@added(ContentSafety.Versions.v2024_04_30_Preview)
+@added(ContentSafety.Versions.v2024_03_30_Preview)
 interface TextCustomizedCategoryOperations {
   @summary("Create a new version of text customized category.")
   @doc("Create new version")
