@@ -286,6 +286,10 @@ model TextCustomizedCategory {
   @visibility("read")
   createdTime: utcDateTime;
 
+  @doc("Build status of the customized category")
+  @visibility("read")
+  buildStatus: CategoryBuildStatus;
+
   @doc("Build information for the customized category.")
   @visibility("read")
   buildInfo: TextCustomizedCategoryBuildInfo;
@@ -293,23 +297,24 @@ model TextCustomizedCategory {
 
 @doc("Detailed information of the customized category build.")
 model TextCustomizedCategoryBuildInfo {
-  @doc("Build status of the customized category")
-  buildStatus: CategoryBuildStatus;
 
   @doc("Last build trigger time.")
   lastBuildTriggeringTime: utcDateTime;
 
   @doc("Last build update time.")
   lastBuildUpdatedTime: utcDateTime;
+
+  @doc("Errors when building the category.")
+  buildErrors?: string[];
 }
 
 #suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
 @doc("Status of the customized category build.")
 enum CategoryBuildStatus {
-  NotStarted,
+  BuildNotStarted,
   Building,
-  Succeeded,
-  Failed,
+  BuildSucceeded,
+  BuildFailed,
 }
 
 @doc("Alias of TextCustomizedCategory")

@@ -650,64 +650,6 @@
         }
       }
     },
-    "/text/categories/{categoryName}:listVersions": {
-      "post": {
-        "operationId": "TextCustomizedCategoryOperations_ListVersions",
-        "description": "List all versions of the category.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "categoryName",
-            "in": "path",
-            "description": "Name of the customized category",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "buildStatus",
-            "in": "query",
-            "description": "Versions of the specified status will be returned. If not provided, all versions will be returned.",
-            "required": false,
-            "type": "string",
-            "enum": [
-              "NotStarted",
-              "Building",
-              "Succeeded",
-              "Failed"
-            ],
-            "x-ms-enum": {
-              "name": "CategoryBuildStatus",
-              "modelAsString": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/PagedTextCustomizedCategoryVersion"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        },
-        "x-ms-pageable": {
-          "nextLinkName": "nextLink"
-        }
-      }
-    },
     "/text/categories/{categoryName}:build": {
       "post": {
         "operationId": "TextCustomizedCategoryOperations_Build",
@@ -748,6 +690,73 @@
               }
             }
           }
+        }
+      }
+    },
+    "/text/categories/{categoryName}:listVersion": {
+      "post": {
+        "operationId": "TextCustomizedCategoryOperations_ListVersion",
+        "description": "List all versions of the category.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
+          },
+          {
+            "name": "categoryName",
+            "in": "path",
+            "description": "Name of the customized category.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "buildStatus",
+            "in": "query",
+            "description": "Versions of the specified status will be returned. If not provided, all versions will be returned.",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "BuildNotStarted",
+              "Building",
+              "BuildSucceeded",
+              "BuildFailed"
+            ],
+            "x-ms-enum": {
+              "name": "CategoryBuildStatus",
+              "modelAsString": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedTextCustomizedCategoryVersion"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
         }
       }
     },
@@ -1191,10 +1200,10 @@
       "type": "string",
       "description": "Status of the customized category build.",
       "enum": [
-        "NotStarted",
+        "BuildNotStarted",
         "Building",
-        "Succeeded",
-        "Failed"
+        "BuildSucceeded",
+        "BuildFailed"
       ],
       "x-ms-enum": {
         "name": "CategoryBuildStatus",
@@ -1591,6 +1600,11 @@
           "description": "Creation time of the customized category.",
           "readOnly": true
         },
+        "buildStatus": {
+          "$ref": "#/definitions/CategoryBuildStatus",
+          "description": "Build status of the customized category",
+          "readOnly": true
+        },
         "buildInfo": {
           "$ref": "#/definitions/TextCustomizedCategoryBuildInfo",
           "description": "Build information for the customized category.",
@@ -1604,6 +1618,7 @@
         "sampleCopyBlobUrl",
         "version",
         "createdTime",
+        "buildStatus",
         "buildInfo"
       ]
     },
@@ -1611,10 +1626,6 @@
       "type": "object",
       "description": "Detailed information of the customized category build.",
       "properties": {
-        "buildStatus": {
-          "$ref": "#/definitions/CategoryBuildStatus",
-          "description": "Build status of the customized category"
-        },
         "lastBuildTriggeringTime": {
           "type": "string",
           "format": "date-time",
@@ -1624,10 +1635,16 @@
           "type": "string",
           "format": "date-time",
           "description": "Last build update time."
+        },
+        "buildErrors": {
+          "type": "array",
+          "description": "Errors when building the category.",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": [
-        "buildStatus",
         "lastBuildTriggeringTime",
         "lastBuildUpdatedTime"
       ]
@@ -1678,6 +1695,11 @@
           "description": "Creation time of the customized category.",
           "readOnly": true
         },
+        "buildStatus": {
+          "$ref": "#/definitions/CategoryBuildStatus",
+          "description": "Build status of the customized category",
+          "readOnly": true
+        },
         "buildInfo": {
           "$ref": "#/definitions/TextCustomizedCategoryBuildInfo",
           "description": "Build information for the customized category.",
@@ -1691,6 +1713,7 @@
         "sampleCopyBlobUrl",
         "version",
         "createdTime",
+        "buildStatus",
         "buildInfo"
       ]
     }

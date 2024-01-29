@@ -176,16 +176,18 @@ interface TextCustomizedCategoryOperations {
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 
-  @doc("List all versions of the category.")
-  listVersions is TextCustomizedCategoryOps.ResourceAction<
-    TextCustomizedCategoryVersion,
-    {
-      @query
-      @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
-      buildStatus?: CategoryBuildStatus;
-    },
-    Foundations.CustomPage<TextCustomizedCategoryVersion>
-  >;
+  // @doc("List all versions of the category.")
+  // listVersions is TextCustomizedCategoryOps.ResourceAction<
+  //   TextCustomizedCategory,
+  //   {
+  //     ...ListQueryParametersTrait<StandardListQueryParameters>;
+  //     @query
+  //     @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
+  //     buildStatus?: CategoryBuildStatus;
+  //   },
+  //   Foundations.CustomPage<TextCustomizedCategoryVersion>
+  //   // ListQueryParametersTrait<StandardListQueryParameters>
+  // >;
 
   @doc("Delete a customized category or a specific version of it.")
   deletCustomizedCategory is TextCustomizedCategoryOps.ResourceDelete<
@@ -206,5 +208,24 @@ interface TextCustomizedCategoryOperations {
       version: int32;
     },
     AcceptedResponse
+  >;
+
+
+  @doc("List all versions of the category.")
+  @route("text/categories/{categoryName}:listVersion")
+  @action
+  @post
+  listVersion is  Azure.Core.RpcOperation<
+    {
+      ...StandardListQueryParameters;
+      @path
+      @doc("Name of the customized category.")
+      categoryName: string;
+
+      @query
+      @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
+      buildStatus?: CategoryBuildStatus;
+    },
+    Foundations.CustomPage<TextCustomizedCategoryVersion>
   >;
 }
