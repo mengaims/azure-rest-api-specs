@@ -207,37 +207,4 @@ interface TextCustomizedCategoryOperations {
     },
     AcceptedResponse
   >;
-  // #suppress "@azure-tools/typespec-azure-core/verb-conflict"
-  // @doc("List all versions of the category.")
-  // @post
-  // @route("text/categories/{categoryName}:listVersions")
-  // listCustomizedCategoryVersions is TextCustomizedCategoryOps.ResourceList<
-  //   TextCustomizedCategoryVersion,
-  //   ListQueryParametersTrait<
-  //     {
-  //       ...StandardListQueryParameters;
-        
-  //       @query
-  //       @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
-  //       buildStatus?: CategoryBuildStatus;
-      
-  //       @path
-  //       categoryName: string;
-  //     }
-  //   >
-  // >;
-  // listCustomizedCategoryVersions is TextCustomizedCategoryOps.ResourceList<
-  //   TextCustomizedCategoryVersion,
-  //   ListQueryParametersTrait<
-  //   {
-  //     ...StandardListQueryParameters;
-      
-  //     @query
-  //     @doc("Versions of the specified status will be returned. If not provided, all versions will be returned.")
-  //     buildStatus?: CategoryBuildStatus;
-    
-  //     @path
-  //     categoryName: string;
-  //   }>
-  // >;
 }
