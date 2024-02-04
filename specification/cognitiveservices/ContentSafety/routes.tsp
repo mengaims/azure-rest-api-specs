@@ -419,3 +419,19 @@ interface TextUngroundednessDetectionOperations {
     DetectUngroundednessResult
   >;
 }
+
+@added(Versions.v2023_10_30_Preview)
+interface BingLongTextModelOperations {
+  @summary("Analyze text with Bing long text model")
+  @doc("A synchronous API for the analysis of potentially harmful text content. Currently, it supports five categories: Defensive, Hate, SelfHarm, Sexual, and Violence.")
+  @route("/model:bingLongText")
+  @post
+  bingLongTextModel is Azure.Core.RpcOperation<
+    {
+      @doc("The text analysis request.")
+      @body
+      body: BingLongTextModelAnalyzeOptions;
+    },
+    BingLongTextModelAnalyzeResult
+  >;
+}

@@ -833,3 +833,39 @@ model DetectUngroundednessResult {
   @doc("The detailed information about a text identified as ungrounded.")
   ungroundedDetails: UngroundedDetails[];
 }
+
+@added(ContentSafety.Versions.v2023_10_30_Preview)
+#suppress "@azure-tools/typespec-azure-core/documentation-required" "MUST fix in next update"
+@doc("Bing long text model analyze category.")
+enum BingLongTextModelCategory {
+  Defensive,
+  Hate,
+  SelfHarm,
+  Sexual,
+  Violence,
+}
+
+@added(ContentSafety.Versions.v2023_10_30_Preview)
+@doc("Text analysis result.")
+model BingLongTextModelCategoriesAnalysis {
+  @doc("The text analysis category.")
+  category: BingLongTextModelCategory;
+
+  @doc("The value increases with the severity of the input content, and the output value can be 0, 2, 4, 6.")
+  severity?: int32;
+}
+
+@added(ContentSafety.Versions.v2023_10_30_Preview)
+@doc("The bing long text model analysis request.")
+model BingLongTextModelAnalyzeOptions {
+  @doc("The text needs to be analyzed by bing long text model.")
+  @maxLength(10000)
+  text?: string;
+}
+
+@added(ContentSafety.Versions.v2023_10_30_Preview)
+@doc("The bing long text model analysis response.")
+model BingLongTextModelAnalyzeResult {
+  @doc("Analysis result for categories.")
+  categoriesAnalysis: BingLongTextModelCategoriesAnalysis[];
+}
