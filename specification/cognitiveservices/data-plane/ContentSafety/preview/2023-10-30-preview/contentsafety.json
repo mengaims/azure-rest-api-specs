@@ -651,6 +651,47 @@
         }
       }
     },
+    "/model:bingLongText": {
+      "post": {
+        "operationId": "BingLongTextModelOperations_BingLongTextModel",
+        "summary": "Analyze text with Bing long text model",
+        "description": "A synchronous API for the analysis of potentially harmful text content. Currently, it supports five categories: Defensive, Hate, SelfHarm, Sexual, and Violence.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BingLongTextModelAnalyzeOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/BingLongTextModelAnalyzeResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text/blocklists": {
       "get": {
         "operationId": "TextBlocklists_ListTextBlocklists",
@@ -2742,6 +2783,67 @@
             "description": "The task has been succeeded."
           }
         ]
+      }
+    },
+    "BingLongTextModelAnalyzeOptions": {
+      "type": "object",
+      "description": "The bing long text model analysis request.",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text needs to be analyzed by bing long text model.",
+          "maxLength": 10000
+        }
+      }
+    },
+    "BingLongTextModelAnalyzeResult": {
+      "type": "object",
+      "description": "The bing long text model analysis response.",
+      "properties": {
+        "categoriesAnalysis": {
+          "type": "array",
+          "description": "Analysis result for categories.",
+          "items": {
+            "$ref": "#/definitions/BingLongTextModelCategoriesAnalysis"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "categoriesAnalysis"
+      ]
+    },
+    "BingLongTextModelCategoriesAnalysis": {
+      "type": "object",
+      "description": "Text analysis result.",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/BingLongTextModelCategory",
+          "description": "The text analysis category."
+        },
+        "severity": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The value increases with the severity of the input content, and the output value can be 0, 2, 4, 6."
+        }
+      },
+      "required": [
+        "category"
+      ]
+    },
+    "BingLongTextModelCategory": {
+      "type": "string",
+      "description": "Bing long text model analyze category.",
+      "enum": [
+        "Defensive",
+        "Hate",
+        "SelfHarm",
+        "Sexual",
+        "Violence"
+      ],
+      "x-ms-enum": {
+        "name": "BingLongTextModelCategory",
+        "modelAsString": true
       }
     },
     "Class": {
