@@ -230,26 +230,26 @@ model JailbreakAnalysisResult {
 }
 
 @added(ContentSafety.Versions.v2024_02_15_Preview)
-@doc("The text injection attacks analysis request.")
-model AnalyzeTextInjectionAttacksOptions {
-  @doc("The user prompt needs to be analyzed if it attempts to do jailbreak attacks.")
+@doc("The text prompt injection attacks analysis request.")
+model AnalyzeTextPromptInjectionOptions {
+  @doc("The user prompt needs to be analyzed if it attempts to do direct injection attacks.")
   userPrompt?: string;
-  @doc("The documents needs to be analyzed if they attempt to do jailbreak or cross-prompt injection attacks.")
+  @doc("The documents needs to be analyzed if they attempt to do indirect injection attacks.")
   documents?: string[];
 }
 
 @added(ContentSafety.Versions.v2024_02_15_Preview)
 @doc("The text injection attacks analysis response.")
-model AnalyzeTextInjectionAttacksResult {
-  @doc("Jailbreak analysis result for user prompt input.")
-  userPromptAnalysisResult?: TextInjectionAnalysisResult;
-  @doc("Jailbreak and cross-prompt injection attacks analysis result for documents input.")
-  documentsAnalysisResults?: TextInjectionAnalysisResult[];
+model AnalyzeTextPromptInjectionResult {
+  @doc("Direct injection analysis result for user prompt input.")
+  userPromptAnalysisResult?: TextPromptInjectionResult;
+  @doc("Indirect injection attacks analysis result for documents input.")
+  documentsAnalysisResults?: TextPromptInjectionResult[];
 }
 
 @added(ContentSafety.Versions.v2024_02_15_Preview)
 @doc("The text injection attacks analysis response.")
-model TextInjectionAnalysisResult {
-  @doc("Analysis result for jailbreak attacks.")
+model TextPromptInjectionResult {
+  @doc("Analysis result for text prompt injection attacks.")
   detected: boolean;
 }
