@@ -332,7 +332,7 @@ model DetectUngroundednessResult {
 model AnalyzeTextPromptInjectionOptions {
   @doc("The user prompt needs to be analyzed if it attempts to do direct injection attacks.")
   userPrompt?: string;
-  @doc("The documents needs to be analyzed if they attempt to do indirect injection attacks.")
+  @doc("The documents needs to be analyzed if they attempt to do direct or indirect injection attacks.")
   documents?: string[];
 }
 
@@ -342,7 +342,7 @@ model AnalyzeTextPromptInjectionOptions {
 model AnalyzeTextPromptInjectionResult {
   @doc("Direct injection analysis result for user prompt input.")
   userPromptAnalysisResult?: TextPromptInjectionResult;
-  @doc("Indirect injection attacks analysis result for documents input.")
+  @doc("Direct and indirect injection attacks analysis result for documents input.")
   documentsAnalysisResults?: TextPromptInjectionResult[];
 }
 
@@ -350,6 +350,6 @@ model AnalyzeTextPromptInjectionResult {
 @added(ContentSafety.Versions.v2024_02_15_Preview)
 @doc("The text injection attacks analysis response.")
 model TextPromptInjectionResult {
-  @doc("Analysis result for text prompt injection attacks.")
+  @doc("Analysis result for whether the prompt is classified as an injection attack.")
   detected: boolean;
 }
