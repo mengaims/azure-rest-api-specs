@@ -260,7 +260,7 @@ model JailbreakAnalysisResult {
 @added(ContentSafety.Versions.v2024_03_30_Preview)
 @resource("text/categories")
 @doc("Text customized category")
-model TextCustomizedCategory {
+model TextCustomizedCategoryVersion {
   @key
   @visibility("read", "create", "update")
   @doc("Name of the customized category")
@@ -332,11 +332,12 @@ enum CategoryStatus {
   DeleteFailed,
 }
 
-@doc("Alias of TextCustomizedCategory")
-model TextCustomizedCategoryVersion {
-  ...TextCustomizedCategory;
-}
+// @doc("Alias of TextCustomizedCategory")
+// model TextCustomizedCategoryVersion {
+//   ...TextCustomizedCategory;
+// }
 
+@added(ContentSafety.Versions.v2024_03_30_Preview)
 @doc("List of customized category versions.")
 model TextCustomizedCategoryVersionList {
   @doc("List of customized category versions.")
