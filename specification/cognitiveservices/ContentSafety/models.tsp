@@ -270,21 +270,17 @@ model TextCustomizedCategory {
   @visibility("read", "create", "update")
   definition: string;
 
-  @doc("URL of sample jsonl blob.")
+  @doc("URL of sample jsonl blob. Read & write access to the last layer virtual directory is required.")
   @visibility("create", "read", "update")
-  sampleBlobPath?: string;
+  sampleBlobUrl?: string;
 
-  @doc("URL of directory to store copied sample files.")
-  @visibility("create", "read", "update")
-  sampleBlobCopyDirectory?: string;
-
-  @doc("URL of copied sample jsonl blob.")
-  @visibility("read")
-  sampleBlobCopyPath?: string;
-
-  @doc("Delimiter of blob url.")
-  @visibility("created", "read", "update")
+  @doc("Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the sampleBlobUrl.")
+  @visibility("created", "update")
   blobDelimiter?: string;
+
+  @doc("URL of copied sample jsonl blob. If sampleBlobUrl is not provided in the request, this field will not be shown in the response.")
+  @visibility("read")
+  sampleBlobCopyUrl?: string;
 
   @doc("Version number of the customized category.")
   @visibility("read")
