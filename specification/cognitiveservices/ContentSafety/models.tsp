@@ -65,6 +65,20 @@ model AnalyzeTextOptions {
 
   @doc("This refers to the type of text analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".")
   outputType?: AnalyzeTextOutputType = AnalyzeTextOutputType.FourSeverityLevels;
+  
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incidents to detect.")
+  incidents?: IncidentOptions;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The text analysis request.")
+model IncidentOptions {
+  @doc("The accept decision made by service.")
+  incidentNames?: string[];
+
+  @doc("When set to true, further analyses of harmful content will not be performed in cases where incidents are hit. When set to false, all analyses of harmful content will be performed, whether or not incidents are hit.")
+  haltOnIncidentHit?: boolean;
 }
 
 @doc("The text analysis response.")
@@ -74,6 +88,10 @@ model AnalyzeTextResult {
 
   @doc("Analysis result for categories.")
   categoriesAnalysis: TextCategoriesAnalysis[];
+  
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incident match details.")
+  incidentMatches?: IncidentMatch[];
 }
 
 @doc("The result of blocklist match.")
@@ -100,6 +118,14 @@ model TextCategoriesAnalysis {
   severity?: int32;
 }
 
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The result of text incident match.")
+model IncidentMatch {
+  @doc("The name of the matched incident.")
+  @maxLength(64)
+  incidentName: string;
+}
+
 @doc("The image analysis request.")
 model AnalyzeImageOptions {
   @doc("The image needs to be analyzed.")
@@ -110,6 +136,10 @@ model AnalyzeImageOptions {
 
   @doc("This refers to the type of image analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".")
   outputType?: AnalyzeImageOutputType = AnalyzeImageOutputType.FourSeverityLevels;
+  
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incidents to detect.")
+  incidents?: IncidentOptions;
 }
 
 @doc("The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while the minimum image size is 50 x 50 pixels.")
@@ -128,6 +158,10 @@ model ImageData {
 model AnalyzeImageResult {
   @doc("Analysis result for categories.")
   categoriesAnalysis: ImageCategoriesAnalysis[];
+  
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incident match details.")
+  incidentMatches?: IncidentMatch[];
 }
 
 @doc("Image analysis result.")
@@ -197,6 +231,178 @@ model RemoveTextBlocklistItemsOptions {
   blocklistItemIds: string[];
 }
 
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Text Incident.")
+@resource("text/incidents")
+model TextIncident {
+  @doc("incident name.")
+  @pattern("^[0-9A-Za-z._~-]+$")
+  @key("incidentName")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  incidentName: string;
+
+  @doc("Incident definition.")
+  @maxLength(1024)
+  incidentDefinition?: string;
+
+  @doc("Incident status.")
+  @visibility("read")
+  status: statusDirection;
+
+  @doc("Incident created time.")
+  @visibility("read", "query")
+  created: utcDateTime;
+
+  @doc("Incident updated time.")
+  @visibility("read", "query")
+  lastUpdated: utcDateTime;
+}
+
+@doc("Incident status.")
+enum statusDirection {
+  @doc("Incident is in progress.")
+  InProgress: "InProgress",
+
+  @doc("Incident is completed.")
+  Completed: "Completed",
+
+  @doc("Incident is Failed.")
+  Failed: "Failed"
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Sample in a Text Incident.")
+@resource("incidentSamples")
+@parentResource(TextIncident)
+model TextIncidentSample {
+  @doc("incident name.")
+  @key("incidentSampleId")
+  @visibility("read")
+  @maxLength(64)
+  incidentSampleId: string;
+
+  @doc("IncidentSample text content.")
+  @maxLength(1024)
+  text?: string;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The request to add incidentSamples to a incident.")
+model AddTextIncidentSamplesOptions {
+  @doc("Array of incidentSamples to add.")
+  incidentSamples: TextIncidentSample[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The response of adding incidentSamples to the incident.")
+model AddTextIncidentSamplesResult {
+  @doc("Array of incidentSamples have been added.")
+  incidentSamples: TextIncidentSample[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The request to remove incidentSamples from a incident.")
+model RemoveTextIncidentSamplesOptions {
+  @doc("Array of incidentSamples to remove.")
+  incidentSampleIds: string[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Image Incident.")
+@resource("image/incidents")
+model ImageIncident {
+  @doc("incident name.")
+  @pattern("^[0-9A-Za-z._~-]+$")
+  @key("incidentName")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  incidentName: string;
+
+  @doc("Incident status.")
+  @visibility("read")
+  status: statusDirection;
+
+  @doc("Incident created time.")
+  @visibility("read", "query")
+  created: utcDateTime;
+
+  @doc("Incident updated time.")
+  @visibility("read", "query")
+  lastUpdated: utcDateTime;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Sample in an Image Incident.")
+@resource("incidentSamples")
+@parentResource(ImageIncident)
+model ImageIncidentSample {
+  @doc("incident name.")
+  @key("incidentSampleId")
+  @visibility("read")
+  @maxLength(64)
+  incidentSampleId: string;
+
+  @doc("IncidentSample image content.")
+  image?: ImageData;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Sample Result in an Image Incident.")
+@resource("incidentSamples")
+@parentResource(ImageIncident)
+model ImageIncidentSampleResult {
+  @doc("incident name.")
+  @key("incidentSampleId")
+  @visibility("read")
+  @maxLength(64)
+  incidentSampleId: string;
+
+  @doc("IncidentSample image content.")
+  image?: ImageDataResult;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The image result is base64 encoded bytes")
+@projectedName("csharp", "ContentSafetyImageDataResult")
+model ImageDataResult {
+  @doc("The Base64 encoding of the image.")
+  content?: bytes;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The request to add incidentSamples to a incident.")
+model AddImageIncidentSamplesOptions {
+  @doc("Array of incidentSamples to add.")
+  incidentSamples: ImageIncidentSample[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The request to remove incidentSamples from a incident.")
+model RemoveImageIncidentSamplesOptions {
+  @doc("Array of incidentSamples to remove.")
+  incidentSampleIds: string[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Sample in a Image Incident.")
+@resource("incidentSamples")
+@parentResource(ImageIncident)
+model ListImageIncidentSampleResult {
+  @doc("incident name.")
+  @key("incidentSampleId")
+  @visibility("read")
+  @maxLength(64)
+  incidentSampleId: string;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The response of adding incidentSamples to the incident.")
+model AddImageIncidentSamplesResult {
+  @doc("Array of incidentSamples have been added.")
+  incidentSamples: ListImageIncidentSampleResult[];
+}
+
 @added(ContentSafety.Versions.v2023_10_15_Preview)
 @doc("The protected material analysis request.")
 model AnalyzeTextProtectedMaterialOptions {
@@ -239,4 +445,34 @@ model AnalyzeTextJailbreakResult {
 model JailbreakAnalysisResult {
   @doc("Analysis result for jailbreak.")
   detected: boolean;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The text detect incidents analysis request.")
+model AnalyzeTextDetectIncidentsOptions {
+  @doc("The text needs to be analyzed if it attempt to detect incidents. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
+  @maxLength(10000)
+  text: string;
+
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incidents to detect.")
+  incidentNames: string[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The detect incidents analysis request.")
+model AnalyzeDetectIncidentsResult {
+  @doc("The detect incidents match details.")
+  incidentMatches: IncidentMatch[];
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The image detect incidents analysis request.")
+model AnalyzeImageDetectIncidentsOptions {
+  @doc("The image needs to be analyzed.")
+  image: ImageData;
+
+  @added(ContentSafety.Versions.v2024_04_15_Preview)
+  @doc("The incidents to detect.")
+  incidentNames: string[];
 }
