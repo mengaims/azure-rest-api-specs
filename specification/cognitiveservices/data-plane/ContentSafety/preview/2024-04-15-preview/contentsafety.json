@@ -1157,6 +1157,10 @@
           },
           "x-ms-identifiers": []
         },
+        "enableOtherwiseLabel": {
+          "type": "boolean",
+          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
+        },
         "exampleBlobUrl": {
           "type": "string",
           "description": "URL of example jsonl blob. Read & write access to the last layer virtual directory is required.",
@@ -1221,6 +1225,10 @@
           },
           "x-ms-identifiers": []
         },
+        "enableOtherwiseLabel": {
+          "type": "boolean",
+          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
+        },
         "exampleBlobUrl": {
           "type": "string",
           "description": "URL of example jsonl blob. Read & write access to the last layer virtual directory is required.",
@@ -1266,6 +1274,10 @@
             "$ref": "#/definitions/AutoReviewerLabelDetails"
           },
           "x-ms-identifiers": []
+        },
+        "enableOtherwiseLabel": {
+          "type": "boolean",
+          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
         },
         "exampleBlobUrl": {
           "type": "string",

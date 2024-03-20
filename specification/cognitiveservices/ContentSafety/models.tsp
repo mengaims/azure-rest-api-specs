@@ -252,6 +252,9 @@ model AutoReviewerVersion {
   @doc("The labels defined in the auto reviewer.")
   labels: AutoReviewerLabelDetails[];
 
+  @doc("Whether let system add an otherwise label to the auto reviewer. Default value is true.")
+  enableOtherwiseLabel?: boolean;
+
   @doc("URL of example jsonl blob. Read & write access to the last layer virtual directory is required.")
   @visibility("create", "read", "update")
   exampleBlobUrl?: string;
