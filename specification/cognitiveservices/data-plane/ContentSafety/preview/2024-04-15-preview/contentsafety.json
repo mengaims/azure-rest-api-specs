@@ -1659,7 +1659,7 @@
       "properties": {
         "text": {
           "type": "string",
-          "description": "The text needs to be analyzed. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.",
+          "description": "The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.",
           "maxLength": 10000
         },
         "categories": {
