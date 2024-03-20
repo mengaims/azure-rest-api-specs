@@ -65,20 +65,6 @@ model AnalyzeTextOptions {
 
   @doc("This refers to the type of text analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".")
   outputType?: AnalyzeTextOutputType = AnalyzeTextOutputType.FourSeverityLevels;
-  
-  @added(ContentSafety.Versions.v2024_04_15_Preview)
-  @doc("The incidents to detect.")
-  incidents?: IncidentOptions;
-}
-
-@added(ContentSafety.Versions.v2024_04_15_Preview)
-@doc("The text analysis request.")
-model IncidentOptions {
-  @doc("The accept decision made by service.")
-  incidentNames?: string[];
-
-  @doc("When set to true, further analyses of harmful content will not be performed in cases where incidents are hit. When set to false, all analyses of harmful content will be performed, whether or not incidents are hit.")
-  haltOnIncidentHit?: boolean;
 }
 
 @doc("The text analysis response.")
@@ -88,10 +74,6 @@ model AnalyzeTextResult {
 
   @doc("Analysis result for categories.")
   categoriesAnalysis: TextCategoriesAnalysis[];
-  
-  @added(ContentSafety.Versions.v2024_04_15_Preview)
-  @doc("The incident match details.")
-  incidentMatches?: IncidentMatch[];
 }
 
 @doc("The result of blocklist match.")
@@ -136,10 +118,6 @@ model AnalyzeImageOptions {
 
   @doc("This refers to the type of image analysis output. If no value is assigned, the default value will be \"FourSeverityLevels\".")
   outputType?: AnalyzeImageOutputType = AnalyzeImageOutputType.FourSeverityLevels;
-  
-  @added(ContentSafety.Versions.v2024_04_15_Preview)
-  @doc("The incidents to detect.")
-  incidents?: IncidentOptions;
 }
 
 @doc("The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused. The maximum image size is 2048 x 2048 pixels and should not exceed 4 MB, while the minimum image size is 50 x 50 pixels.")
@@ -158,10 +136,6 @@ model ImageData {
 model AnalyzeImageResult {
   @doc("Analysis result for categories.")
   categoriesAnalysis: ImageCategoriesAnalysis[];
-  
-  @added(ContentSafety.Versions.v2024_04_15_Preview)
-  @doc("The incident match details.")
-  incidentMatches?: IncidentMatch[];
 }
 
 @doc("Image analysis result.")
@@ -248,7 +222,7 @@ model TextIncident {
 
   @doc("Incident status.")
   @visibility("read")
-  status: statusDirection;
+  status: incidentStatus;
 
   @doc("Incident created time.")
   @visibility("read", "query")
@@ -260,7 +234,7 @@ model TextIncident {
 }
 
 @doc("Incident status.")
-enum statusDirection {
+enum incidentStatus {
   @doc("Incident is in progress.")
   InProgress: "InProgress",
 
@@ -321,7 +295,7 @@ model ImageIncident {
 
   @doc("Incident status.")
   @visibility("read")
-  status: statusDirection;
+  status: incidentStatus;
 
   @doc("Incident created time.")
   @visibility("read", "query")
