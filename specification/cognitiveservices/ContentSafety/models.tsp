@@ -50,7 +50,7 @@ union AnalyzeImageOutputType {
 
 @doc("The text analysis request.")
 model AnalyzeTextOptions {
-  @doc("The text needs to be analyzed. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.")
+  @doc("The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
   @maxLength(10000)
   text: string;
 
