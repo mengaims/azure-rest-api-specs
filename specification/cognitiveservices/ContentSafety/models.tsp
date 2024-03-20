@@ -262,7 +262,7 @@ model AutoReviewerVersion {
   exampleBlobUrl?: string;
 
   @doc("Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the exampleBlobUrl.")
-  @visibility("created", "update")
+  @visibility("created", "update", "read")
   blobDelimiter?: string;
 
   @doc("URL of copied example jsonl blob. If exampleBlobUrl is not provided in the request, this field will not be shown in the response.")

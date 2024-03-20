@@ -219,7 +219,7 @@
             "description": "The resource instance.",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/AutoReviewerVersionCreateOrUpdate"
+              "$ref": "#/definitions/AutoReviewerVersion"
             }
           }
         ],
@@ -1171,6 +1171,14 @@
             "create"
           ]
         },
+        "blobDelimiter": {
+          "type": "string",
+          "description": "Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the exampleBlobUrl.",
+          "x-ms-mutability": [
+            "read",
+            "update"
+          ]
+        },
         "exampleBlobCopyUrl": {
           "type": "string",
           "description": "URL of copied example jsonl blob. If exampleBlobUrl is not provided in the request, this field will not be shown in the response.",
@@ -1206,7 +1214,7 @@
         "status"
       ]
     },
-    "AutoReviewerVersionCreateOrUpdate": {
+    "AutoReviewerVersionItem": {
       "type": "object",
       "properties": {
         "autoReviewerName": {
@@ -1245,52 +1253,8 @@
           "type": "string",
           "description": "Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the exampleBlobUrl.",
           "x-ms-mutability": [
+            "read",
             "update"
-          ]
-        },
-        "error": {
-          "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse",
-          "description": "Error when building the auto reviewer."
-        }
-      },
-      "required": [
-        "autoReviewerName",
-        "labels"
-      ]
-    },
-    "AutoReviewerVersionItem": {
-      "type": "object",
-      "properties": {
-        "autoReviewerName": {
-          "type": "string",
-          "description": "The name of the auto reviewer.",
-          "maxLength": 64,
-          "pattern": "^[0-9A-Za-z._~-]+$",
-          "x-ms-mutability": [
-            "read",
-            "update",
-            "create"
-          ]
-        },
-        "labels": {
-          "type": "array",
-          "description": "The labels defined in the auto reviewer.",
-          "items": {
-            "$ref": "#/definitions/AutoReviewerLabelDetails"
-          },
-          "x-ms-identifiers": []
-        },
-        "enableOtherwiseLabel": {
-          "type": "boolean",
-          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
-        },
-        "exampleBlobUrl": {
-          "type": "string",
-          "description": "URL of example jsonl blob. Read & write access to the last layer virtual directory is required.",
-          "x-ms-mutability": [
-            "read",
-            "update",
-            "create"
           ]
         },
         "exampleBlobCopyUrl": {
