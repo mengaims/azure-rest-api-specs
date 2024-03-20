@@ -1598,10 +1598,6 @@
               }
             ]
           }
-        },
-        "incidents": {
-          "$ref": "#/definitions/IncidentOptions",
-          "description": "The incidents to detect."
         }
       },
       "required": [
@@ -1617,14 +1613,6 @@
           "description": "Analysis result for categories.",
           "items": {
             "$ref": "#/definitions/ImageCategoriesAnalysis"
-          },
-          "x-ms-identifiers": []
-        },
-        "incidentMatches": {
-          "type": "array",
-          "description": "The incident match details.",
-          "items": {
-            "$ref": "#/definitions/IncidentMatch"
           },
           "x-ms-identifiers": []
         }
@@ -1733,10 +1721,6 @@
               }
             ]
           }
-        },
-        "incidents": {
-          "$ref": "#/definitions/IncidentOptions",
-          "description": "The incidents to detect."
         }
       },
       "required": [
@@ -1787,14 +1771,6 @@
           "description": "Analysis result for categories.",
           "items": {
             "$ref": "#/definitions/TextCategoriesAnalysis"
-          },
-          "x-ms-identifiers": []
-        },
-        "incidentMatches": {
-          "type": "array",
-          "description": "The incident match details.",
-          "items": {
-            "$ref": "#/definitions/IncidentMatch"
           },
           "x-ms-identifiers": []
         }
@@ -1938,7 +1914,7 @@
           ]
         },
         "status": {
-          "$ref": "#/definitions/statusDirection",
+          "$ref": "#/definitions/incidentStatus",
           "description": "Incident status.",
           "readOnly": true
         },
@@ -2033,23 +2009,6 @@
       "required": [
         "incidentName"
       ]
-    },
-    "IncidentOptions": {
-      "type": "object",
-      "description": "The text analysis request.",
-      "properties": {
-        "incidentNames": {
-          "type": "array",
-          "description": "The accept decision made by service.",
-          "items": {
-            "type": "string"
-          }
-        },
-        "haltOnIncidentHit": {
-          "type": "boolean",
-          "description": "When set to true, further analyses of harmful content will not be performed in cases where incidents are hit. When set to false, all analyses of harmful content will be performed, whether or not incidents are hit."
-        }
-      }
     },
     "JailbreakAnalysisResult": {
       "type": "object",
@@ -2431,7 +2390,7 @@
           "maxLength": 1024
         },
         "status": {
-          "$ref": "#/definitions/statusDirection",
+          "$ref": "#/definitions/incidentStatus",
           "description": "Incident status.",
           "readOnly": true
         },
@@ -2500,7 +2459,7 @@
         "incidentSampleId"
       ]
     },
-    "statusDirection": {
+    "incidentStatus": {
       "type": "string",
       "description": "Incident status.",
       "enum": [
@@ -2509,7 +2468,7 @@
         "Failed"
       ],
       "x-ms-enum": {
-        "name": "statusDirection",
+        "name": "incidentStatus",
         "modelAsString": true,
         "values": [
           {
