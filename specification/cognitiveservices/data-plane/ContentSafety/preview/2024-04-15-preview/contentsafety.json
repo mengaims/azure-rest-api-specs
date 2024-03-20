@@ -144,6 +144,50 @@
       }
     },
     "/text/autoReviewers/{autoReviewerName}": {
+      "get": {
+        "operationId": "AutoReviewerOperations_GetAutoReviewer",
+        "description": "Get a auto reviewer or a specific version of it.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "autoReviewerName",
+            "in": "path",
+            "description": "Name of the auto reviewer.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "If not provided, it will return the latest version.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AutoReviewerVersionList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
       "put": {
         "operationId": "AutoReviewerOperations_CreateOrUpdateAutoReviewer",
         "summary": "Create a new version of auto reviewer.",
@@ -157,7 +201,9 @@
             "in": "path",
             "description": "The name of the auto reviewer.",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
           },
           {
             "name": "x-ms-error-code",
@@ -228,7 +274,9 @@
             "in": "path",
             "description": "The name of the auto reviewer.",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
           },
           {
             "name": "version",
@@ -242,52 +290,6 @@
         "responses": {
           "204": {
             "description": "There is no content to send for this request, but the headers may be useful. "
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        }
-      }
-    },
-    "/text/autoReviwer/{autoReviwerName}": {
-      "get": {
-        "operationId": "AutoReviewerOperations_GetAutoReviwer",
-        "description": "Get a auto reviewer or a specific version of it.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "name": "autoReviwerName",
-            "in": "path",
-            "description": "Name of the auto reviewer.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "version",
-            "in": "query",
-            "description": "If not provided, it will return the latest version.",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/AutoReviewerVersionList"
-            }
           },
           "default": {
             "description": "An unexpected error response.",
@@ -1070,22 +1072,21 @@
       "properties": {
         "text": {
           "type": "string",
-          "description": "The text needs to be auto reviewed. We support a maximum of 30K tokens."
+          "description": "The text needs to be auto reviewed."
         },
         "autoReviewerName": {
           "type": "string",
           "description": "The name of the auto reviewer."
         },
-        "autoReviwerVersion": {
+        "autoReviewerVersion": {
           "type": "integer",
           "format": "int32",
-          "description": "The version of the auto reviewer."
+          "description": "The version of the auto reviewer. If not assigned we will use the latest version."
         }
       },
       "required": [
         "text",
-        "autoReviewerName",
-        "autoReviwerVersion"
+        "autoReviewerName"
       ]
     },
     "AutoReviewTextResult": {
@@ -1126,11 +1127,9 @@
     "AutoReviewerStatus": {
       "type": "string",
       "enum": [
-        "NotStarted",
         "Building",
         "Succeeded",
-        "Failed",
-        "WaitingRetry"
+        "Failed"
       ],
       "x-ms-enum": {
         "name": "AutoReviewerStatus",
@@ -1143,6 +1142,8 @@
         "autoReviewerName": {
           "type": "string",
           "description": "The name of the auto reviewer.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
           "x-ms-mutability": [
             "read",
             "update",
@@ -1211,6 +1212,8 @@
         "autoReviewerName": {
           "type": "string",
           "description": "The name of the auto reviewer.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
           "x-ms-mutability": [
             "read",
             "update",
@@ -1261,6 +1264,8 @@
         "autoReviewerName": {
           "type": "string",
           "description": "The name of the auto reviewer.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
           "x-ms-mutability": [
             "read",
             "update",

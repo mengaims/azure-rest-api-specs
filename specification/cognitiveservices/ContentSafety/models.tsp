@@ -246,6 +246,8 @@ model JailbreakAnalysisResult {
 model AutoReviewerVersion {
   @key
   @visibility("read", "create", "update")
+  @pattern("^[0-9A-Za-z._~-]+$")
+  @maxLength(64)
   @doc("The name of the auto reviewer.")
   autoReviewerName: string;
 
@@ -294,11 +296,9 @@ model AutoReviewerLabelDetails {
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 enum AutoReviewerStatus {
-  NotStarted,
   Building,
   Succeeded,
   Failed,
-  WaitingRetry,
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
@@ -311,14 +311,14 @@ model AutoReviewerVersionList {
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("The text auto reviewing request.")
 model AutoReviewTextOptions {
-  @doc("The text needs to be auto reviewed. We support a maximum of 30K tokens.")
+  @doc("The text needs to be auto reviewed.")
   text: string;
 
   @doc("The name of the auto reviewer.")
   autoReviewerName: string;
 
-  @doc("The version of the auto reviewer.")
-  autoReviwerVersion: int32;
+  @doc("The version of the auto reviewer. If not assigned we will use the latest version.")
+  autoReviewerVersion?: int32;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)

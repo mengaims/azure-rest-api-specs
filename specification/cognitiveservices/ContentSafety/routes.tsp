@@ -163,12 +163,12 @@ interface AutoReviewerOperations {
   #suppress "@azure-tools/typespec-azure-core/use-standard-operations"
   @doc("Get a auto reviewer or a specific version of it.")
   @get
-  @route("/text/autoReviwer/{autoReviwerName}")
-  getAutoReviwer is Azure.Core.Foundations.Operation<
+  @route("/text/autoReviewers/{autoReviewerName}")
+  getAutoReviewer is Azure.Core.Foundations.Operation<
     {
       @path
       @doc("Name of the auto reviewer.")
-      autoReviwerName: string;
+      autoReviewerName: string;
 
       @query
       @doc("If not provided, it will return the latest version.")
