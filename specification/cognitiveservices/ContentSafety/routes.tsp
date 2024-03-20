@@ -78,7 +78,7 @@ interface TextOperations {
       @clientName("options", "java")
       body: AnalyzeTextDetectIncidentsOptions;
     },
-    AnalyzeDetectIncidentsResult
+    DetectIncidentsResult
   >;
 }
 
@@ -113,7 +113,7 @@ interface ImageOperations {
       @clientName("options", "java")
       body: AnalyzeImageDetectIncidentsOptions;
     },
-    AnalyzeDetectIncidentsResult
+    DetectIncidentsResult
   >;
 }
 

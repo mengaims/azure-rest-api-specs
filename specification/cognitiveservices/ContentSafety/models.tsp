@@ -50,7 +50,7 @@ union AnalyzeImageOutputType {
 
 @doc("The text analysis request.")
 model AnalyzeTextOptions {
-  @doc("The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
+  @doc("The text needs to be analyzed. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.")
   @maxLength(10000)
   text: string;
 
@@ -222,7 +222,7 @@ model TextIncident {
 
   @doc("Incident status.")
   @visibility("read")
-  status: incidentStatus;
+  status: IncidentStatus;
 
   @doc("Incident created time.")
   @visibility("read", "query")
@@ -233,16 +233,12 @@ model TextIncident {
   lastUpdated: utcDateTime;
 }
 
+@added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("Incident status.")
-enum incidentStatus {
-  @doc("Incident is in progress.")
-  InProgress: "InProgress",
-
-  @doc("Incident is completed.")
-  Completed: "Completed",
-
-  @doc("Incident is Failed.")
-  Failed: "Failed"
+enum IncidentStatus {
+  InProgress,
+  Completed,
+  Failed,
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
@@ -295,7 +291,7 @@ model ImageIncident {
 
   @doc("Incident status.")
   @visibility("read")
-  status: incidentStatus;
+  status: IncidentStatus;
 
   @doc("Incident created time.")
   @visibility("read", "query")
@@ -424,7 +420,7 @@ model JailbreakAnalysisResult {
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("The text detect incidents analysis request.")
 model AnalyzeTextDetectIncidentsOptions {
-  @doc("The text needs to be analyzed if it attempt to detect incidents. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.")
+  @doc("The text needs to be analyzed if it attempts to detect incidents. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.")
   @maxLength(10000)
   text: string;
 
@@ -435,7 +431,7 @@ model AnalyzeTextDetectIncidentsOptions {
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("The detect incidents analysis request.")
-model AnalyzeDetectIncidentsResult {
+model DetectIncidentsResult {
   @doc("The detect incidents match details.")
   incidentMatches: IncidentMatch[];
 }

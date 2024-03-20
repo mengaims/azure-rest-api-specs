@@ -498,7 +498,7 @@
           "200": {
             "description": "The request has succeeded.",
             "schema": {
-              "$ref": "#/definitions/AnalyzeDetectIncidentsResult"
+              "$ref": "#/definitions/DetectIncidentsResult"
             }
           },
           "default": {
@@ -1323,7 +1323,7 @@
           "200": {
             "description": "The request has succeeded.",
             "schema": {
-              "$ref": "#/definitions/AnalyzeDetectIncidentsResult"
+              "$ref": "#/definitions/DetectIncidentsResult"
             }
           },
           "default": {
@@ -1527,23 +1527,6 @@
         "incidentSamples"
       ]
     },
-    "AnalyzeDetectIncidentsResult": {
-      "type": "object",
-      "description": "The detect incidents analysis request.",
-      "properties": {
-        "incidentMatches": {
-          "type": "array",
-          "description": "The detect incidents match details.",
-          "items": {
-            "$ref": "#/definitions/IncidentMatch"
-          },
-          "x-ms-identifiers": []
-        }
-      },
-      "required": [
-        "incidentMatches"
-      ]
-    },
     "AnalyzeImageDetectIncidentsOptions": {
       "type": "object",
       "description": "The image detect incidents analysis request.",
@@ -1627,7 +1610,7 @@
       "properties": {
         "text": {
           "type": "string",
-          "description": "The text needs to be analyzed if it attempt to detect incidents. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.",
+          "description": "The text needs to be analyzed if it attempts to detect incidents. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.",
           "maxLength": 10000
         },
         "incidentNames": {
@@ -1676,7 +1659,7 @@
       "properties": {
         "text": {
           "type": "string",
-          "description": "The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one request.",
+          "description": "The text needs to be analyzed. We support a maximum of 10 thousands Unicode characters (Unicode code points) in the text of one request.",
           "maxLength": 10000
         },
         "categories": {
@@ -1840,6 +1823,23 @@
         }
       }
     },
+    "DetectIncidentsResult": {
+      "type": "object",
+      "description": "The detect incidents analysis request.",
+      "properties": {
+        "incidentMatches": {
+          "type": "array",
+          "description": "The detect incidents match details.",
+          "items": {
+            "$ref": "#/definitions/IncidentMatch"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "incidentMatches"
+      ]
+    },
     "ImageCategoriesAnalysis": {
       "type": "object",
       "description": "Image analysis result.",
@@ -1914,7 +1914,7 @@
           ]
         },
         "status": {
-          "$ref": "#/definitions/incidentStatus",
+          "$ref": "#/definitions/IncidentStatus",
           "description": "Incident status.",
           "readOnly": true
         },
@@ -2009,6 +2009,19 @@
       "required": [
         "incidentName"
       ]
+    },
+    "IncidentStatus": {
+      "type": "string",
+      "description": "Incident status.",
+      "enum": [
+        "InProgress",
+        "Completed",
+        "Failed"
+      ],
+      "x-ms-enum": {
+        "name": "IncidentStatus",
+        "modelAsString": true
+      }
     },
     "JailbreakAnalysisResult": {
       "type": "object",
@@ -2390,7 +2403,7 @@
           "maxLength": 1024
         },
         "status": {
-          "$ref": "#/definitions/incidentStatus",
+          "$ref": "#/definitions/IncidentStatus",
           "description": "Incident status.",
           "readOnly": true
         },
@@ -2458,36 +2471,6 @@
       "required": [
         "incidentSampleId"
       ]
-    },
-    "incidentStatus": {
-      "type": "string",
-      "description": "Incident status.",
-      "enum": [
-        "InProgress",
-        "Completed",
-        "Failed"
-      ],
-      "x-ms-enum": {
-        "name": "incidentStatus",
-        "modelAsString": true,
-        "values": [
-          {
-            "name": "InProgress",
-            "value": "InProgress",
-            "description": "Incident is in progress."
-          },
-          {
-            "name": "Completed",
-            "value": "Completed",
-            "description": "Incident is completed."
-          },
-          {
-            "name": "Failed",
-            "value": "Failed",
-            "description": "Incident is Failed."
-          }
-        ]
-      }
     }
   },
   "parameters": {
