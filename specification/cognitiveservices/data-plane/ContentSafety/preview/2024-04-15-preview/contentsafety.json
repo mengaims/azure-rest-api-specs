@@ -516,6 +516,212 @@
         }
       }
     },
+    "/text/autoReviewers": {
+      "get": {
+        "operationId": "AutoReviewerOperations_ListCustomizedCategory",
+        "description": "List latest versions of auto reviewers.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
+          },
+          {
+            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedAutoReviewerVersion"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/text/autoReviewers/{autoReviewerName}": {
+      "get": {
+        "operationId": "AutoReviewerOperations_GetAutoReviewer",
+        "description": "Get a auto reviewer or a specific version of it.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "autoReviewerName",
+            "in": "path",
+            "description": "Name of the auto reviewer.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "If not provided, it will return the latest version.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AutoReviewerVersionList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "AutoReviewerOperations_CreateOrUpdateAutoReviewer",
+        "summary": "Create a new version of auto reviewer.",
+        "description": "Create new auto reviewer or a new version of exisiting auto reviewer.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "autoReviewerName",
+            "in": "path",
+            "description": "The name of the auto reviewer.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "x-ms-error-code",
+            "in": "header",
+            "description": "String error code indicating what went wrong.",
+            "required": false,
+            "type": "string",
+            "x-ms-client-name": "errorCode"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "description": "The resource instance.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AutoReviewerVersion"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AutoReviewerVersion"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          },
+          "201": {
+            "description": "The request has succeeded and a new resource has been created as a result.",
+            "schema": {
+              "$ref": "#/definitions/AutoReviewerVersion"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "AutoReviewerOperations_DeleteCustomizedCategory",
+        "description": "Delete an auto reviewer or a specific version of it.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "autoReviewerName",
+            "in": "path",
+            "description": "The name of the auto reviewer.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "description": "If not provided, it will delete all the versions of the auto reviewer.",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "There is no content to send for this request, but the headers may be useful. "
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text/blocklists": {
       "get": {
         "operationId": "TextBlocklists_ListTextBlocklists",
@@ -1300,6 +1506,47 @@
         }
       }
     },
+    "/text:autoReview": {
+      "post": {
+        "operationId": "AutoReviewerOperations_AutoReview",
+        "summary": "Auto Review Text",
+        "description": "A synchronous API for the automatic review of harmful content",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "The text analysis request.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AutoReviewTextOptions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/AutoReviewTextResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text:detectIncidents": {
       "post": {
         "operationId": "TextOperations_DetectTextIncidents",
@@ -1762,6 +2009,249 @@
         "categoriesAnalysis"
       ]
     },
+    "AutoReviewTextOptions": {
+      "type": "object",
+      "description": "The text auto reviewing request.",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": "The text needs to be auto reviewed."
+        },
+        "autoReviewerName": {
+          "type": "string",
+          "description": "The name of the auto reviewer."
+        },
+        "autoReviewerVersion": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The version of the auto reviewer. If not assigned we will use the latest version."
+        }
+      },
+      "required": [
+        "text",
+        "autoReviewerName"
+      ]
+    },
+    "AutoReviewTextResult": {
+      "type": "object",
+      "description": "The text auto reviewing result.",
+      "properties": {
+        "labelName": {
+          "type": "string",
+          "description": "The output label name."
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "The reasoning of output label."
+        }
+      },
+      "required": [
+        "labelName",
+        "reasoning"
+      ]
+    },
+    "AutoReviewerLabelDetails": {
+      "type": "object",
+      "properties": {
+        "labelName": {
+          "type": "string",
+          "description": "The name of the label."
+        },
+        "description": {
+          "type": "string",
+          "description": "The description of the label."
+        }
+      },
+      "required": [
+        "labelName",
+        "description"
+      ]
+    },
+    "AutoReviewerStatus": {
+      "type": "string",
+      "enum": [
+        "Building",
+        "Succeeded",
+        "Failed"
+      ],
+      "x-ms-enum": {
+        "name": "AutoReviewerStatus",
+        "modelAsString": true
+      }
+    },
+    "AutoReviewerVersion": {
+      "type": "object",
+      "properties": {
+        "autoReviewerName": {
+          "type": "string",
+          "description": "The name of the auto reviewer.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "description": "The labels defined in the auto reviewer.",
+          "items": {
+            "$ref": "#/definitions/AutoReviewerLabelDetails"
+          },
+          "x-ms-identifiers": []
+        },
+        "enableOtherwiseLabel": {
+          "type": "boolean",
+          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
+        },
+        "exampleBlobUrl": {
+          "type": "string",
+          "description": "URL of example jsonl blob. Read & write access to the last layer virtual directory is required.",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "blobDelimiter": {
+          "type": "string",
+          "description": "Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the exampleBlobUrl.",
+          "x-ms-mutability": [
+            "read",
+            "update"
+          ]
+        },
+        "exampleBlobCopyUrl": {
+          "type": "string",
+          "description": "URL of copied example jsonl blob. If exampleBlobUrl is not provided in the request, this field will not be shown in the response.",
+          "readOnly": true
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Version number of the auto reviewer.",
+          "readOnly": true
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation time of the auto reviewer.",
+          "readOnly": true
+        },
+        "status": {
+          "$ref": "#/definitions/AutoReviewerStatus",
+          "description": "Build status of the auto reviewer.",
+          "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse",
+          "description": "Error when building the auto reviewer."
+        }
+      },
+      "required": [
+        "autoReviewerName",
+        "labels",
+        "version",
+        "createdTime",
+        "status"
+      ]
+    },
+    "AutoReviewerVersionItem": {
+      "type": "object",
+      "properties": {
+        "autoReviewerName": {
+          "type": "string",
+          "description": "The name of the auto reviewer.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "labels": {
+          "type": "array",
+          "description": "The labels defined in the auto reviewer.",
+          "items": {
+            "$ref": "#/definitions/AutoReviewerLabelDetails"
+          },
+          "x-ms-identifiers": []
+        },
+        "enableOtherwiseLabel": {
+          "type": "boolean",
+          "description": "Whether let system add an otherwise label to the auto reviewer. Default value is true."
+        },
+        "exampleBlobUrl": {
+          "type": "string",
+          "description": "URL of example jsonl blob. Read & write access to the last layer virtual directory is required.",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
+        },
+        "blobDelimiter": {
+          "type": "string",
+          "description": "Delimiter of blob url. If not provided, '/' will be used as the delimiter to parse the exampleBlobUrl.",
+          "x-ms-mutability": [
+            "read",
+            "update"
+          ]
+        },
+        "exampleBlobCopyUrl": {
+          "type": "string",
+          "description": "URL of copied example jsonl blob. If exampleBlobUrl is not provided in the request, this field will not be shown in the response.",
+          "readOnly": true
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Version number of the auto reviewer.",
+          "readOnly": true
+        },
+        "createdTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation time of the auto reviewer.",
+          "readOnly": true
+        },
+        "status": {
+          "$ref": "#/definitions/AutoReviewerStatus",
+          "description": "Build status of the auto reviewer.",
+          "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponseItem",
+          "description": "Error when building the auto reviewer."
+        }
+      },
+      "required": [
+        "autoReviewerName",
+        "labels",
+        "version",
+        "createdTime",
+        "status"
+      ]
+    },
+    "AutoReviewerVersionList": {
+      "type": "object",
+      "description": "List of auto reviewer versions.",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "List of auto reviewer versions.",
+          "items": {
+            "$ref": "#/definitions/AutoReviewerVersionItem"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
     "Azure.Core.Foundations.Error": {
       "type": "object",
       "description": "The error object.",
@@ -1803,6 +2293,23 @@
         "error": {
           "$ref": "#/definitions/Azure.Core.Foundations.Error",
           "description": "The error object."
+        }
+      },
+      "required": [
+        "error"
+      ]
+    },
+    "Azure.Core.Foundations.ErrorResponseItem": {
+      "type": "object",
+      "description": "A response containing error details.",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "The error object."
+        },
+        "errorCode": {
+          "type": "string",
+          "description": "String error code indicating what went wrong."
         }
       },
       "required": [
@@ -2049,6 +2556,29 @@
       },
       "required": [
         "incidentSampleId"
+      ]
+    },
+    "PagedAutoReviewerVersion": {
+      "type": "object",
+      "description": "Paged collection of AutoReviewerVersion items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The AutoReviewerVersion items on this page",
+          "items": {
+            "$ref": "#/definitions/AutoReviewerVersionItem"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "value"
       ]
     },
     "PagedImageIncident": {
