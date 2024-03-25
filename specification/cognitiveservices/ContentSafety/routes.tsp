@@ -276,6 +276,17 @@ interface AutoReviewerOperations {
       version?: int32;
     }>
   >;
+
+  @summary("Get An Auto Reviewer Operation.")
+  @doc("Get an auto reviewer operation.")
+  getAutoReviewerOperation is Azure.Core.ResourceRead<AutoReviewerOperationDetail>;
+
+  @summary("List All Auto Reviewer Operations.")
+  @doc("List all auto reviewer operations.")
+  listAutoReviewerOperations is Azure.Core.ResourceList<
+    AutoReviewerOperationDetail,
+    ListQueryParametersTrait<StandardListQueryParameters>
+  >;
 }
 
 interface TextIncidentOps
