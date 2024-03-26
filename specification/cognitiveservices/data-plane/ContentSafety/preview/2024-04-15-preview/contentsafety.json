@@ -2908,7 +2908,7 @@
     },
     "IncidentOperationStatus": {
       "type": "string",
-      "description": "Operation status.",
+      "description": "Incident operation status.",
       "enum": [
         "NotStarted",
         "Running",

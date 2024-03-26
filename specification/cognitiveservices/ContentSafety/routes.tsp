@@ -401,7 +401,7 @@ interface TextIncidentOperation {
   @doc("Returns text incident operation details and Operation-Location.")
   activate is TextIncidentOperationsOps.ResourceAction<
   TextIncident,
-  OperationOptions,
+  IncidentOperationOptions,
   TextIncidentOperationResult
   >;
 
@@ -421,7 +421,7 @@ interface ImageIncidentOperation {
   @doc("Returns image incident operation details and Operation-Location.")
   activate is ImageIncidentOperationsOps.ResourceAction<
   ImageIncident,
-  OperationOptions,
+  IncidentOperationOptions,
   ImageIncidentOperationResult
   >;
 

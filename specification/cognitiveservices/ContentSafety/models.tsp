@@ -543,7 +543,7 @@ model TextIncident {
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
-@doc("Operation status.")
+@doc("Incident operation status.")
 union IncidentOperationStatus {
   string,
   "NotStarted",
@@ -759,4 +759,4 @@ model ImageIncidentOperationResult {
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("Empty request body.")
-model OperationOptions {}
+model IncidentOperationOptions {}
