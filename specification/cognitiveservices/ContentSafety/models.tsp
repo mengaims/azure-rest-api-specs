@@ -446,6 +446,10 @@ model AutoReviewerVersion {
   @doc("Creation time of the auto reviewer.")
   @visibility("read")
   createdTime: utcDateTime;
+
+  @doc("Status of the auto reviewer version.")
+  @visibility("read")
+  status: string;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)

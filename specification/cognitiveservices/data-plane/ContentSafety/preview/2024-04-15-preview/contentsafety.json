@@ -605,7 +605,7 @@
         }
       },
       "put": {
-        "operationId": "AutoReviewerOperations_CreateOrUpdateAutoReviewer",
+        "operationId": "AutoReviewerOperations_CreateOrReplaceAutoReviewer",
         "summary": "Create a new version of auto reviewer.",
         "description": "Create new auto reviewer or a new version of exisiting auto reviewer.",
         "parameters": [
@@ -636,12 +636,26 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/AutoReviewerVersion"
+            },
+            "headers": {
+              "Operation-Location": {
+                "type": "string",
+                "format": "uri",
+                "description": "The location for monitoring the operation state."
+              }
             }
           },
           "201": {
             "description": "The request has succeeded and a new resource has been created as a result.",
             "schema": {
               "$ref": "#/definitions/AutoReviewerVersion"
+            },
+            "headers": {
+              "Operation-Location": {
+                "type": "string",
+                "format": "uri",
+                "description": "The location for monitoring the operation state."
+              }
             }
           },
           "default": {
@@ -656,7 +670,8 @@
               }
             }
           }
-        }
+        },
+        "x-ms-long-running-operation": true
       },
       "delete": {
         "operationId": "AutoReviewerOperations_DeleteAutoReviewer",
@@ -699,50 +714,6 @@
               }
             }
           }
-        }
-      }
-    },
-    "/text/autoReviewers/operations": {
-      "get": {
-        "operationId": "AutoReviewerOperations_ListAutoReviewerOperations",
-        "summary": "List All Auto Reviewer Operations.",
-        "description": "List all auto reviewer operations.",
-        "parameters": [
-          {
-            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.TopQueryParameter"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.SkipQueryParameter"
-          },
-          {
-            "$ref": "#/parameters/Azure.Core.MaxPageSizeQueryParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The request has succeeded.",
-            "schema": {
-              "$ref": "#/definitions/PagedAutoReviewerOperationDetail"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
-            },
-            "headers": {
-              "x-ms-error-code": {
-                "type": "string",
-                "description": "String error code indicating what went wrong."
-              }
-            }
-          }
-        },
-        "x-ms-pageable": {
-          "nextLinkName": "nextLink"
         }
       }
     },
@@ -2453,13 +2424,19 @@
           "format": "date-time",
           "description": "Creation time of the auto reviewer.",
           "readOnly": true
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the auto reviewer version.",
+          "readOnly": true
         }
       },
       "required": [
         "autoReviewerName",
         "labels",
         "version",
-        "createdTime"
+        "createdTime",
+        "status"
       ]
     },
     "AutoReviewerVersionList": {
@@ -2829,28 +2806,6 @@
       },
       "required": [
         "incidentSampleId"
-      ]
-    },
-    "PagedAutoReviewerOperationDetail": {
-      "type": "object",
-      "description": "Paged collection of AutoReviewerOperationDetail items",
-      "properties": {
-        "value": {
-          "type": "array",
-          "description": "The AutoReviewerOperationDetail items on this page",
-          "items": {
-            "$ref": "#/definitions/AutoReviewerOperationDetail"
-          }
-        },
-        "nextLink": {
-          "type": "string",
-          "format": "uri",
-          "description": "The link to the next page of items",
-          "readOnly": true
-        }
-      },
-      "required": [
-        "value"
       ]
     },
     "PagedAutoReviewerVersion": {
