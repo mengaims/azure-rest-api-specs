@@ -332,6 +332,47 @@
         }
       }
     },
+    "/image/incidents/{incidentName}:activate": {
+      "post": {
+        "operationId": "ImageIncidentOperation_Activate",
+        "summary": "Activate Image incident Operation",
+        "description": "Returns image incident operation details and Operation-Location.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "incidentName",
+            "in": "path",
+            "description": "incident name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/ImageIncidentOperationResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/image/incidents/{incidentName}/incidentSamples": {
       "get": {
         "operationId": "ImageIncidents_ListIncidentSamples",
@@ -417,6 +458,55 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/ImageIncidentSampleResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/incidents/{incidentName}/operations/{operationId}": {
+      "get": {
+        "operationId": "ImageIncidentOperation_GetImageIncidentOperation",
+        "summary": "Get Operation By OperationId",
+        "description": "Returns operation details.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "incidentName",
+            "in": "path",
+            "description": "incident name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "operationId",
+            "in": "path",
+            "description": "The ID of the image incident operation.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/ImageIncidentOperationResult"
             }
           },
           "default": {
@@ -1363,6 +1453,47 @@
         }
       }
     },
+    "/text/incidents/{incidentName}:activate": {
+      "post": {
+        "operationId": "TextIncidentOperation_Activate",
+        "summary": "Activate Text Incident Operation",
+        "description": "Returns text incident operation details and Operation-Location.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "incidentName",
+            "in": "path",
+            "description": "incident name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/TextIncidentOperationResult"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text/incidents/{incidentName}/incidentSamples": {
       "get": {
         "operationId": "TextIncidents_ListIncidentSamples",
@@ -1448,6 +1579,55 @@
             "description": "The request has succeeded.",
             "schema": {
               "$ref": "#/definitions/TextIncidentSample"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/text/incidents/{incidentName}/operations/{operationId}": {
+      "get": {
+        "operationId": "TextIncidentOperation_GetTextIncidentOperation",
+        "summary": "Get Operation By OperationId",
+        "description": "Returns operation details.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "incidentName",
+            "in": "path",
+            "description": "incident name.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "operationId",
+            "in": "path",
+            "description": "The ID of the text incident operation.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/TextIncidentOperationResult"
             }
           },
           "default": {
@@ -2648,11 +2828,6 @@
             "create"
           ]
         },
-        "status": {
-          "$ref": "#/definitions/IncidentStatus",
-          "description": "Incident status.",
-          "readOnly": true
-        },
         "created": {
           "type": "string",
           "format": "date-time",
@@ -2672,7 +2847,6 @@
       },
       "required": [
         "incidentName",
-        "status",
         "created",
         "lastUpdated"
       ]
@@ -2692,6 +2866,34 @@
           ]
         }
       }
+    },
+    "ImageIncidentOperationResult": {
+      "type": "object",
+      "description": "The image incident operation result.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the image incident operation.",
+          "maxLength": 64,
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
+        },
+        "status": {
+          "$ref": "#/definitions/IncidentOperationStatus",
+          "description": "The status of the image incident operation.",
+          "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "Return error detail when the operation failed."
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ]
     },
     "ImageIncidentSample": {
       "type": "object",
@@ -2745,16 +2947,18 @@
         "incidentName"
       ]
     },
-    "IncidentStatus": {
+    "IncidentOperationStatus": {
       "type": "string",
-      "description": "Incident status.",
+      "description": "Operation status.",
       "enum": [
-        "InProgress",
-        "Completed",
-        "Failed"
+        "NotStarted",
+        "Running",
+        "Succeeded",
+        "Failed",
+        "Canceled"
       ],
       "x-ms-enum": {
-        "name": "IncidentStatus",
+        "name": "IncidentOperationStatus",
         "modelAsString": true
       }
     },
@@ -3237,11 +3441,6 @@
           "description": "Incident definition.",
           "maxLength": 1024
         },
-        "status": {
-          "$ref": "#/definitions/IncidentStatus",
-          "description": "Incident status.",
-          "readOnly": true
-        },
         "created": {
           "type": "string",
           "format": "date-time",
@@ -3261,7 +3460,6 @@
       },
       "required": [
         "incidentName",
-        "status",
         "created",
         "lastUpdated"
       ]
@@ -3286,6 +3484,34 @@
           "maxLength": 1024
         }
       }
+    },
+    "TextIncidentOperationResult": {
+      "type": "object",
+      "description": "The text incident operation result.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The ID of the text incident operation.",
+          "maxLength": 64,
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
+        },
+        "status": {
+          "$ref": "#/definitions/IncidentOperationStatus",
+          "description": "The status of the text incident operation.",
+          "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "Return error detail when the incident operation failed."
+        }
+      },
+      "required": [
+        "id",
+        "status"
+      ]
     },
     "TextIncidentSample": {
       "type": "object",

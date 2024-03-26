@@ -521,10 +521,6 @@ model TextIncident {
   @maxLength(1024)
   incidentDefinition?: string;
 
-  @doc("Incident status.")
-  @visibility("read")
-  status: IncidentStatus;
-
   @doc("Incident created time.")
   @visibility("read", "query")
   created: utcDateTime;
@@ -535,12 +531,14 @@ model TextIncident {
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
-@doc("Incident status.")
-union IncidentStatus {
+@doc("Operation status.")
+union IncidentOperationStatus {
   string,
-  "InProgress",
-  "Completed",
+  "NotStarted",
+  "Running",
+  "Succeeded",
   "Failed",
+  "Canceled"
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
@@ -590,10 +588,6 @@ model ImageIncident {
   @visibility("read", "create", "query")
   @maxLength(64)
   incidentName: string;
-
-  @doc("Incident status.")
-  @visibility("read")
-  status: IncidentStatus;
 
   @doc("Incident created time.")
   @visibility("read", "query")
@@ -712,3 +706,45 @@ model AnalyzeImageDetectIncidentsOptions {
   @doc("The incidents to detect.")
   incidentNames: string[];
 }
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The text incident operation result.")
+@resource("operations")
+@parentResource(TextIncident)
+model TextIncidentOperationResult {
+  @doc("The ID of the text incident operation.")
+  @key("operationId")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  id: string;
+
+  @doc("The status of the text incident operation.")
+  @visibility("read")
+  status: IncidentOperationStatus;
+
+  @doc("Return error detail when the incident operation failed.")
+  error?: Azure.Core.Foundations.Error;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("The image incident operation result.")
+@resource("operations")
+@parentResource(ImageIncident)
+model ImageIncidentOperationResult {
+  @doc("The ID of the image incident operation.")
+  @key("operationId")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  id: string;
+
+  @doc("The status of the image incident operation.")
+  @visibility("read")
+  status: IncidentOperationStatus;
+
+  @doc("Return error detail when the operation failed.")
+  error?: Azure.Core.Foundations.Error;
+}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+@doc("Empty request body.")
+model OperationOptions {}

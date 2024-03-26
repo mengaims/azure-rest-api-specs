@@ -385,3 +385,43 @@ interface ImageIncidents {
     ListQueryParametersTrait<StandardListQueryParameters>
   >;
 }
+
+interface TextIncidentOperationsOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+interface TextIncidentOperation {
+  @summary("Activate Text Incident Operation")
+  @doc("Returns text incident operation details and Operation-Location.")
+  activate is TextIncidentOperationsOps.ResourceAction<
+  TextIncident,
+  OperationOptions,
+  TextIncidentOperationResult
+  >;
+
+  @summary("Get Operation By OperationId")
+  @doc("Returns operation details.")
+  getTextIncidentOperation is TextIncidentOperationsOps.ResourceRead<TextIncidentOperationResult>;
+}
+
+interface ImageIncidentOperationsOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@added(ContentSafety.Versions.v2024_04_15_Preview)
+interface ImageIncidentOperation {
+  @summary("Activate Image incident Operation")
+  @doc("Returns image incident operation details and Operation-Location.")
+  activate is ImageIncidentOperationsOps.ResourceAction<
+  ImageIncident,
+  OperationOptions,
+  ImageIncidentOperationResult
+  >;
+
+  @summary("Get Operation By OperationId")
+  @doc("Returns operation details.")
+  getImageIncidentOperation is ImageIncidentOperationsOps.ResourceRead<ImageIncidentOperationResult>;
+}
