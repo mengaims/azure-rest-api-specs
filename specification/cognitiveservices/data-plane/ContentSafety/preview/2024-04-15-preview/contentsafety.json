@@ -336,7 +336,7 @@
       "post": {
         "operationId": "ImageIncidentOperation_Activate",
         "summary": "Activate Image incident Operation",
-        "description": "Returns image incident operation details and Operation-Location.",
+        "description": "Active image incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -349,6 +349,9 @@
             "type": "string",
             "maxLength": 64,
             "pattern": "^(?=[a-zA-Z0-9])[a-zA-Z0-9-]*[a-zA-Z0-9]$"
+          },
+          {
+            "$ref": "#/parameters/IncidentOperationIdOptions"
           }
         ],
         "responses": {
@@ -505,8 +508,8 @@
     "/image/incidents/operations/{operationId}": {
       "get": {
         "operationId": "ImageIncidentOperation_GetImageIncidentOperation",
-        "summary": "Get Operation By OperationId",
-        "description": "Returns operation details.",
+        "summary": "Get Image Incident Operation By OperationId",
+        "description": "Get a image incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -1510,7 +1513,7 @@
       "post": {
         "operationId": "TextIncidentOperation_Activate",
         "summary": "Activate Text Incident Operation",
-        "description": "Returns text incident operation details and Operation-Location.",
+        "description": "Active text incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -1523,6 +1526,9 @@
             "type": "string",
             "maxLength": 64,
             "pattern": "^(?=[a-zA-Z0-9])[a-zA-Z0-9-]*[a-zA-Z0-9]$"
+          },
+          {
+            "$ref": "#/parameters/IncidentOperationIdOptions"
           }
         ],
         "responses": {
@@ -1679,8 +1685,8 @@
     "/text/incidents/operations/{operationId}": {
       "get": {
         "operationId": "TextIncidentOperation_GetTextIncidentOperation",
-        "summary": "Get Operation By OperationId",
-        "description": "Returns operation details.",
+        "summary": "Get Text Incident Operation By OperationId",
+        "description": "Get a text incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -2921,6 +2927,10 @@
           "$ref": "#/definitions/IncidentOperationStatus",
           "description": "The status of the image incident operation.",
           "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "Return error detail when the operation failed."
         }
       },
       "required": [
@@ -3535,6 +3545,10 @@
           "$ref": "#/definitions/IncidentOperationStatus",
           "description": "The status of the text incident operation.",
           "readOnly": true
+        },
+        "error": {
+          "$ref": "#/definitions/Azure.Core.Foundations.Error",
+          "description": "Return error detail when the operation failed."
         }
       },
       "required": [
@@ -3641,6 +3655,15 @@
       "type": "integer",
       "format": "int32",
       "x-ms-parameter-location": "method"
+    },
+    "IncidentOperationIdOptions": {
+      "name": "Operation-Id",
+      "in": "header",
+      "description": "The operation id passed by the user, if not provided, will be automatically generated as a UUID.",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method",
+      "x-ms-client-name": "operationId"
     }
   }
 }

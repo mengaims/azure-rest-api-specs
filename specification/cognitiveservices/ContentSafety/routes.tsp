@@ -401,7 +401,7 @@ interface TextIncidentOperation {
   @doc("Active text incident operation.")
   activate is TextIncidentOperationsOps.LongRunningResourceAction<
   TextIncident,
-  IncidentOperationOptions,
+  IncidentOperationIdOptions,
   {
       @statusCode
       statusCode: 202;
@@ -424,7 +424,7 @@ interface ImageIncidentOperation {
   @doc("Active image incident operation.")
   activate is ImageIncidentOperationsOps.LongRunningResourceAction<
   ImageIncident,
-  IncidentOperationOptions,
+  IncidentOperationIdOptions,
   {
       @statusCode
       statusCode: 202;

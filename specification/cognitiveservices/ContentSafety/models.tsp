@@ -732,6 +732,9 @@ model TextIncidentOperationResult {
   @doc("The status of the text incident operation.")
   @visibility("read")
   status: IncidentOperationStatus;
+
+  @doc("Return error detail when the operation failed.")
+  error?: Azure.Core.Foundations.Error;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
@@ -747,8 +750,15 @@ model ImageIncidentOperationResult {
   @doc("The status of the image incident operation.")
   @visibility("read")
   status: IncidentOperationStatus;
+
+  @doc("Return error detail when the operation failed.")
+  error?: Azure.Core.Foundations.Error;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
-@doc("Empty request body.")
-model IncidentOperationOptions {}
+@doc("Incident operation id options.")
+model IncidentOperationIdOptions {
+    @doc("The operation id passed by the user, if not provided, will be automatically generated as a UUID.")
+    @header("Operation-Id")
+    operationId: string;
+}
