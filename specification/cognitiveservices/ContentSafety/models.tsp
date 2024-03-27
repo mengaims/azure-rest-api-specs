@@ -523,7 +523,7 @@ model AutoReviewerOperationDetail {
 @resource("text/incidents")
 model TextIncident {
   @doc("incident name.")
-  @pattern("^[0-9A-Za-z._~-]+$")
+  @pattern("^(?=[a-zA-Z0-9])[a-zA-Z0-9-]*[a-zA-Z0-9]$")
   @key("incidentName")
   @visibility("read", "create", "query")
   @maxLength(64)
@@ -595,7 +595,7 @@ model RemoveTextIncidentSamplesOptions {
 @resource("image/incidents")
 model ImageIncident {
   @doc("incident name.")
-  @pattern("^[0-9A-Za-z._~-]+$")
+  @pattern("^(?=[a-zA-Z0-9])[a-zA-Z0-9-]*[a-zA-Z0-9]$")
   @key("incidentName")
   @visibility("read", "create", "query")
   @maxLength(64)
@@ -721,8 +721,7 @@ model AnalyzeImageDetectIncidentsOptions {
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("The text incident operation result.")
-@resource("operations")
-@parentResource(TextIncident)
+@resource("text/incidents/operations")
 model TextIncidentOperationResult {
   @doc("The ID of the text incident operation.")
   @key("operationId")
@@ -733,15 +732,11 @@ model TextIncidentOperationResult {
   @doc("The status of the text incident operation.")
   @visibility("read")
   status: IncidentOperationStatus;
-
-  @doc("Return error detail when the incident operation failed.")
-  error?: Azure.Core.Foundations.Error;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 @doc("The image incident operation result.")
-@resource("operations")
-@parentResource(ImageIncident)
+@resource("image/incidents/operations")
 model ImageIncidentOperationResult {
   @doc("The ID of the image incident operation.")
   @key("operationId")
@@ -752,9 +747,6 @@ model ImageIncidentOperationResult {
   @doc("The status of the image incident operation.")
   @visibility("read")
   status: IncidentOperationStatus;
-
-  @doc("Return error detail when the operation failed.")
-  error?: Azure.Core.Foundations.Error;
 }
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)

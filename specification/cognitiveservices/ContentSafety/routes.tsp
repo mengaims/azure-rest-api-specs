@@ -399,10 +399,13 @@ interface TextIncidentOperationsOps
 interface TextIncidentOperation {
   @summary("Activate Text Incident Operation")
   @doc("Returns text incident operation details and Operation-Location.")
-  activate is TextIncidentOperationsOps.ResourceAction<
+  activate is TextIncidentOperationsOps.LongRunningResourceAction<
   TextIncident,
   IncidentOperationOptions,
-  TextIncidentOperationResult
+  {
+      @statusCode
+      statusCode: 202;
+  }
   >;
 
   @summary("Get Operation By OperationId")
@@ -419,10 +422,13 @@ interface ImageIncidentOperationsOps
 interface ImageIncidentOperation {
   @summary("Activate Image incident Operation")
   @doc("Returns image incident operation details and Operation-Location.")
-  activate is ImageIncidentOperationsOps.ResourceAction<
+  activate is ImageIncidentOperationsOps.LongRunningResourceAction<
   ImageIncident,
   IncidentOperationOptions,
-  ImageIncidentOperationResult
+  {
+      @statusCode
+      statusCode: 202;
+  }
   >;
 
   @summary("Get Operation By OperationId")
