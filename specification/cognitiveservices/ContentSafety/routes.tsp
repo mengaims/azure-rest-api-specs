@@ -398,7 +398,7 @@ interface TextIncidentOperationsOps
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 interface TextIncidentOperation {
   @summary("Activate Text Incident Operation")
-  @doc("Returns text incident operation details and Operation-Location.")
+  @doc("Active text incident operation.")
   activate is TextIncidentOperationsOps.LongRunningResourceAction<
   TextIncident,
   IncidentOperationOptions,
@@ -408,8 +408,8 @@ interface TextIncidentOperation {
   }
   >;
 
-  @summary("Get Operation By OperationId")
-  @doc("Returns operation details.")
+  @summary("Get Text Incident Operation By OperationId")
+  @doc("Get a text incident operation.")
   getTextIncidentOperation is TextIncidentOperationsOps.ResourceRead<TextIncidentOperationResult>;
 }
 
@@ -421,7 +421,7 @@ interface ImageIncidentOperationsOps
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 interface ImageIncidentOperation {
   @summary("Activate Image incident Operation")
-  @doc("Returns image incident operation details and Operation-Location.")
+  @doc("Active image incident operation.")
   activate is ImageIncidentOperationsOps.LongRunningResourceAction<
   ImageIncident,
   IncidentOperationOptions,
@@ -431,7 +431,7 @@ interface ImageIncidentOperation {
   }
   >;
 
-  @summary("Get Operation By OperationId")
-  @doc("Returns operation details.")
+  @summary("Get Image Incident Operation By OperationId")
+  @doc("Get a image incident operation.")
   getImageIncidentOperation is ImageIncidentOperationsOps.ResourceRead<ImageIncidentOperationResult>;
 }
