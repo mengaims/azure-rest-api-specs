@@ -397,9 +397,9 @@ interface TextIncidentOperationsOps
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 interface TextIncidentOperation {
-  @summary("Activate Text Incident Operation")
-  @doc("Active text incident operation.")
-  activate is TextIncidentOperationsOps.LongRunningResourceAction<
+  @summary("Deploy Text Incident Operation")
+  @doc("Deploy text incident operation.")
+  deploy is TextIncidentOperationsOps.LongRunningResourceAction<
   TextIncident,
   IncidentOperationIdOptions,
   {
@@ -420,9 +420,9 @@ interface ImageIncidentOperationsOps
 
 @added(ContentSafety.Versions.v2024_04_15_Preview)
 interface ImageIncidentOperation {
-  @summary("Activate Image incident Operation")
-  @doc("Active image incident operation.")
-  activate is ImageIncidentOperationsOps.LongRunningResourceAction<
+  @summary("Deploy Image incident Operation")
+  @doc("Deploy image incident operation.")
+  deploy is ImageIncidentOperationsOps.LongRunningResourceAction<
   ImageIncident,
   IncidentOperationIdOptions,
   {

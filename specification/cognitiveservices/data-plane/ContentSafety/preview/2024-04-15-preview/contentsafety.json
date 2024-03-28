@@ -332,11 +332,11 @@
         }
       }
     },
-    "/image/incidents/{incidentName}:activate": {
+    "/image/incidents/{incidentName}:deploy": {
       "post": {
-        "operationId": "ImageIncidentOperation_Activate",
-        "summary": "Activate Image incident Operation",
-        "description": "Active image incident operation.",
+        "operationId": "ImageIncidentOperation_Deploy",
+        "summary": "Deploy Image incident Operation",
+        "description": "Deploy image incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
@@ -1509,11 +1509,11 @@
         }
       }
     },
-    "/text/incidents/{incidentName}:activate": {
+    "/text/incidents/{incidentName}:deploy": {
       "post": {
-        "operationId": "TextIncidentOperation_Activate",
-        "summary": "Activate Text Incident Operation",
-        "description": "Active text incident operation.",
+        "operationId": "TextIncidentOperation_Deploy",
+        "summary": "Deploy Text Incident Operation",
+        "description": "Deploy text incident operation.",
         "parameters": [
           {
             "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
