@@ -760,5 +760,5 @@ model ImageIncidentOperationResult {
 model IncidentOperationIdOptions {
     @doc("The operation id passed by the user, if not provided, will be automatically generated as a UUID.")
     @header("Operation-Id")
-    operationId: string;
+    operationId?: string;
 }

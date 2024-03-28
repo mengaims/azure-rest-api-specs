@@ -3660,7 +3660,7 @@
       "name": "Operation-Id",
       "in": "header",
       "description": "The operation id passed by the user, if not provided, will be automatically generated as a UUID.",
-      "required": true,
+      "required": false,
       "type": "string",
       "x-ms-parameter-location": "method",
       "x-ms-client-name": "operationId"
