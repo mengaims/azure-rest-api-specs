@@ -408,3 +408,210 @@ model TextPromptInjectionResult {
   @doc("Analysis result for whether the prompt is classified as an injection attack.")
   attackDetected: boolean;
 }
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Text analyze category.")
+union ContentKind {
+  string,
+  "Text",
+  "Image",
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Message analyze source.")
+union Source {
+  string,
+  "Prompt",
+  "Completion",
+  "System",
+  "Document"
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused.")
+model Image {
+  @doc("The Base64 encoding of the image.")
+  base64?: string;
+
+  @doc("The blob url of the image.")
+  blobUrl?: string;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The content of a message, which can be either text or an image.")
+model ContentItem {
+  @doc("The type of content, either 'text' or 'image'.")
+  kind: string;
+
+  @doc("The text content, applicable if kind is 'text'.")
+  text?: string;
+
+  @doc("The image content, applicable if kind is 'image'. Encoded in base64.")
+  image?: Image
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The content of a message, which can be either text or an image.")
+model MessageItem {
+  @doc("The type of message source.")
+  source: Source;
+
+  @doc("A collection of content items.")
+  content: ContentItem[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("A model used for analysis.")
+model ModelItem {
+  @doc("The name of the model.")
+  name: string;
+
+  @doc("The version of the model.")
+  version?: string;
+
+  @doc("The sources that the model analyzes.")
+  sources: Source[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The unified analysis request.")
+model UnifiedAnalyzeOptions {
+  @doc("A collection of messages for analysis.")
+  messages: MessageItem[];
+
+  @doc("The models used for analysis.")
+  raiModels: ModelItem[];  
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the output of a model analysis.")
+model ModelOutput {
+  @doc("The id the image index")
+  id?: int32;
+  @doc("The output detail of the model.")
+  output: Record<string>;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the output of a model analysis.")
+model ModelAnalysisResult {
+  @doc("The name of the model.")
+  modelName: string;
+
+  @doc("The version of the model.")
+  version: string;
+
+  @doc("The result code of the analysis.")
+  resultCode: string;
+
+  @doc("Detailed information about the result code.")
+  resultCodeDetail: string;
+
+  @doc("The output of the model analysis.")
+  modelOutput: ModelOutput[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The response structure for unified model analysis.")
+model UnifiedAnalyzeResult {
+  @doc("A collection of model analysis results.")
+  modelsAnalysis: ModelAnalysisResult[];
+}
+
+@doc("Harm Category.")
+union HarmCategory {
+  string,
+  "Hate",
+  "SelfHarm",
+  "Sexual",
+  "Violence",
+  "PromptShield",
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Specifies a single setting within a safety policy.")
+model Setting {
+  @doc("The category of content to which the setting applies.")
+  category: HarmCategory;
+
+  @doc("The sources from which the content originates.")
+  sources: string[];
+
+  @doc("A configuration string defining what constitutes harmful content.")
+  harmConfig?: string;
+
+  @doc("Indicates whether content matching this setting should be blocked.")
+  blocking?: boolean;
+
+  @doc("Defines specific criteria for blocking content.")
+  blockingCriteria?: Record<string>;
+
+  @doc("Indicates whether this setting is enabled.")
+  enabled?: boolean;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Defines an inline safety policy with specific settings.")
+model SafetyPolicyInline {
+  @doc("The settings of the safety policy.")
+  settings: Setting[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Defines the options for analyzing content with a safety policy.")
+model SafetyPolicyAnalyzeOption {
+  @doc("The messages to be analyzed.")
+  messages: MessageItem[];
+
+  @doc("The inline safety policy to be applied during analysis. One of `safetyPolicyName` or `safetyPolicyInline` must be provided.")
+  safetyPolicyInline?: SafetyPolicyInline;
+
+  @doc("The name of a predefined safety policy to be applied during analysis. One of `safetyPolicyName` or `safetyPolicyInline` must be provided.")
+  safetyPolicyName?: string;
+}
+
+@doc("Details the output of an analysis, including detection status, severity, and additional information.")
+model SafetyPolicyAnalysisOutput {
+  @doc("Indicates whether harmful content was detected.")
+  detected?: boolean;
+
+  @doc("The severity of the detected content, on a scale of 0-7.")
+  severity?: int32;
+
+  @doc("The level of harm detected, for compatibility with RAIPolicy.")
+  level?: string;
+
+  @doc("A dictionary to include more scores, explanations, rewrites, etc.")
+  advanced?: Record<string>;
+}
+
+@doc("Describes a single result of analysis under a specific harm category.")
+model SafetyPolicyAnalysisResult {
+  @doc("The category of harm detected.")
+  harmCategory: HarmCategory;
+
+  @doc("The identifier for the harm configuration used.")
+  harmConfigId: string;
+
+  @doc("The output of the analysis, including detection status and severity.")
+  output: SafetyPolicyAnalysisOutput;
+
+  @doc("The result code of the analysis.")
+  resultCode: string;
+
+  @doc("Detailed information about the result code.")
+  resultCodeDetail?: string;
+}
+
+@doc("Represents the analysis results by applying a safety policy.")
+model SafetyPolicyAnalyzeResult {
+  @doc("The collection of analysis results.")
+  results: SafetyPolicyAnalysisResult[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The response structure for unified model analysis.")
+model SafetyPolicyAnalyzeResponse {
+  @doc("A collection of model analysis results.")
+  analysisByPolicy: SafetyPolicyAnalyzeResult;
+}

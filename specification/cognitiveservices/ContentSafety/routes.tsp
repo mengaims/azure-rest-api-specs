@@ -184,3 +184,41 @@ interface TextGroundednessDetectionOperations {
     AnalyzeTextGroundednessResult
   >;
 }
+
+  @added(Versions.v2024_03_10_Preview)
+  interface UnfiedAnalyzeOperations {
+  @summary("Unified Analysis")
+  @doc("A synchronous API for the unified analysis of input content")
+  @route("/analyze")
+  @post
+  analyze is Azure.Core.RpcOperation<
+    {
+      @body
+      @doc("The unified analyze request.")
+      @clientName("options", "csharp")
+      @clientName("options", "python")
+      @clientName("options", "java")
+      body: UnifiedAnalyzeOptions;
+    },
+    UnifiedAnalyzeResult
+  >;
+}
+
+@added(Versions.v2024_03_10_Preview)
+interface SafetyPolicyAnalyzeOperations {
+@summary("Safety Policy Analysis")
+@doc("A synchronous API for the safety policy analysis of input content")
+@route("/analyzeBySafetyPolicy")
+@post
+analyzeBySafetyPolicy is Azure.Core.RpcOperation<
+  {
+    @body
+    @doc("The safety policy analyze request.")
+    @clientName("options", "csharp")
+    @clientName("options", "python")
+    @clientName("options", "java")
+    body: SafetyPolicyAnalyzeOption;
+  },
+  SafetyPolicyAnalyzeResponse
+>;
+}

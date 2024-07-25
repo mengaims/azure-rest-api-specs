@@ -16,6 +16,8 @@ interface ContentSafetyClient {
   analyzeImage is ContentSafety.ImageOperations.analyzeImage;
   detectTextJailbreak is ContentSafety.TextOperations.detectTextJailbreak;
   detectTextProtectedMaterial is ContentSafety.TextOperations.detectTextProtectedMaterial;
+  analyze is ContentSafety.UnfiedAnalyzeOperations.analyze;
+  analyzeBySafetyPolicy is ContentSafety.SafetyPolicyAnalyzeOperations.analyzeBySafetyPolicy;
 }
 
 @client({
