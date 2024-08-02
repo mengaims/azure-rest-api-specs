@@ -615,3 +615,72 @@ model SafetyPolicyAnalyzeResponse {
   @doc("A collection of model analysis results.")
   analysisByPolicy: SafetyPolicyAnalyzeResult;
 }
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The parent policy model.")
+model ParentPolicy {
+  @doc("The name of the parent policy.")
+  name: string;
+
+  @doc("The strategy of the parent policy.")
+  strategy: string;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The base settings of safety policy.")
+model BaseSetting {
+  @doc("The harm category.")
+  harmCategory: string;
+
+  @doc("The harm configuration ID.")
+  harmConfigId?: string;
+
+  @doc("The sources of the harm.")
+  sources?: string[];
+
+  @doc("The blocking criteria for CMP dedicated.")
+  blockingCriteria?: Record<string>;
+
+  @doc("Indicates if blocking is enabled for CMP dedicated.")
+  blocking?: boolean;
+
+  @doc("Indicates if the result for this harm configuration is enabled.")
+  enabled?: boolean;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The advanced settings model.")
+model AdvancedSetting {
+  @doc("The type of the advanced setting.")
+  type: string;
+
+  @doc("The name of the advanced setting.")
+  name: string;
+
+  @doc("The version of the advanced setting (optional).")
+  version?: int32;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@resource("safetyPolicies")
+@doc("The safety policy name.")
+model Policy {
+  @doc("The name of the policy.")
+  @pattern("^[0-9A-Za-z._~-]+$")
+  @key("safetyPolicyName")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  name: string;
+
+  @doc("The parent policy.")
+  parentPolicy: ParentPolicy;
+
+  @doc("The mode of the policy.")
+  mode?: string;
+
+  @doc("The base settings of the policy.")
+  baseSettings: BaseSetting[];
+
+  @doc("The advanced settings of the policy.")
+  advancedSettings: AdvancedSetting[];
+}

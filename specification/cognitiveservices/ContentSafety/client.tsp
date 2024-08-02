@@ -34,3 +34,14 @@ interface BlocklistClient {
   listTextBlocklists is ContentSafety.TextBlocklists.listTextBlocklists;
   removeBlocklistItems is ContentSafety.TextBlocklists.removeBlocklistItems;
 }
+
+@client({
+  name: "SafetyPolicyClient",
+  service: ContentSafety,
+})
+interface SafetyPolicyClient {
+  createOrUpdateSafetyPolicy is ContentSafety.SafetyPolicy.createOrUpdateSafetyPolicy;
+  deleteSafetyPolicy is ContentSafety.SafetyPolicy.deleteSafetyPolicy;
+  getSafetyPolicy is ContentSafety.SafetyPolicy.getSafetyPolicy;
+  listSafetyPolices is ContentSafety.SafetyPolicy.listSafetyPolices;
+}
