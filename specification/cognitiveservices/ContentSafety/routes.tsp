@@ -223,19 +223,21 @@ analyzeBySafetyPolicy is Azure.Core.RpcOperation<
 >;
 }
 
+@added(Versions.v2024_03_10_Preview)
 interface SafetyPolicyOps
   extends Azure.Core.ResourceOperations<NoRepeatableRequests &
       NoConditionalRequests &
       NoClientRequestId> {}
 
-  @@clientName(Azure.Core.Foundations.ResourceBody.resource, "options");
+@@clientName(Azure.Core.Foundations.ResourceBody.resource, "options");
 
+@added(Versions.v2024_03_10_Preview)
 interface SafetyPolicy {
   @summary("Create Or Update Safety Policy")
   @doc("Updates a safety policy. If the policyName does not exist, a new safety policy will be created.")
   createOrUpdateSafetyPolicy is SafetyPolicyOps.ResourceCreateOrUpdate<Policy>;
 
-  @summary("Delete Safety Policy By policyName")
+  @summary("Delete A Safety Policy By policyName")
   @doc("Deletes a safety policy.")
   deleteSafetyPolicy is SafetyPolicyOps.ResourceDelete<Policy>;
 

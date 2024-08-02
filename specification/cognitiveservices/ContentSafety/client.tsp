@@ -43,5 +43,5 @@ interface SafetyPolicyClient {
   createOrUpdateSafetyPolicy is ContentSafety.SafetyPolicy.createOrUpdateSafetyPolicy;
   deleteSafetyPolicy is ContentSafety.SafetyPolicy.deleteSafetyPolicy;
   getSafetyPolicy is ContentSafety.SafetyPolicy.getSafetyPolicy;
-  listSafetyPolices is ContentSafety.SafetyPolicy.listSafetyPolices;
+  listSafetyPolicies is ContentSafety.SafetyPolicy.listSafetyPolicies;
 }

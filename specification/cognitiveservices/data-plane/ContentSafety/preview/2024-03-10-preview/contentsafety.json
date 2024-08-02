@@ -182,6 +182,175 @@
         }
       }
     },
+    "/safetyPolicies": {
+      "get": {
+        "operationId": "SafetyPolicy_ListSafetyPolicies",
+        "summary": "Get All Safety Policies",
+        "description": "Get all safety policies details.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/PagedPolicy"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/safetyPolicies/{safetyPolicyName}": {
+      "get": {
+        "operationId": "SafetyPolicy_GetSafetyPolicy",
+        "summary": "Get Safety Policy By policyName",
+        "description": "Returns safety policy details.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "safetyPolicyName",
+            "in": "path",
+            "description": "The name of the policy.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "SafetyPolicy_CreateOrUpdateSafetyPolicy",
+        "summary": "Create Or Update Safety Policy",
+        "description": "Updates a safety policy. If the policyName does not exist, a new safety policy will be created.",
+        "consumes": [
+          "application/merge-patch+json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "safetyPolicyName",
+            "in": "path",
+            "description": "The name of the policy.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "description": "The resource instance.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PolicyCreateOrUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request has succeeded.",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "201": {
+            "description": "The request has succeeded and a new resource has been created as a result.",
+            "schema": {
+              "$ref": "#/definitions/Policy"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "SafetyPolicy_DeleteSafetyPolicy",
+        "summary": "Delete A Safety Policy By policyName",
+        "description": "Deletes a safety policy.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Azure.Core.Foundations.ApiVersionParameter"
+          },
+          {
+            "name": "safetyPolicyName",
+            "in": "path",
+            "description": "The name of the policy.",
+            "required": true,
+            "type": "string",
+            "maxLength": 64,
+            "pattern": "^[0-9A-Za-z._~-]+$"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "There is no content to send for this request, but the headers may be useful. "
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/Azure.Core.Foundations.ErrorResponse"
+            },
+            "headers": {
+              "x-ms-error-code": {
+                "type": "string",
+                "description": "String error code indicating what went wrong."
+              }
+            }
+          }
+        }
+      }
+    },
     "/text/blocklists": {
       "get": {
         "operationId": "TextBlocklists_ListTextBlocklists",
@@ -791,6 +960,29 @@
         "blocklistItems"
       ]
     },
+    "AdvancedSetting": {
+      "type": "object",
+      "description": "The advanced settings model.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the advanced setting."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the advanced setting."
+        },
+        "version": {
+          "type": "integer",
+          "format": "int32",
+          "description": "The version of the advanced setting (optional)."
+        }
+      },
+      "required": [
+        "type",
+        "name"
+      ]
+    },
     "AnalyzeImageOptions": {
       "type": "object",
       "description": "The image analysis request.",
@@ -1187,6 +1379,45 @@
         }
       }
     },
+    "BaseSetting": {
+      "type": "object",
+      "description": "The base settings of safety policy.",
+      "properties": {
+        "harmCategory": {
+          "type": "string",
+          "description": "The harm category."
+        },
+        "harmConfigId": {
+          "type": "string",
+          "description": "The harm configuration ID."
+        },
+        "sources": {
+          "type": "array",
+          "description": "The sources of the harm.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blockingCriteria": {
+          "type": "object",
+          "description": "The blocking criteria for CMP dedicated.",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "blocking": {
+          "type": "boolean",
+          "description": "Indicates if blocking is enabled for CMP dedicated."
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Indicates if the result for this harm configuration is enabled."
+        }
+      },
+      "required": [
+        "harmCategory"
+      ]
+    },
     "ContentItem": {
       "type": "object",
       "description": "The content of a message, which can be either text or an image.",
@@ -1465,6 +1696,29 @@
         "output"
       ]
     },
+    "PagedPolicy": {
+      "type": "object",
+      "description": "Paged collection of Policy items",
+      "properties": {
+        "value": {
+          "type": "array",
+          "description": "The Policy items on this page",
+          "items": {
+            "$ref": "#/definitions/Policy"
+          },
+          "x-ms-identifiers": []
+        },
+        "nextLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The link to the next page of items",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
     "PagedTextBlocklist": {
       "type": "object",
       "description": "Paged collection of TextBlocklist items",
@@ -1510,6 +1764,124 @@
       "required": [
         "value"
       ]
+    },
+    "ParentPolicy": {
+      "type": "object",
+      "description": "The parent policy model.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the parent policy."
+        },
+        "strategy": {
+          "type": "string",
+          "description": "The strategy of the parent policy."
+        }
+      },
+      "required": [
+        "name",
+        "strategy"
+      ]
+    },
+    "ParentPolicyCreateOrUpdate": {
+      "type": "object",
+      "description": "The parent policy model.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the parent policy."
+        },
+        "strategy": {
+          "type": "string",
+          "description": "The strategy of the parent policy."
+        }
+      }
+    },
+    "Policy": {
+      "type": "object",
+      "description": "The safety policy name.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the policy.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
+        },
+        "parentPolicy": {
+          "$ref": "#/definitions/ParentPolicy",
+          "description": "The parent policy."
+        },
+        "mode": {
+          "type": "string",
+          "description": "The mode of the policy."
+        },
+        "baseSettings": {
+          "type": "array",
+          "description": "The base settings of the policy.",
+          "items": {
+            "$ref": "#/definitions/BaseSetting"
+          },
+          "x-ms-identifiers": []
+        },
+        "advancedSettings": {
+          "type": "array",
+          "description": "The advanced settings of the policy.",
+          "items": {
+            "$ref": "#/definitions/AdvancedSetting"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "name",
+        "parentPolicy",
+        "baseSettings",
+        "advancedSettings"
+      ]
+    },
+    "PolicyCreateOrUpdate": {
+      "type": "object",
+      "description": "The safety policy name.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the policy.",
+          "maxLength": 64,
+          "pattern": "^[0-9A-Za-z._~-]+$",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
+        },
+        "parentPolicy": {
+          "$ref": "#/definitions/ParentPolicyCreateOrUpdate",
+          "description": "The parent policy."
+        },
+        "mode": {
+          "type": "string",
+          "description": "The mode of the policy."
+        },
+        "baseSettings": {
+          "type": "array",
+          "description": "The base settings of the policy.",
+          "items": {
+            "$ref": "#/definitions/BaseSetting"
+          },
+          "x-ms-identifiers": []
+        },
+        "advancedSettings": {
+          "type": "array",
+          "description": "The advanced settings of the policy.",
+          "items": {
+            "$ref": "#/definitions/AdvancedSetting"
+          },
+          "x-ms-identifiers": []
+        }
+      }
     },
     "ProtectedMaterialAnalysisResult": {
       "type": "object",
