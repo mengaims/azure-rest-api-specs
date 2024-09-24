@@ -408,3 +408,329 @@ model TextPromptInjectionResult {
   @doc("Analysis result for whether the prompt is classified as an injection attack.")
   attackDetected: boolean;
 }
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Text analyze category.")
+union ContentKind {
+  string,
+  "Text",
+  "Image",
+}
+
+@doc("Analyze applied source.")
+union Source {
+  string,
+  "All",
+  "Prompt",
+  "Completion",
+  "System",
+  "Document"
+}
+
+@doc("Message analyze source.")
+union MessageSource {
+  string,
+  "Prompt",
+  "Completion",
+  "System",
+  "Document"
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused.")
+model Image {
+  @doc("The Base64 encoding of the image.")
+  base64?: string;
+
+  @doc("The blob url of the image.")
+  blobUrl?: string;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The content of a message, which can be either text or an image.")
+model ContentItem {
+  @doc("The type of content, either 'text' or 'image'.")
+  kind: ContentKind;
+
+  @doc("The text content, applicable if kind is 'text'.")
+  text?: string;
+
+  @doc("The image content, applicable if kind is 'image'. Encoded in base64.")
+  image?: Image
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The content of a message, which can be either text or an image.")
+model MessageItem {
+  @doc("The type of message source.")
+  source: MessageSource;
+
+  @doc("A collection of content items.")
+  contents: ContentItem[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("A model used for analysis.")
+model ModelItem {
+  @doc("The name of the model.")
+  name: string;
+
+  @doc("The version of the model.")
+  version?: string;
+
+  @doc("The sources that the model analyzes.")
+  sources: Source[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The unified analysis request.")
+model UnifiedAnalyzeOptions {
+  @doc("A collection of messages for analysis.")
+  messages: MessageItem[];
+
+  @doc("The models used for analysis.")
+  raiModels: ModelItem[];  
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the output of a model analysis.")
+model ModelOutput {
+  @doc("The id the image index")
+  id?: int32;
+  @doc("The output detail of the model.")
+  output: Record<string>;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the output of a model analysis.")
+model ModelAnalysisResult {
+  @doc("The name of the model.")
+  modelName: string;
+
+  @doc("The version of the model.")
+  version: string;
+
+  @doc("The result code of the analysis.")
+  resultCode: string;
+
+  @doc("Detailed information about the result code.")
+  resultCodeDetail: string;
+
+  @doc("The output of the model analysis.")
+  modelOutput: ModelOutput[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The response structure for unified model analysis.")
+model UnifiedAnalyzeResult {
+  @doc("A collection of model analysis results.")
+  modelsAnalysis: ModelAnalysisResult[];
+}
+
+@doc("SafetyPolicy Mode.")
+union SafetyPolicyMode {
+  string,
+  "Default",
+  "Deferred",
+  "Blocking"
+}
+
+@doc("Harm Category.")
+union HarmCategory {
+  string,
+  "Celebrity",
+  "Drug",
+  "Hate",
+  "PromptInjection",
+  "ProtectedMaterial",
+  "SelfHarm",
+  "Sexual",
+  "Violence"
+}
+
+@doc("RiskLevel")
+union RiskLevel{
+  string,
+  "Safe",
+  "Low",
+  "Medium",
+  "High"
+}
+
+@doc("Advanced Type.")
+union AdvancedType {
+  string,
+  "Blocklist",
+  "IncidentResponse",
+  "CustomiziedCategory"
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Defines the options for analyzing content with a safety policy.")
+model SafetyPolicyAnalyzeOption {
+  @doc("The messages to be analyzed.")
+  messages: MessageItem[];
+
+  @doc("The inline safety policy to be applied during analysis. One of `safetyPolicyName` or `safetyPolicyInline` must be provided.")
+  safetyPolicyInline?: SafetyPolicy;
+
+  @doc("The name of a predefined safety policy to be applied during analysis. One of `safetyPolicyName` or `safetyPolicyInline` must be provided.")
+  safetyPolicyName?: string;
+}
+
+@doc("Details the output of an analysis, including detection status, severity, and additional information.")
+model SafetyPolicyAnalysisOutput {
+  @doc("Indicates whether harmful content was detected.")
+  detected?: boolean;
+
+  @doc("The severity of the detected content, on a scale of 0 to 7.")
+  severity?: int32;
+
+  @doc("The level of harm detected.")
+  level?: RiskLevel;
+
+  @doc("A dictionary to include more scores, explanations, rewrites, etc.")
+  advanced?: PromptInjectionDetail;
+}
+
+@doc("Details the output of an analysis, including detection status, severity, and additional information.")
+model PromptInjectionDetail {
+  @doc("Indicates whether prompt injection was detected.")
+  promptInjection?: boolean;
+
+  @doc("Indicates whether cross-domain issues were detected.")
+  crossDomain?: boolean;
+}
+
+@doc("Describes a single result of analysis under a specific harm category.")
+model BaseSettingResult {
+  @doc("The category of harm detected.")
+  harmCategory: HarmCategory;
+
+  @doc("The sources of the harm.")
+  sources: Source[];
+
+  @doc("The identifier for the harm configuration used. This field is optional.")
+  harmConfigId?: string;
+
+  @doc("The output of the analysis.")
+  output: SafetyPolicyAnalysisOutput;
+
+  @doc("The result code of the analysis.")
+  resultCode: string;
+
+  @doc("Detailed information about the result code. This field is optional.")
+  resultCodeDetail?: string;
+
+  @doc("Indicates whether the blocking criteria are met based on the analysis result. This field is optional.")
+  isBlockingCriteriaMet?: boolean;
+}
+
+@doc("Describes a single result of analysis under a specific advanced setting.")
+model AdvancedSettingResult {
+  @doc("The type of advanced setting.")
+  type: AdvancedType;
+
+  @doc("The sources of the harm.")
+  sources: Source[];
+
+  @doc("The output of the analysis.")
+  output: SafetyPolicyAnalysisOutput;
+
+  @doc("The result code of the analysis.")
+  resultCode: string;
+
+  @doc("Detailed information about the result code. This field is optional.")
+  resultCodeDetail?: string;
+}
+
+@doc("Represents the analysis response obtained by applying a safety policy.")
+model SafetyPolicyAnalyzeResponse {
+  @doc("A collection of base setting analysis results.")
+  baseSettingResults: BaseSettingResult[];
+
+  @doc("A collection of advanced setting analysis results.")
+  advancedSettingResults: AdvancedSettingResult[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The parent policy model.")
+model ParentPolicy {
+  @doc("The name of the parent policy.")
+  name: string;
+
+  @doc("The strategy of the parent policy.")
+  strategy: string;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Only one blockingCriteria can be set, as the detection result of harmCategory can only be either severity either level either isDetected")
+model BlockingCriteria {
+  @doc("The severity allowed from 0-7.")
+  allowedSeverity?: int32;
+
+  @doc("The level allowed from ['Safe', 'Low', 'Medium', 'High'].")
+  allowedLevel?: RiskLevel;
+
+  @doc("Indicates if harmCategory is detected.")
+  isDetected?: boolean;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the base settings of a safety policy.")
+model BaseSetting {
+  @doc("Specifies the harm category.")
+  harmCategory: HarmCategory;
+
+  @doc("Specifies the harm configuration ID. This field is optional.")
+  harmConfigId?: string;
+
+  @doc("Specifies the sources of the harm. This field is optional.")
+  sources?: Source[];
+
+  @doc("Specifies the blocking criteria for CMP dedicated. This field is optional.")
+  blockingCriteria?: BlockingCriteria;
+
+  @doc("Indicates if blocking is enabled. The default value is false. This field is optional.")
+  blocking?: boolean;
+
+  @doc("Indicates if the result for this harm configuration is enabled. The default value is true. This field is optional.")
+  enabled?: boolean;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("Represents the advanced settings configuration.")
+model AdvancedSetting {
+  @doc("Specifies the type of the advanced setting.")
+  type: AdvancedType;
+
+  @doc("Specifies the name of the advanced setting.")
+  name: string;
+
+  @doc("Specifies the sources of the advanced setting. This field is optional.")
+  sources?: Source[];
+
+  @doc("Specifies the version of the advanced setting. This field is optional.")
+  version?: int32;
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@resource("safetyPolicies")
+@doc("The safety policy name.")
+model SafetyPolicy {
+  @doc("The name of the policy.")
+  @pattern("^[0-9A-Za-z._~-]+$")
+  @key("safetyPolicyName")
+  @visibility("read", "create", "query")
+  @maxLength(64)
+  name: string;
+
+  @doc("The mode of the policy.")
+  mode?: SafetyPolicyMode;
+
+  @doc("The base settings of the policy.")
+  baseSettings: BaseSetting[];
+
+  @doc("The advanced settings of the policy.")
+  advancedSettings: AdvancedSetting[];
+}

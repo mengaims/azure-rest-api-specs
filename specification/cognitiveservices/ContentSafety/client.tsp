@@ -16,6 +16,8 @@ interface ContentSafetyClient {
   analyzeImage is ContentSafety.ImageOperations.analyzeImage;
   detectTextJailbreak is ContentSafety.TextOperations.detectTextJailbreak;
   detectTextProtectedMaterial is ContentSafety.TextOperations.detectTextProtectedMaterial;
+  analyze is ContentSafety.UnfiedAnalyzeOperations.analyze;
+  analyzeBySafetyPolicy is ContentSafety.SafetyPolicyAnalyzeOperations.analyzeBySafetyPolicy;
 }
 
 @client({
@@ -31,4 +33,15 @@ interface BlocklistClient {
   listTextBlocklistItems is ContentSafety.TextBlocklists.listTextBlocklistItems;
   listTextBlocklists is ContentSafety.TextBlocklists.listTextBlocklists;
   removeBlocklistItems is ContentSafety.TextBlocklists.removeBlocklistItems;
+}
+
+@client({
+  name: "SafetyPolicyClient",
+  service: ContentSafety,
+})
+interface SafetyPolicyClient {
+  createOrUpdateSafetyPolicy is ContentSafety.SafetyPolicy.createOrUpdateSafetyPolicy;
+  deleteSafetyPolicy is ContentSafety.SafetyPolicy.deleteSafetyPolicy;
+  getSafetyPolicy is ContentSafety.SafetyPolicy.getSafetyPolicy;
+  listSafetyPolicies is ContentSafety.SafetyPolicy.listSafetyPolicies;
 }

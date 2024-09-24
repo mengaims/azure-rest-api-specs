@@ -73,9 +73,9 @@ interface TextOperations {
     {
       @body
       @doc("The text prompt injection attacks analysis request.")
-      @clientName("options", "csharp")
-      @clientName("options", "python")
-      @clientName("options", "java")
+      @projectedName("csharp", "options")
+      @projectedName("python", "options")
+      @projectedName("java", "options")
       body: AnalyzeTextPromptInjectionOptions;
     },
     AnalyzeTextPromptInjectionResult
@@ -183,4 +183,69 @@ interface TextGroundednessDetectionOperations {
     },
     AnalyzeTextGroundednessResult
   >;
+}
+
+  @added(Versions.v2024_03_10_Preview)
+  interface UnfiedAnalyzeOperations {
+  @summary("Unified Analysis")
+  @doc("A synchronous API for the unified analysis of input content")
+  @route("/analyze")
+  @post
+  analyze is Azure.Core.RpcOperation<
+    {
+      @body
+      @doc("The unified analyze request.")
+      @clientName("options", "csharp")
+      @clientName("options", "python")
+      @clientName("options", "java")
+      body: UnifiedAnalyzeOptions;
+    },
+    UnifiedAnalyzeResult
+  >;
+}
+
+@added(Versions.v2024_03_10_Preview)
+interface SafetyPolicyAnalyzeOperations {
+@summary("Safety Policy Analysis")
+@doc("A synchronous API for the safety policy analysis of input content")
+@route("/analyzeBySafetyPolicy")
+@post
+analyzeBySafetyPolicy is Azure.Core.RpcOperation<
+  {
+    @body
+    @doc("The safety policy analyze request.")
+    @clientName("options", "csharp")
+    @clientName("options", "python")
+    @clientName("options", "java")
+    body: SafetyPolicyAnalyzeOption;
+  },
+  SafetyPolicyAnalyzeResponse
+>;
+}
+
+@added(Versions.v2024_03_10_Preview)
+interface SafetyPolicyOps
+  extends Azure.Core.ResourceOperations<NoRepeatableRequests &
+      NoConditionalRequests &
+      NoClientRequestId> {}
+
+@@clientName(Azure.Core.Foundations.ResourceBody.resource, "options");
+
+@added(Versions.v2024_03_10_Preview)
+interface SafetyPolicyManagement {
+  @summary("Create Or Update Safety Policy")
+  @doc("Updates a safety policy. If the policyName does not exist, a new safety policy will be created.")
+  createOrUpdateSafetyPolicy is SafetyPolicyOps.ResourceCreateOrUpdate<SafetyPolicy>;
+
+  @summary("Delete A Safety Policy By policyName")
+  @doc("Deletes a safety policy.")
+  deleteSafetyPolicy is SafetyPolicyOps.ResourceDelete<SafetyPolicy>;
+
+  @summary("Get Safety Policy By policyName")
+  @doc("Returns safety policy details.")
+  getSafetyPolicy is SafetyPolicyOps.ResourceRead<SafetyPolicy>;
+
+  @summary("Get All Safety Policies")
+  @doc("Get all safety policies details.")
+  listSafetyPolicies is SafetyPolicyOps.ResourceList<SafetyPolicy>;
 }
