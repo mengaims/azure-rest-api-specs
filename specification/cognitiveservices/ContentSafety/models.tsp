@@ -466,6 +466,16 @@ model MessageItem {
   source: MessageSource;
 
   @doc("A collection of content items.")
+  content: ContentItem[];
+}
+
+@added(ContentSafety.Versions.v2024_03_10_Preview)
+@doc("The content of a message, which can be either text or an image.")
+model HarmMessageItem {
+  @doc("The type of message source.")
+  source: MessageSource;
+
+  @doc("A collection of content items.")
   contents: ContentItem[];
 }
 
@@ -479,7 +489,7 @@ model ModelItem {
   version?: string;
 
   @doc("The sources that the model analyzes.")
-  sources: Source[];
+  sources: MessageSource[];
 }
 
 @added(ContentSafety.Versions.v2024_03_10_Preview)
@@ -497,8 +507,8 @@ model UnifiedAnalyzeOptions {
 model ModelOutput {
   @doc("The id the image index")
   id?: int32;
-  @doc("The output detail of the model.")
-  output: Record<string>;
+  @doc("The output detail of the model. The key is string, the value can be string, boolean, float, integer and etc")
+  output: Record<string>
 }
 
 @added(ContentSafety.Versions.v2024_03_10_Preview)
@@ -569,7 +579,7 @@ union AdvancedType {
 @doc("Defines the options for analyzing content with a safety policy.")
 model SafetyPolicyAnalyzeOption {
   @doc("The messages to be analyzed.")
-  messages: MessageItem[];
+  messages: HarmMessageItem[];
 
   @doc("The inline safety policy to be applied during analysis. One of `safetyPolicyName` or `safetyPolicyInline` must be provided.")
   safetyPolicyInline?: SafetyPolicy;

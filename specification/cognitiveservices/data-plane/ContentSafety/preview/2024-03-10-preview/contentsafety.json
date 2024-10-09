@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "swagger": "3.0",
   "info": {
     "title": "ContentSafety Service",
     "version": "2024-03-10-preview",
@@ -1583,6 +1583,28 @@
         "modelAsString": true
       }
     },
+    "HarmMessageItem": {
+      "type": "object",
+      "description": "The content of a message, which can be either text or an image.",
+      "properties": {
+        "source": {
+          "$ref": "#/definitions/MessageSource",
+          "description": "The type of message source."
+        },
+        "contents": {
+          "type": "array",
+          "description": "A collection of content items.",
+          "items": {
+            "$ref": "#/definitions/ContentItem"
+          },
+          "x-ms-identifiers": []
+        }
+      },
+      "required": [
+        "source",
+        "contents"
+      ]
+    },
     "Image": {
       "type": "object",
       "description": "The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are provided, the request will be refused.",
@@ -1729,7 +1751,7 @@
           "$ref": "#/definitions/MessageSource",
           "description": "The type of message source."
         },
-        "contents": {
+        "content": {
           "type": "array",
           "description": "A collection of content items.",
           "items": {
@@ -1740,7 +1762,7 @@
       },
       "required": [
         "source",
-        "contents"
+        "content"
       ]
     },
     "MessageSource": {
@@ -1809,7 +1831,7 @@
           "type": "array",
           "description": "The sources that the model analyzes.",
           "items": {
-            "$ref": "#/definitions/Source"
+            "$ref": "#/definitions/MessageSource"
           }
         }
       },
@@ -1829,9 +1851,13 @@
         },
         "output": {
           "type": "object",
-          "description": "The output detail of the model.",
+          "description": "The output detail of the model. The key is string, the value can be string, boolean, float, integer and etc",
           "additionalProperties": {
-            "type": "string"
+            "anyOf": [
+              { "type": "string" },
+              { "type": "number" },
+              { "type": "boolean" }
+            ]
           }
         }
       },
@@ -2048,7 +2074,7 @@
           "type": "array",
           "description": "The messages to be analyzed.",
           "items": {
-            "$ref": "#/definitions/MessageItem"
+            "$ref": "#/definitions/HarmMessageItem"
           },
           "x-ms-identifiers": []
         },
