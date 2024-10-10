@@ -508,7 +508,7 @@ model ModelOutput {
   @doc("The id the image index")
   id?: int32;
   @doc("The output detail of the model. The key is string, the value can be string, boolean, float, integer and etc")
-  output: Record<string>
+  output: Record<string | boolean | float | int32>;
 }
 
 @added(ContentSafety.Versions.v2024_03_10_Preview)
@@ -524,7 +524,7 @@ model ModelAnalysisResult {
   resultCode: string;
 
   @doc("Detailed information about the result code.")
-  resultCodeDetail: string;
+  resultCodeDetail?: string;
 
   @doc("The output of the model analysis.")
   modelOutput: ModelOutput[];
